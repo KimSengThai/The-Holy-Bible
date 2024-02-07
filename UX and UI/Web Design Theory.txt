@@ -1,0 +1,48 @@
+
+*Web Design Stuffs
+_3 seconds to make a good first impression.
+_Website template	->	https://www.canva.com/en_gb/
+
+
+*Colour theory		->	Red: Love, Energy, Intensity		->	Car ad
+				Yellow: Attention Grabbing		->	Clothing ad
+				Green: Freshness. Safety. Growth.	->	Grocery
+				Blue: Trust, Stability			->	Bank used it a lot
+				Purple: Wealth, femininity		->	Loan company
+				
+_Analogous colour: Harmonous
+_Contrast colour: Attention, deisgn to pop, MUST NOT STYLE TEXT WITH IT BUT CAN DO FOR LOGO OR ICON.
+_Try to get the colour pattern you want									->	https://color.adobe.com/create/color-wheel
+_Tempalte for colour scheme										->	https://colorhunt.co/palettes/popular
+
+
+*Typography (font-style)	https://brightblueday.com/blog/fonts-the-key-to-expressing-your-brand/
+_Serif family 		-> 	little feet at the end letter. Make it look like a a command, traditional or king. Eg letterhead.
+_Mood			->	Serif		Tranditional, stable, respectable
+				Sans-serif	Sensible, simple, straightforward
+				Script		Personal, creative, elegant
+				Display		Friendly, loud, amusing
+				Modern		Stylish, chic, smart			
+				Two fonts in one design is clean and tidy. Make sure it has similar mood and time era. Either pick one san serif or non san serif, or combine them sanserif as heading, non san serif as body.
+_NEVER USE THESE FONTS	->	Kristen, Comic Sans, Papyrus, Viner, Curlz, EwuBoa
+
+
+*UI 
+_UI stands for 'user interface' and it specifically refers to the touchpoints a person uses to engage with a digital product. Think about the type of audience.
+_Hierarchy		->	Colour: Use bright colour to attract the user and pull the eyes to the desire button.
+				Line length: aim for 40 to 60 characters per line.
+				Alignment: Reduce the number of alignment points.
+				White space: refer to margin or padding. Minimalist.
+			
+
+*UX
+_UX stands for 'user experience' and it relates to how a user feels whenever they interact with a product or service. 	
+_Keep it simple				->	Not too much information on a page.
+_Consistancy				->	Make it easy for people to use.
+_Reading pattern 			->	F pattern, Z pattern, so design base on that layout.
+_All platform deisgn			->	How you use available space on big screen, make it fill on small screen.
+_Don't make the design deceiving	->	Dark pattern. Evil.
+
+
+*Background Image
+https://pattern.monster/

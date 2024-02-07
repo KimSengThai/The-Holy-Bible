@@ -1,0 +1,85 @@
+
+*jQuery
+_JavaScript library
+_Shortcut for JavaScript syntax
+_John Resig is the creator
+_Use CAD google link! jQuery 3.x.snippet	->	https://developers.google.com/speed/libraries#jquery
+_Put the link above our normal tag!!!
+
+
+*Minification
+_cruch everything together to reduce the size of any code block!
+_That's why we minify code block from external frame work such as jQuery or Bootstrap.
+
+
+*Selecting ELements
+_document.querySelector("h1") = $("h1")			->	$ sign allow us to selectorAll as well
+_$(".className")
+_$("#IDName")
+
+
+*Manipulating Styles
+_One value in bracket means getting but two values means setting.
+_$("h1").css("color", "red")				->	Due to seperation of concern, do not do this
+_$("h1").addClass("className")				->	Use this method to add style from css sheet
+_$("h1").removeClass("className")			->	Use this method to remove style from css sheet	
+_$("h1").hasClass("className")				->	Asking if the element has that class or not (Bolean answer)
+
+
+*Manipulating Text
+_$("h1").text("Bye")					->	.textContent, use it to replace text inside
+_$("button").html("<em>Hey</em>")			->	.html to replace innerHTML from vinilla JavaScript. Everything in the tag.
+
+
+*Manipulating Attributes
+_$("img").attr("src")					->	Get image
+_$("a").attr("href", "https://www.yahoo.com")		->	Set link
+
+
+*Adding Event Listeners
+_Changing the color of h1 by pressing the button.
+	$("button").click(function() {
+		$("h1").css("color","purple");
+ 	})
+
+_Whatever he type, it change to the key we input.
+	$(document).keydown(function(event) {
+		$("h1").text(event.key);
+ 	})
+
+_Event shorter method!!!				->	.on
+	$(document).on("keydown", function(event) {
+		$("h1").text(event.key);
+ 	})
+
+
+*Adding and Removing Elements
+_$("h1").before("<button>New</button>")			->	Create an element (button) before h1
+_$("h1").after("<button>New</button>")			->	Create an element (button) after h1
+_$("h1").prepend("<button>New</button>")		->	Create an element (button) inside h1, before the content 
+_$("h1").append("<button>New</button>")			->	Create an element (button) inside h1, after the content
+
+__$("h1").remove()					->	Remove all element (h1)
+
+
+*Website Animations
+.hide()							->	Sudden disappearance
+.show()							->	Sudden appearance
+.toggle()						->	Switch between hide and show
+.fadeOut()						->	Delay disappearance
+.fadeIn()						->	Delay appearance
+.fadeToggle()						->	Switch between the two fade
+.slideUp()						->	Collapse up
+.slideDown()						->	Uncollapse up
+.slideToggle()						->	witch between the two collapse
+.animate({opacity: 0.5;})				->	define custom CSS, only work on numeric value not things like color
+
+_Chain method
+	$("button").on("click", function() {
+		$("h1").slideUp().slideDown().animate({opacity: 0.5});
+	});
+
+
+
+
+

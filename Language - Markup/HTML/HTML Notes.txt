@@ -1,0 +1,63 @@
+
+*HTML Stuffs
+_Hypertext Markup Language (raw text)
+_Contain content such as images, text or videos
+_HTML element consist of opening tag - content - closing tag		->		<h1> Kim Seng Thai </h1>. 
+_Heading tags: available up to 6.
+_Nesting means what is inside. Relationship is etc > great grand-parent > grand-parent > parent > child
+_Body elements is the things that people see.
+_<div> <p> <span> useful for styling purposes, can contain text, links, images or videos.
+_Attribute	->	.class, #ID, tag, src (source)
+_image syntax	->	<img src = "URL" alt = "Description" />
+_video syntax	->	<video src = "URL" alt = "Description" />
+_anchor syntax	->	<a href = "URL" > This is the name </a>
+_form syntax	->	<form>
+  				<label for="fname">First name:</label><br>					->	label defines a label for form elements
+				<input type="text" id="fname" name="fname"><br>					->	to bind the two lines together (label and input) for = id
+ 				<input type="radio" id="html" name="fav_language" value="HTML">			->	radio lets the user select ONE of the number of choices listed
+  				<label for="html">HTML</label><br>
+  				<input type="radio" id="css" name="fav_language" value="CSS">
+  				<label for="css">CSS</label><br>
+			</form>											->	there are many more options such as checkboxes and submit button.
+_Rules to make your code easy to read		->	Make sure your codes and lines are easy to read, indentation, <!--comment-->
+
+
+*2 types of elements
+_Block element		->	Start new line, stack vertically. eg, <div>, <br/>, <p>
+_Inline element		->	Fit content, stack horizontally. eg, <bold>, <italic>
+
+
+*Structure:
+<!DOCTYPE html>										->	Tell computer the type of document, it is a must.
+<html>											->	To create the structure of HTML
+    <head>
+        <meta charset="UTF-8"> 								->	character encoding represent how character are stored in computer's memory or transmitted over networks. UTF-8 is a popular character encoding.
+        <meta name ="viewport" content="width=device-width, initial-scale=1.0" />	->	Content for mobile scaling, telling HTML that the width will be viewport (which is the actual browser), initial scale 1.0 because it is the initial zoom level.
+        <title> Mr Engineer Portfolio Website </title>					->	Title of the webpage
+        <link rel="stylesheet" href="style.css">					->	How to link to CSS
+    </head>
+    <body>
+        <h1>Heading</h1>
+        <p>Paragraph</p>
+	<script src="./index.js"></script>						->	How to link to JavaScript
+    </body>
+</html>
+
+_Shortcut in VS Code -> ! (press enter)
+
+
+*Table		->	Only use when trying to make a table, not layout. For tabulate data.
+			<table>
+				<tr class="row">
+					<tf class="col1">...</td>
+					<tf class="col2">...</td>
+				</tr>
+			</table>
+
+
+*HTML Semantic Elements
+_Non-semantic elements			->	Element have no meaning other than wrapping text. Eg, <div>, <span>
+_Semantic elements 			-> 	Element clearly descirbes its meaning to both the brower and the develop. Eg, <article> = unique content such as blog post or comment section but in general there is no strict rule for body. 
+_Semantic elements structure order	->	<header>	->	<nav>		->	<section>, <article>, <aside>		->	<footer>
+
+

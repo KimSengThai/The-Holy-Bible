@@ -1,0 +1,129 @@
+
+*Ubuntu Stuffs
+_Use terminal to launch application to the server (GitHub)
+_We use Ubuntu (deverloper app for command prompt)
+
+
+*Git Bash from Angela
+_User -> Application ->	Operating System -> CPU, Disks, Memory
+_User => Graphical User Interface (GUI) or Command Line Interface (CIL)
+_GUI  => Window Explorer or Mac Finder to access or find the files
+_CIL  => Using command prompt to access or find the files for greater control, speed, and finding hidden files
+_BASH => Bourne Again SHell, CIL for UNIX system, eg Linux
+
+
+*Command Prompt (Linux)
+_pwd		->	current directory (find where you are working right now)
+_ls		->	what is inside the file
+_ls-l		->	what is inside the file (including the hidden files)
+_echo		->	Output as string
+_cat		->	Output as file
+_cd		->	move to directory
+_touch		->	create a file
+_mkdir		->	create a folder
+_rm		->	remove files (not folders)
+_rm -r		->	remove folders
+_cp		->	copy files or folders
+_mv (1) (2)	->	move files or folders 1 to 2
+_open		->	open the files or folders
+_code		->	open in VS Code
+_head -n NUM	->	print from top, default print the first 10 lines (NUM is how many lines we want)
+_tail -n NUM	->	print from bottom, default print the last 10 lines (NUM is how many lines we want)
+_nano		->	text editor
+_..		->	means parent directory
+_*		->	everything
+_;		->	multiple command
+
+
+*Command Prompt (Linux) Short-cut key
+_Arrow up and down to move throughout history
+_Hold Alt to move between words
+_ctrl A to go to the beginning of the line, ctrl E to go to the end of the line
+_ctrl U to clear all the lines
+
+
+*Version Control
+_Version Control -> Allow you to go back on previous save using Git.
+
+
+*Local repository 		->	Git can track any changes. Site to keep repository (storage)
+_git init			->	initialise repository (so any changes, git will keep track), once initiate you dont have to do it anymore.
+_git add (filename)		->	add files to staging area (not doing anything yet but still track). To add all files do -> "git add ."
+_git commit -m	"comment"	->	save to local repository! git commit -m "Add file/folderName"
+
+
+_rm --cached -r.		->	Remove everything inside the staging area
+
+
+*Git command
+_git status			->	to check the current status
+_git log			->	date and time a person commit
+_git diff (filename)		->	check what was change!
+_git checkout (filename)	->	Convert to the last commit
+
+
+*GitHub repository 
+_Make a new repository in GitHub
+_Go to (push an existing repository from the command line) 	->	For existing local repository.
+_Follow the command in your desktop and make sure cd the folder you want!
+
+
+*Update File To Github
+_git add (filename)		->	add files to staging area (not doing anything yet but still track). To add all files do -> "git add ."
+_git commit -m	"comment"	->	save to local repository! git commit -m "Add file/folderName"
+_git push origin		->	Do this to save to github, only after the previous steps.
+
+
+*Gitignore
+_Use it for folder or files you dont want anyone else to see.
+_touch .gitignore		->	Create git ignore
+_secrete.txt			->	Put the file that you want to ignore in .gitignore (write inside .gitignore)
+
+_Command in .gitignore
+_#				->	Comments
+_*.txt				->	Ignore every text
+
+
+*Cloning GitHub
+_git clone (url)		->	To clone other people repository
+_Follow the instruction from the website GitHub
+
+
+*Branching and Merging
+_Main branch is for the main project while Features are the other branches. Main branch reserve only final product.
+_git branch (name of features or second branch)		->	Creating a second branch
+_git branch 						->	Shows how many branch there are. (*) shows which branch you are on.
+_git checkout (name branch)				->	To get into the name branch
+_git merge (branch name)				->	To merge branch which will then open Vim (text editor)
+_:q!							->	Do this in Vim to save and quit
+_git push origin main -u				->	To push the main branch
+
+
+*Fork to take someone work to your repository so you can make changes. (copy link to ubunto)
+_Fork (dupilcate to your own repository) their work in the repository
+_Clone (copy link to your ubunto)
+_Open a pull request (wait for owner to approve your changes)
+
+Or
+
+_git fetch and git pull (merge the changes with another user, wait for his pull request)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,163 @@
+
+*Node.js backend shit
+_Framework provide pre use component.
+_Node is a JavaScript runtime (V8 Engine, allow JS to write for any application and not just the web)
+_Node is also allow for asynchronous event-driven (Can store code in event)
+_Node allow for full-stack, scalable (data wise), non blocking (asynchronous, fast), huge ecosystem (allow for us to easy add functionality)
+_Node is not a framework but a runtime environment that allow us to use in the computer and not just within the browser.
+
+
+*Native Node Modules (File System)
+_Documentation		->	https://nodejs.org/docs/latest/api/
+_File System allow us to access a local storage.
+_To access the file system use fs.writeFile(file, data[, options], callback).
+	_file -> place you want to store informations.
+	_data -> data you want to store that file into.
+	_function -> function to call back.
+
+_eg; 
+const fs = require("fs");
+
+fs.writeFile("message.txt", "hello form NodeJS!", (err) => {
+    if (err) throw err;
+    console.log('The file has been saved!');
+  }); 
+
+_or to read instead of write
+
+fs.readFile("./message.txt",'utf8', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+  }); 
+
+
+*Node Package Manager (step by step to install NPM)
+_NPM			->	Created by GutHub where there are utilities and tools to help you write node. Community tools library.
+_NPM href		->	https://www.npmjs.com/
+_To start (initiate npm)->	npm init or npm init -y (saying yes to everything) 
+_To install package	->	npm install <name of package you want to install in npmjs>
+_Follow instruction in the package itself via the website
+
+
+*ECMAScript Modules (to use import function)
+_To enable the package you must:	Go into package.json, add in first child "type": "module",
+_We can now use import key word
+_Syntax for import		import <> from <"">
+
+_eg				import superheroes from "superheroes";
+				const name = superheroes.random();
+
+				console.log(`I am ${name}!`);
+
+
+*Project (QR Code Generator using Node)
+_Install inquirer and qr-image (generate QR code) npm package.
+_Use inquirer to store message
+
+1. Use the inquirer npm package to get user input.
+2. Use the qr-image npm package to turn the user entered URL into a QR code image.
+3. Create a txt file to save the user input using the native fs node module.
+
+import inquirer from "inquirer";
+import qr from "qr-image";
+import fs from "fs";
+
+inquirer
+  .prompt([
+    {
+      message: "Type in your URL: ",
+      name: "URL",
+    },
+  ])
+  .then((answers) => {
+    const url = answers.URL;
+    var qr_svg = qr.image(url);
+    qr_svg.pipe(fs.createWriteStream("qr_img.png"));
+
+    fs.writeFile("URL.txt", url, (err) => {
+      if (err) throw err;
+      console.log("The file has been saved!");
+    });
+  })
+  .catch((error) => {
+    if (error.isTtyError) {
+      // Prompt couldn't be rendered in the current environment
+    } else {
+      // Something else went wrong
+    }
+  });
+
+
+*Express 
+_Framework for backend JS which allow us to create backend stuffs.
+_Express + Node allow us to run JavaScript on any computer.
+_VS Code (source-code editor by Microsoft) is created by Node JS
+_Allow us for less code, readability and add middlewares
+_Steps to create Express Server (Express + Node):
+	1, Create directory (folder)
+	2, Create index.js file (in the folder)
+	3, Initialise NPM (npm init -y) (main set as index.js)
+	4, Install the Express package (npm i express) (to use latest ES6 syntax "type": "module",)
+	5, Write Server application in index.js
+	6, Start server (node index.js) or use nodemon
+
+_Code for index.js (5)
+	import express from "express";					//Import express from that express module
+	const app = express();						//Create an app using express object
+
+	app.use(express.static("public"));				//To use static file such as CSS or HTML in public folder.
+
+	app.listen(3000, () => {					//Specify app with above, two things 
+ 	   console.log("Server running on port 3000.");			//(Port 3000 - location with server, Call back function)
+	});
+
+
+*JSON
+_JavaScript Object Notation					->	A way to format data in a readable way
+_How to make the JSON file readable				->	https://jsonviewer.stack.hu/
+_JSON file contain, value can be string, array or number	->	
+									{ "nameEndPoint" : 	[
+													{
+													"keyID": "value",
+													"key": "value"
+													},
+												]
+									};
+_Convert JavaScript Object to JSON	->	const jsonData = JSON.stringify(data-JS Object);
+_Convert JSON to JavaScript Object	->	const jsonData = JSON.parse(data-JSON);
+
+
+*To create a fake server (JSON)
+_Popular mock server allow to get a full fake API for prototyping and mocking
+_To install JSON (g stand for global)				->	npm install -g json-server
+_JSON require a JSON file to store data				->	data.json
+_To run the server without the need of refreshing it		->	json-server --watch data.json(file name)
+_To get certain information from an endpoint 			->	GET /nameEndPoint/:ID
+_Work with GET, POST, PUT, PATCH, DELETE.
+_Post does not work with :ID because there is not routes/endpoints
+_RoutesOrEndpoints/HTTP Request/resources(any attribute from JSON)/:id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

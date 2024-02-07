@@ -1,0 +1,150 @@
+
+*EJS Stuffs
+_Embedded Javascript is a templating language, eg. jinja (python), handlebars, pug, TWIG (php), EJS (javascript)
+_Templating passing information or data in our server to render in HTML file. Important for seperation of concern.
+_Act as a little JavScript module that can run JavaScript code inside HTML file.	index.ejs
+_Need EJS language support in VS Code allow for syntax highlighting and also has the correct auto-suggest come up. EJS language support by DigitalBrainstem
+_eg, 
+
+<body>
+	<ul>
+		<% for (let i=0; i<items.length; i++) { %>
+			<li>
+				<%= items[i] %>
+			</li>
+			<% } %>
+	</ul>
+</body>
+
+_Note: %> called the Plain Ending tag and it is necessary for closing all the tags. 
+_This tag is used to embed JS code for control-flow, conditionals, no output.
+_In Node JS and Express JS we use res.sendFile to send the HTML file, however it only work for static webpage.
+_Use res.render to send non static webpage. (change in real time)
+_So treat EJS as HTML
+_eg, Change date in real time (weekends and weekdays)
+
+_index.ejs
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Weekday Warrior</title>
+	</head>
+	<body>
+		<h1>Hey, it's <%= dayType %>, <%= advice %>!</h1> <!-- Using Plain Ending tag to insert object -->
+	</body>
+	</html>
+
+
+_index.js
+    import express from "express";
+
+    const app = express();
+    const port = 3000;
+
+    const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+    const d = new Date();					// getDay() function for today
+    let day = weekday[d.getDay()];
+
+    let type = "the weekday";					// Default day to be weekday
+    let adv = "it's time to work hard";				// Saving variables as well
+
+    if (day === "Sunday" || day === "Saturday") {		// If statement to check if its weekend
+        type = "the weekend";
+        adv = "it's time to have some fun";
+    }
+
+    app.get("/", (req, res) => {				// using GET to get resource from the server
+        res.render("index.ejs",	{ 				// render instead of sendFile (body parser HTML)
+            dayType: type,					// objectID to equal to a variable, for passing data
+            advice: adv,
+        }				
+        );
+    });
+
+    app.listen(port, () => {
+        console.log(`Listening on port ${port}`);
+    });
+
+
+
+*EJS Tags
+_<%= variable %>		->	JS Output (Will execute the code and shows)				
+_<% console.log("hello") %>	->	JS Execute (Will execute the code but will not show)
+_<%- Hello %>			->	Render HTML (Render as HTML)
+_<%%  %%>			->	Show <% or %> (useful for teaching)
+_<%# This is a comment %>	->	Stop Execution (nothing, just notes)
+_<%- include("header.ejs") %> 	->	Insert another EJS file (can use for footer and header)
+
+_Notes: every single lines need to be open and close.
+
+
+*Passing Data to EJS Templates (From Server to Client and Client to Server)
+_Using res.render to pass data. Which can then pass onto index.ejs
+_Passing data without variable from Node JS to EJS would crash the program, because EJS does not check if the varible exist or not.
+_Use "res.locals" to varify the existence of varible from Node (server) to EJS (client)
+_Use method="POST" to pass data from EJS (client) to Node (server) with Middleware (body parser)
+_eg, Counting your name
+
+_index.ejs
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Letters</title>
+  </head>
+
+  <body>
+
+    <% if (locals.numberOfLetters) { %>                       <!-- Using locals.variables to check if variable exist or not -->
+      <h1>There are <%=numberOfLetters%> in your name.</h1>
+      <% } else { %>
+      <h1>Enter your name below</h1>
+      <% } %>
+    <form action="/submit" method="POST">
+      <input type="text" name="fName" placeholder="First name">
+      <input type="text" name="lName" placeholder="Last name">
+      <input type="submit" value="OK">
+    </form>
+  </body>
+
+  </html>
+
+_index.js (node, express, body parsel for input)
+    import express from "express";					// import express
+    import bodyParser from "body-parser";				// import body parsel
+
+    const app = express();
+    const port = 3000;
+
+    app.use(bodyParser.urlencoded({ extended: true }));
+
+    app.get("/", (req, res) => {					// HTTP response index.ejs file from the server
+      res.render("index.ejs");
+    }); 
+
+    app.post("/submit", (req, res) => {
+      const numLetter = req.body.fName.length + req.body.lName.length;
+      res.render("index.ejs", {numberOfLetters: numLetter});		// render object and passing data to ejs
+    });
+
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+
+
+*EJS Partials and Layouts
+_Adding stactic files (HTML and CSS) into EJS would not work.
+_Usually with Node base backend we have:	
+	_Public folder (with static files such as images, styles)
+	_views folder for putting all the ejs files, inside views folder (create partials folder for header and footer)
+	_Then we can use built in middleware, to find the static files in js			->	app.use(express.static("public"));
+	_To reference it in ejs header, statement above already reference folder		->	<link rel="stylesheet" href="/styles/content.css">
+	_Can use Partials to make the files less cluter such as adding files			->	<%- include("partials/header.ejs") %>
+
+
+

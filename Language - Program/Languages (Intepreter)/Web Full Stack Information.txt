@@ -1,0 +1,51 @@
+
+*How does internet work?
+_Long string of wires
+_Servers (computer that need to be online 24/7)
+_Clients (user)	->	ISP (Internet Provider)		->	DNS (Domain Name System) act as a yellowpage (place with information) then return back to client.
+
+
+*How does website work?
+_HTML	->	Content (Structure)
+_CSS	->	Style	(Wall lining)
+_JS	->	Functionality	(Appliances, button)
+
+
+*Tech Stack
+_Back-end (server)	->	Operating System
+			->	Web server
+			->	Database
+			->	Programming database
+			->	Web framework
+
+_Front-end (user)	->	HTML
+			->	CSS
+			->	JavaScript
+
+*Information stuffs about Backend
+_Front-End - Everything user can hear, see, or interact with.
+_Back-End  - User never get to see, touch or hear.
+
+*Back-End
+_Server		->	Computer, live 24/7, any computer can act as a network.
+_Application	->	Logic that runs on that server (computer), how the server is going to respond to the request (client)
+_Database	->	Store data, we need  a way to persist information (permanetly store data)
+
+
+*Example of Web App
+_User Login -> Enter email and password -> Pass (request) to Server -> App look inside the database and compare that with the request, if match then send back to the Server, if not match then get User to send again.
+
+_Restaurant (Front-End)		->	Kitchen-Server, Chef-App and Pantry-Database (Back-End)
+
+
+*Tools for Back-End STUFFS and Framework
+_Java		->	JavaSprings
+_Ruby		->	Rails
+_php		->	Cake or Laravel
+_C#		->	ASP.NET
+_Pyton		->	Flask or django
+_JavaScript	->	node (most popular backend framwork as a developer 2023)
+
+
+*Survey from StackOverFlow
+https://survey.stackoverflow.co/2023/

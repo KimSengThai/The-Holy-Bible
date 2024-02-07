@@ -1,0 +1,360 @@
+
+*Javascript 2 DOM (+ need to review later)
+_DOM = Document Object Model (Mostly represented by the tree diagram)	document.
+
+
+*Syntax: 
+_html				->	document.firstElementChild;
+_Element between the tags	->	.innerHTML 	
+_Select HTML element		->	document.querySelector("#ID or .Class or tag")
+_Stimulate a mouse click	->	.click	
+_CSS style selector		->	.style.color
+
+
+*HTML Structure. This need to be in the body because the way computer work. Computer would process content first. Which means we need to script the Java at the bottom of the body.
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JS Demo</title>
+    </head>
+    <body>
+        <h1></h1>
+        <p></p>
+        <script src="./index.js"></script>
+    </body>
+</html>
+
+
+*Objects in DOM
+_Objects (eg, buttons) contain two types of data which are Properties (styling, appearance) and Methods (function, what it does)
+
+_Properties can do two things		->	Get Property (What?)		car.colour; = red 
+						Set Property (Input)		car.numberOfDoors = 2;
+						eg. no parentheses		innterHTML, style, firstChild
+
+_Methods can do two things		->	Call Method (Just do it)	car.drive; 
+						eg. parentheses			click(), appendChild(), setAttritube()
+
+
+*Selecting HTML elements
+_Result with multiple answers will give you in array answer []!!! That means information would be store as an array.
+_Select only the first right answer	->	document.querySelector("#ID or .class or tag or combine selector stuffs");
+_Select all the answer			->	document.querySelectorAll("#ID or .class or tag or combine selector stuffs");
+
+_Get ALL elements with tags		->	document.getElementsByTagName("anyTag");
+_To get more specific with tags		->	document.getElementsByTagName("anyTag")[arrayNumber];
+_Get ALL elements with class name	->	document.getElementsByClassName("className");
+_Get an element with ID			->	document.getElementByID("IDName");
+
+
+*Manipulating and Changing Styles of HTML
+_The property name in CSS and JavaScript is exactly the same other than replacing the - with camel casing.
+_Value (HTML and CSS) of JavaScript has to be specified as a "string" otherwise it will be consider as JavaScript language.
+_To change color of text (CSS) in Javascript		->	name.style.color = "white";
+
+
+*Seperation of Concerns
+_HTML for Content ONLY, CSS for Styling ONLY, JavaScript for Bahaviour ONLY. For this sole reason changing the website style in JavaScript is not good coding practice. 
+_Ways to changing style with JavaScript (adding class) 	->	document.querySelector("class1").classList.add("class2")
+_The opposite, removing class				->	document.querySelector("class1").classList.remove("class2")
+_Toggle, apply and(&&) cancel				->	document.querySelector("class1").classList.toggle("class2")
+_The above methods allow us to add or remove class name so we can use it in CSS style.
+
+
+*Text Manipulation and Text Content Property
+_All the element between the selector, except node	->	.innerHTML = ""
+_Only the text between the selector			->	.textContent = ""
+
+
+*Manipulating HTML Element Attributes
+_Attributes are everything that goes inside the tag other than the tag name itself. (img, string name, video, etc)
+_Get attribute						->	document.querySelector("a").getAttribute("href");
+_Set attribute						->	document.querySelector("a").setAttribute("href", "Change it to what");
+
+
+*Creating HTML Element
+_appendChild means to insert at the end of the body element.
+_Creating h1 node					->	let h1 = document.createElement("h1")
+_Insert h1 to the body element				->	document.body.appendChild(h1)							
+_Selecting JavaScript node				->	let script = document.querySelector("script[src='./index.js']")
+_Inserting order					->	document.body.insertBefore(h1, script)
+
+
+*Changing the node or tag itself
+_Need to make sure that callign element (div) is the parent, first arguement is what we want to replace with and select arguement is what we want to replace (child of div)
+_Creating h2 node or element				->	let h2 = document.createElement("h2")
+_Meaning we're replacing a child of the div element	->	div.replaceChild(h2, p)
+
+_Alternatively, we can use replace with if we already have an access node
+_It try to look for node (p) and replace it with h2	->	p.replaceWith(h2)
+
+
+*Remove the node or tag itself
+_Selecting 2nd list element				->	let itemToBeRemoved = document.querySelector("ul li:nth-child(2)");
+_Item to be removed from the dom tree			->	itemToBeRemoved.remove();
+
+_Alternatively, we can remove the child element from the list
+_Remove the node by using DOM tree manipulation		->	ul.removeChild(itemToBeRemoved)
+
+
+*Event Target Method
+_Event Listeners set up a function after a verb		->	.addEventListener("type",listener(event));		:type (verb), listener (JavaScript function calling), event (referencing the click but not as an object or array, can be any name)
+_Use to invoked or called an object, eg EventListener	->	this. 							:this (referencing the object or array)
+_This is a function type that add variable behind the scene base on the two parameters.
+_Behind the scene the function create object model for "type", store it and put it in listener.
+_Now it make listender as a call back function.
+_Different types of addEvenetListener() include click, dblclick, focus/blur (for forms, when entering password), mouseover/mouseout (hover stuffs), etc.
+_Can make multiple addEvenetListener for the same element.
+
+
+*Remove Event Listerner
+_Removing a function from event listender.
+_No () need for functionToBeRemove because it already expect a function there
+	
+_Adding event listener					->	btn.addEventListener("click", () => {
+_Removing the event listener function			->	h2.removeEventListener("dblclick", functionToBeRemove)
+_dblclick refer to the even listener that we remove	->	})
+
+
+*Event Handlers
+_Shorter syntax of event listerner 
+_No () need for functionToBeChangeTo because it already expect a function there
+_on in the front, eg onclick, onmouseover, onmouseout, onchange(changing input value), onkeyup, onkeydown, etc.
+_oncontextmenu		->	user right click function, call event.preventDefault() to disable the user to right click.
+
+_Same execute as event handler, function definition		->	h2.ondblclick = functionToBeChangeTo;
+
+_Alternatively, function invocation				->	h2.onclick = function() {
+										h2.style.color = "yellow"
+									}
+
+
+*Industry practice 
+_Putting the script node in the head section instead of the body.
+_We don't want to put the script in the body because it might get in the way when we manipulating DOM node. Plus script is suppose to be meta data.
+_Either use 1, Event listner: DOMContentLoaded or 2, Event Handler: window.onload
+
+_1, Event Listerner. 
+_Telling DOM to load then initialize the function		->	document.addEventListern("DOMContentLoaded, initialize") 
+_Wrap function around all .js code, initialise	after above	->	function initialize() {}
+
+_2, Event Hanlder.
+_Wait until window to finish loading				->	window.onload event handler. window.onload = initialize
+_Wrap function around all .js code, initialise	after above	->	function initialize() {}
+
+
+*Events Objects (Fetching Data)
+_The momenet we "type", it return that "type" and can you all its properties as a parameter.
+_For forms, event listener would restart when we press submit, the problem is that the data would be lost because the website refresh.
+_To prevent the event from refreshing, useful for fetching data	->	event.preventDefault();			:Put that in the listener() in the beginning.
+_To get the value that we want, eg name				->	let nameInput = document.querySelector('#name').value
+_.value is asking for name only not the tag such as name or number. read-only.
+_event.target refer to where the event took place, it returns read-only. To get the object or array use .this property!
+
+
+*HTMLAudioElement
+_Input sound to website using JavaScript		->	var audio = new Audio("locationOfSound");
+_The code construct a HTML audio element. Play is verb		audio.play();
+
+
+*Audio Constructive Function (behind the scene from the above HTMLAudioElement)
+
+	function Audio (fileLocation) {		
+		this.fileLocation = fileLocation;
+		this.play = function()	{
+		//Tap into the audio hardware
+		//Check the file at fileLocation exists
+		//Check the file at fileLocation is a sound file
+		//Play the file at fileLocation
+		}
+	}
+
+
+*HTMLKeyPressEvent
+_Input keyboard to a website using JavaScript
+_Below code block shows when user press a keyboard (keydown) it wil trigger a function. 
+_The function then will take the key value (event.key) and compare with what been press ("w").
+_KeyPressEvent is very useful due to the key event property.
+
+			document.addEventListener("keydown", function(event) {
+    				switch (event.key) {
+    			    	case "w":
+           			var audio = new Audio('./sounds/crash.mp3');
+            			audio.play();
+           			break;
+
+
+*Higher Order Function (Responds to Event, eg eventListener) and Callbacks Function
+_Higher Order Function is function that is able to take function as input. Eg 
+
+	document.addEventListener("keydown", respondToKey(event)) 
+
+_Callback Function allow us to wait until something that is happening, in this case a click. Eg
+
+	function respondToKey(event) {
+		console.log("Key pressed.");
+	}
+
+
+*Timing Events
+_Set time out function can be used to put a timer on the element to appear or disappear
+_clearTimeout()		->	Function to clear out time.
+_setInterval -> 
+_Syntax
+ 
+    	setTimeout (function(), milliseconds, para1, para2, ...);
+	setInterval (function(), milliseconds, para1, para2, ...);
+
+
+_eg with unanimous function() at 0.1 second.
+
+    setTimeout (function() {
+        document.querySelector("." + currentKey).classList.remove("pressed")
+    }, 100);
+
+
+
+_eg Button for countdown!
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Button for countdown!</title>
+	    <script src="launch.js"></script>
+    </head>
+    <body>
+        <input type="text" id="duration" />
+	    <button id="LaunchBtn">Launch</button>
+	
+	    <h1>Time before lauch: <span id="timer">0</span></h1>
+        <h4 id="prompt">Start</h4>
+    </body>
+</html> 
+
+
+document.addEventListener("DOMContentLoaded", initialize)
+function initialize() {
+											// making variables to acess the HTML node
+    let duration = document.querySelector("#duration")
+    let launchBtn = document.querySelector("#LaunchBtn")
+    let time = document.querySelector("#timer")
+    let prompt = document.querySelector("#prompt")
+
+											// Event listner for when button is click
+    launchBtn.addEventListener("click", () => {
+											// disable the button after clicking the launch, reseting the prompt as well
+        launchBtn.setAttribute("disabled","disabled")
+        prompt.innerHTML = ""
+											// parseInt converting any possible value (such as decimal) to integer
+        let timeValue = parseInt(duration.value);
+
+											// Set interval so that the timeValue decrease every 1 second
+        if (!isNaN(timeValue)){
+            let countdownId = setInterval(()=>{
+											// timeValue stop at zero
+                if (timeValue === 0) {
+                    clearTimeout(countdownId);
+                    prompt.innerHTML = "Spacecraft is now launching";
+											// allowing user to press the button back again
+                    launchBtn.removeAttribute("disabled")
+                }           
+                time.innerHTML = timeValue--;
+            }, 1000)
+        } else {
+            prompt.innerHTML = "Invalid Input";
+        }
+    })
+}
+
+
+
+_eg Button For Start, Pause, Stop Timer
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Button for countdown!</title>
+	    <script src="launch.js"></script>
+    </head>
+    <body>
+        <h1>Time: <span id="timer">0</span></h1>
+        <button id="startBtn">Start</button>
+        <!-- disabled the button at the start -->
+        <button id="pauseBtn" disabled>Pause</button>
+        <button id="stopBtn" disabled>Stop</button>       
+    </body>
+</html> 
+
+
+document.addEventListener("DOMContentLoaded", initialize)
+function initialize() {
+    let timer = document.querySelector("#timer")
+    let startBtn = document.querySelector("#startBtn")
+    let pauseBtn = document.querySelector("#pauseBtn")
+    let stopBtn = document.querySelector("#stopBtn")
+
+    startBtn.addEventListener("click", () => {
+        let timeValue = timer.innerHTML
+
+        							// remove and add button once button is click
+        startBtn.setAttribute("disabled","disabled")
+        pauseBtn.removeAttribute("disabled")
+        stopBtn.removeAttribute("disabled")
+
+        timerId = setInterval(() => {
+            timer.innerHTML = ++timeValue;
+        }, 1000)
+    })
+
+    pauseBtn.addEventListener("click", () => {
+        							// function to clear the setInterval
+        clearTimeout(timerId);
+        							// remove and add button once button is click
+        pauseBtn.setAttribute("disabled","disabled");
+        startBtn.removeAttribute("disabled");
+        stopBtn.removeAttribute("disabled");
+    })
+
+    stopBtn.addEventListener("click", () => {
+        							// function to clear the setInterval
+        clearTimeout(timerId);
+
+        timer.innerHTML = 0
+        							// remove and add button once button is click
+        stopBtn.setAttribute("disabled","disabled");
+        pauseBtn.removeAttribute("disabled");
+        startBtn.removeAttribute("disabled");
+    })  
+
+}
+
+
+*JavaScript Function Context
+_this keyword				->	the current execution context while the function is being run. (It will refer to the whole object which the function is tie into.)
+						eg	{Object1: function(){return this}}, it will refer to Object1.
+
+_call()					->	invokes a function with a specified context - tie a function into an object as if it belonged to the object. 
+						eg	Function.call(Object, parameter1, parameter2)
+
+_apply()				->	Does exactly the same as call() only that it accepts an array of arguments. Easier to manage than call().
+						eg	Function.apply(Object, [parameter1, parameter2])
+
+_bind()					->	Similar to call() and apply() but instead of it executing a function immediately, it returns a function that can be executed later on. (used it to store function)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

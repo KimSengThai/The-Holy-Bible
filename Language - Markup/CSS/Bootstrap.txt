@@ -1,0 +1,53 @@
+
+*Bootstrap (HTML, CSS and JavaScript Framework)
+_Website		->	https://getbootstrap.com/docs/5.3/getting-started/introduction/
+_Most popular framework for CSS. Mobile first design which means as the screen expands it add features rather than to remove features as the screen is shrunk.
+_External layout system by two twitter developer at 2010.
+_Contain pre-maid CSS files.
+_12 columns layout system.
+_Only need to know the class name then it will work out. Don't need to code for CSS.
+_Cons: class blow (cluster due to class name), less customisation. Don't use it when you are builting simple website or complex website.
+_Pros: Easy and fast, have pre-built component, consistent styling, good browser compatibility. Used it when mobile responsive website and put it only very quickly.
+_How to use (use via CDN - Current Delivery Network) => <link href="website">; <script href="website">
+_ALWAYS PUT OUR CSS BELOW BOOTSTRAP BECAUSE WE WANT TO PRIORITIES THAT!
+
+
+*Layout System (12 Columns)
+_6 components		->	container, grid, columns, gutters, utilities, z-index
+	
+				<div class="container">
+					<div class=" row">
+						<div class="col"></div>		
+					</div>
+				</div>
+
+			->	_Gutters are the padding between columns
+			->	_Col can have as many items as we like. Every column will have equal spacing and width. col-n (n = how much column we want in each col - 12 system)
+			->	_Container have break points which change the position to make website responsive. Breakpoints are widths that is cusomizable, change when the display change. THEY CAN BE ALL COMBINE!
+				Small for mobile device.
+				Medium for ipad device.
+				Large for laptop device.
+				Extra Large for desktop device.
+				Extra extra large TV device.														
+
+
+*Forms
+_Customise forms in contact me page.
+
+
+*Components
+_Different types of function for JavaScript.
+
+
+*Utilities
+_Page layout section include spacing, borders, colors, etc.
+
+
+*Bootstrap Example
+_Get a sample template from example with inspection command.
+_Section also has custume CSS, just gotta look for it.
+
+
+
+
+

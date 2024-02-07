@@ -1,0 +1,253 @@
+
+*To Create Our First Server (using Express)
+_How to teach our server (location of server) (end point)	->	localhost:3000
+_Local host means hosting our own server locally (to our computer)
+_Port means ways to get into a server using unique number	->	sudo lsof -i -P -n | grep LISTEN
+_Many ways or doors because it has to listen to different request
+_To stop the server to runs after creating step 6		->	control C
+_To install everything if you download node online		->	npm install
+
+
+*HTTP Request
+_HyperText Transfer Protocol	->	For client computer to communicate with the server side.
+_Get				->	Request a resource from the server (getting something from the server)
+_Post				->	Sending a resource to the server eg sign up form
+_Put				->	Update method by replacing it completely
+_Patch				->	Update method by patch up a resource (only send what is required)
+_Delete				->	Delete resource from the server side
+_So when you see the word (Cannot Get /) its because our server do not have any code of resource yet.
+_To get the server from saying Hello, World! using Get
+	app.get("/", (req, res) => {
+		res.send("Hello, World!");
+	});
+
+_You can not run two server at the same time. You need to quit the server and restart with node to edit the server.
+_Use nodemon to automatically restart the node application when there is a change. It will modified with only a save.
+_To install globally		->	npm i -g nodemon
+_To use 			->	nodemon index.js
+_To create another end point.
+
+	app.get("/contact", (req, res) => {
+    		res.send("<h1>hello</h1>");
+	});
+
+_HTTP Response types
+_Information responses (100-199)  100 Hold on
+_Successful responses (200-299)	  200 Here you go
+_Redirection messages (300-399)	  300 Go away
+_Client error responses (400-499) 400 You fuck up
+_Server error responses (500-599) 500 I fuck up
+
+
+*Postman
+_Developer tools allow to create a backend without a frontend. Testing backend.
+_Software testing tools for API
+_can combine URL + HTTP Request Types
+_To change data use post method: 	Choose body -> raw -> JSON and edit from there.
+_When using different types of HTTP Request and see HTTP Response types for status:
+	Get	->	Just need to click, because it is just requesting resource from the server
+	Post	->	Just need to click, because it is just sending resource to the server.
+	Put	->	Replacing resource such as making an account and setting up password (required everything to be send)
+	Patch	->	Just changing one thing such as name (updating user)
+	Delete	->	Delete the resources from the server (such as deleting account)
+
+
+*Middlewares (Types)
+_Between server and routes (HTTP Request Types)
+_They can pre process request, change aspect of request
+_Four Types of Middleware:
+	Pre-processing (body-parser) - request for multiple handlers and change aspect of the request
+	Login request (morgan) - user login
+	Authentication - checking if the client is authorise to make a request
+	Error Handling - identify errors
+
+
+*Body Parser
+_Mainly deal with user input
+_An npm module used to process data send in an HTTP request body.
+_Create request under 									->	req.body property.
+_Eg of Body Parsing (Body parsing middleware, request a body property)
+
+	import express from "express";								// import body parser module using import method
+
+	import bodyParser from 'body-parser';
+
+	import { dirname } from "path";								// this three lines allow for __dirname (user name etc) to direct to our directory
+	import { fileURLToPath } from "url";
+	const __dirname = dirname(fileURLToPath(import.meta.url));
+
+	var urlencodedParser = bodyParser.urlencoded({ extended: true })
+
+	const app = express();
+	const port = 3000;
+
+	app.use(bodyParser.urlencoded({ extended: true }));					// mount middleware (body parser) using .use() method
+
+	app.get("/", (req, res) => {								// sumit button from HTML to here. Request a resource from the server (Get)
+  		res.sendFile(__dirname + "/public/index.html");					// req is the request object from the server
+	});											// res is response object to send data back to client
+												 
+	app.post("/submit", (req, res) => {							// .body means information from body parsing, 
+  		console.log(req.body)								// post to send resource to the server
+	});
+
+	app.listen(port, () => {
+  		console.log(`Listening on port ${port}`);
+	});
+
+
+*Morgan
+_Use to log request in the server.
+_It provides a simple way to log information about incoming requests. 
+_Such as the request method, URL, response status, and execution time. 
+_This can be valuable for debugging, monitoring, and analyzing the behavior of your web server.
+_Create a logger middleware function using format and options.
+_Function will have three arguments: tokens (objects will all defined tokens), req(HTTP request) and res(HTTP response).
+_Function will return a string or undefined/null.
+
+_Eg for Morgan
+	import express from "express";
+	import morgan from 'morgan';
+
+	const app = express();
+	const port = 3000;
+
+	app.use(morgan('tiny'))					// Using predefined format string
+
+	app.get("/", (req, res) => {
+  		res.send("Hello");
+	});
+
+	app.listen(port, () => {
+  		console.log(`Listening on port ${port}`);
+	});
+
+
+*Building our own Middleware (custom middlewares)
+_All middleware require red, res, next() by using app.use() method.
+_next() determine when you should finish with the current middleware and move on to the next method.
+
+_Eg for custom middleware (we name it logger)
+
+	import express from "express";
+
+	const app = express();
+	const port = 3000;
+
+	app.use(logger);						// calling custom function
+
+	function logger(req, res, next) {				// created a custom function for method of getting request and request url
+  		console.log("Request Method: ", req.method)
+  		console.log("Request URL: ", req.url)
+  		next();
+	}
+
+	app.get("/", (req, res) => {
+  		res.send("Hello");
+	});
+
+	app.listen(port, () => {
+  		console.log(`Listening on port ${port}`);
+	});
+
+
+*Challenge (Client getting back their input)
+_Using Body Parser and Custom Middleware
+
+
+	import express from "express";
+	import bodyParser from "body-parser";
+	import { dirname } from "path";
+	import { fileURLToPath } from "url";
+
+	const __dirname = dirname(fileURLToPath(import.meta.url));
+
+	const app = express();
+	const port = 3000;
+	var bandName = "";
+
+// ability to pass urlendcoded data
+	app.use(bodyParser.urlencoded({ extended: true }));
+
+// custom middleware, create a bandNametake which is req for input name from the client side
+	function bandNameGenerator(req, res, next) {
+  		console.log(req.body);
+  		bandName = req.body["street"] + req.body["pet"];
+  		next();
+	}
+
+	app.use(bandNameGenerator);
+
+// Get a resource from our server and it respond by sending HTML file
+	app.get("/", (req, res) => {
+  		res.sendFile(__dirname + "/public/index.html");
+	});
+
+// send resource to our server which is submit and the server respond by sending something back
+	app.post("/submit", (req, res) => {
+ 		res.send(`<h1>Your band name is:</h1><h2>${bandName}✌️</h2>`);
+	});
+
+	app.listen(port, () => {
+  		console.log(`Listening on port ${port}`);
+	});
+
+
+*Project - Display another page after user entering a password. (If Else)
+
+import express from "express";
+import bodyParser from 'body-parser';
+
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+var urlencodedParser = bodyParser.urlencoded({ extended: true })
+
+const app = express();
+const port = 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+});
+
+app.post("/check", (req, res) => {
+    if (req.body.password == "ILoveProgramming") {
+        res.sendFile(__dirname + "/public/secret.html");
+    } else {
+        res.sendFile(__dirname + "/public/index.html");
+    }
+    });
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

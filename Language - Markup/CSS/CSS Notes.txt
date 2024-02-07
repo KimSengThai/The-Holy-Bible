@@ -1,0 +1,188 @@
+
+*CSS Stuffs
+_Stands for Cascading Style Sheets
+_Waterfall rule -> always the last one take priority 
+_Level of important -> Position > Specificity > Type > !importance
+			_Position = Higher to lower, lowest replace highest, waterfall rule
+			_Specificity = How specific selector is. ID > Attribute eg: [draggable], can be [class*="nameOfClass"] > Class > Element > * (universal)
+			_Types = Ways to apply. External stylesheet (ONLY DO THIS WAY!) > Internal CSS In HTML Header Section (<style>) > Inline (<div style="">)
+			_Importance = syntax !important.	eg	->	color: green !important;
+
+
+*Colour Properties->	background color, text color, colour hunt to use existing color
+			rgb() = mixed of color to form different color or can use hexcode as well
+			Use this below to change color in-real time.
+			.gradient-background {
+ 				background: linear-gradient(300deg, #00bfff, #ff4c68, #ef8172);
+  				background-size: 180% 180%;
+  				animation: gradient-animation 18s ease infinite;
+			}
+
+
+*Font ->		Font-size: 12px (px=pixle) (pt=point similar to size in word document) (em=times size of parent) 
+				   (rem=relative to the root, recommended settings)
+			Font-weight: keywords (normal, bold, italic), relative to parent (bolder, lighter), number.
+				     font family (need sans-serif or serif for window users), font.google (website for free font)
+			text-align: start, end ,etc
+
+			 
+*Inspecting ->		Control + Shift + I
+			Element tab: CSS
+			Styles: + button to change live
+			Computed: What is being applied, parent tag
+			CSS Overview: See what they all use
+
+
+*Padding, Border and Margin	-> 	Each element is a box in itself. Change change using percentage or px. 	<div> purpose is to put the element in box. It is a Box = Element + Padding + Border.
+					Padding: Space between element (word, variable) and border. Margin border between outer.
+					Border: 10px solid black (thickness, line pattern, color)
+					So Margin > Border > Padding
+					Pesticide Chrome Extension is used to debug the CSS div box.
+				
+
+*Selector	->	Combine selector to make things less clog.	->	HTML: class = two three. In css we can use either .two or .three.
+			Pseudo-classes					->	Select classes with special state							.selector:hover {}, .selector:focus {}, .selector:last-child {}, .selector:not(#ID) {}
+			Pseudo-elements					->	Select element exist in virtual part of document structure (not in HTML document)	video::backdrop {}, p::first-line{}, input::placeholder, p::before {} (before or after the content of an element)
+			Rules:	Group 					->	Apply both selectors. 									selector1, selector2 {}
+				Child 					->	Parent > child (only work for direct child, use for when you want to specific select).	selectorParent > selectorChild {}
+				Descendant 				->	Apply to a descendent to the right (similar to child, but can select any generation).	selectorAnyGrandParent selectorChild {}
+				Chaining				->	Select to get the very specific. Always start with element (h1, div).			selectorIDselectorClass {}
+				General sibling				->	Target the sibling element, so they share the same parent. Any child, order uneeded.	selectorChild ~ selectorAnyChildThatWeWant {}
+				Adjacent sibling			->	Target the sibling element, so they share the same parent. Need to be direct sibling.	selectorChild1 + selectorChild2ThatWeWant {}
+			Combine: Can combine selector rules together.
+
+
+*Positioning	->	Static: HTML defaul flow, each item will go to the bottom of previous element.
+			Relative: Position rlative to default position. Relative to suppose location meaning if you add top: 100px it will move 100 pixels down by the distance of its previous location. 
+				  		position: relative;
+				  		top: 10px;
+				  		left: 10px;
+			Absolute: Position relative to nearest positioned ancestor or top left corner of webpage. Relative to the previous ancestor.
+				  z-index: z direction, to make the element behind or infront. Element is default to 0.
+			Fixed: Always stay there, even if you scroll.
+			Sticky: Mixed of static and fixed. Can use for navigation like how my first project.
+			Common uses: Parent having relative, children having absolute.
+
+
+*Display	->	Inline: 		->	Into the element only. Can't set size because it will default to the size of the content. Eg, <span>
+			Block: 			->	Full width. Box fit to content. Can set height and width. Eg, <p>
+			Inline-Block:		->	Can go on the same horizontal line, and can change size.
+			Display: none		->	Does not show at all, invisible. Data not being render.
+			Visibility: hidden	->	Data render but it is hidden. Use it when you still want to use the data. eg, for navigation tap when using phone.
+
+
+*Float		->	Allow us to wrap text around element. So text allow to wrap around other element.
+			_img {
+			  float: left;
+			}
+			(image default has display block)
+			
+			_clear: both;
+			(clear responsibility to wrap around things, so it ignore floating things)
+			_Note only use float to wrap around text, nothing else.
+
+
+*Responsive website->	object-fit: cover or fill etc; (fit image or video to container when resizing)
+			_Media Queries: CSS for screens below or equal to 600px wide. 
+					@media (max-width: 600px) {}
+			_CSS Flexbox: Inline Ratio Display so by default it is very responsove. Display: flex. flex:0.5 to half the ratio.
+			_CSS Grid: Grid system with rows and columns
+  					<div class="grid-container">
+    						<div class="first card"></div>
+    						<div class="card"></div>
+    						<div class="card"></div>
+    						<div class="card"></div>
+    						<div class="card"></div>
+ 					</div>
+			_External Frameworks e.g Bootstrap. Framework because it external. It has predefined framework.
+
+
+
+*Media Queries: Can use max or min. and to both.
+		Screen means targeting print, not recommended.
+		Media types, media features, etc.
+    @media (max-width: 600px) {
+
+      /* CSS for screens below or equal to 600px wide */
+      div {
+        height: 200px;
+        width: 200px;
+      }
+    }
+
+
+
+*Flexbox: For website layout and is very responsive. Easy to use. Ability of grow and shrink. Good for 1D content.
+	<div class="container">
+		<div class="1"><p>...</p></div>
+		<div class="2"><p>...</p></div>
+		<div class="3"><p>...</p></div>
+	</div>
+
+	.container {
+		display: flex;			/different system and rule than inblock or block, all the previous display value will be ignore and the layout will display in one line. Can do inline-flex to fit only the content.
+		gap: 10px;			/gap is like margin, the gap between element.
+		height: 100vh or 100%;		/to fill up the whole section or screen	
+	}
+
+	_Flex Direction: 		Default set to row, from left to right horizontal (main axis is X). Set to column will make from top to bottom (main axis is y). Set in the parent.
+					flex-basis: 100px; increase the main axis to 100px. Set in the child, not parent. 0 to make everything equal.
+	
+	_Flex Layout: 			Differentiate between parent and child (which one to set properties to).
+					_order: 0; set to child. Default everything order is 0. The bigger order will set to the last. Small at left to Big at right.
+					_flex-wrap: wrap; set to parent, allow the element or item to fit in full minimum width (responsive screen). Default set to no wrap.
+					_justify-content: flex-start (everything bunch to left); flex-end (everything bunch up to right); center (center in the middle); space-between (space, first and last space touch the end), space-around (space everywhere).Set to parent, allow the content to fix to certain pattern.
+					_align-items: flex-start;
+					_align-self: flex start, make the individual child to have its own properties.
+					_align-content: center. Only work when flex-wrap.
+	
+	_Notes for flexbox:		https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+
+	_Flex Sizing (priotity list):	Content width or height (element itself wrap text) < width/height (we set on the item) < flex-basis (see flex direction above) < min-width/max-width (we set on the item)
+	
+	_Ability to grow and shrink:	Either 1 (on) or 0 (off), can also use it as a ratio to the child element.
+					flex-grow: 1;		grow until the container is full
+					flex-shrink: 1;		will shrink until minimum width
+	
+	_Default in HTML setting:	flex-basis: auto;	give more space for the items with the most contents and less space for the least contents.
+					flex-grow: 0;	
+					flex-shrink: 1;		
+				
+	_Short-hand (quicker) 		flex: 1 1 0;		(grow, shrink, basis)		or		flex: 1;
+	
+
+
+*Grid: 	CSS system of columns and rows. Think of like how many columns the element's box and margin would consume. More flexible than Flexbox. Tool for laying 2D content. Really common to have Grid + Flexbox.
+	
+	.container {
+      		display: grid;
+      		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;				8 columns, 1 ratio each columns, fr stands for fraction
+      		grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;				8 rows
+		height: 100vh or 100%;								to fill up the whole section or screen	
+    	}
+
+_Grid Sizing:				How it process = The grid fit similar to how you read. Left to right and up down. 
+					If there are more grid than what is being decalre then the remaining grid would fit its columns on the above matching columns and row fit to its content.
+	Width and Height		_grid-template-rows: 100px 200px; this method is not responsive to screen because the dispaly will be fixed. 
+	Combine row and column		_grid-template: 100px 200px / 400px 800px; rows / columns, this method is use for when there is a lot of rows and columns to define, not for beginner. It is a shortcut.
+	Auto to fit row			_grid-template-rows: 100px auto; due to the auto, all the rows will fit the content instead of 100px!
+	Auto to fit coloumn		_grid-template-columns: 200px auto; first column is 200px then the second column take 100% of the width.
+	fraction method			_grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; Ratio based method, grow and shrink base on the screen size. 
+	minmax				_grid-template-columns: 200px minmax(400px, 800px); (min, max), max if there is space but min if there is none. 
+	repeat				_grid-template-rows: repeat(2, 200px); n = repeat n number of times, size is 200px by 200px.
+	auto input for new items	_grid-auto-rows: 300px; give height of 300px.
+	debuggig			Use chrome developer tool by clicking on label grid to check the grid system by other developers.
+
+_Grid Placement:			Grid Components = lines, tracks, cells, containers, items. Grid also let you over lay items where flexbox do not.
+					_child container placement (start/end) 	= can specify the placement of GRID LINES with n number. Use -1 and 1 to figure out the grid placement. Eg. grid-column-start: n; grid-column-end: n;
+					_short hand for start/end 		= grid-area: row-start / column-start / row-end / column-end
+					_child container placement (span) = how many grid the element will take. Eg. grid-column: span 2; 
+					_child container placement (order) = can priorities which comes first and last. Lowest number first then highest number last. Eg. order: 1; 
+
+
+
+
+
+
+
+

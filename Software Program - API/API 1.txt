@@ -1,0 +1,64 @@
+
+
+*API Stuffs
+_Application Programming Interface (API)
+_Set of rules or protocals allow for software interaction. Act like a bridge.
+_Use it between Frontend and Backend. Use it to get the data.
+_Different Types of API: GraphQL, SOAP, REST:API, gRPC
+_They are architectural styles (how you want the data structure to look like)
+_REST:API is the most popular and most commonly use for the web development.
+_HTTP Protocol to interact with the API
+
+
+_API is a software intermediary that allows two applications to talk to each other. 
+_Eg, weather (fecthing data from the server), log in with twitter or facebook account, payment (communicate with the server about payment processing)
+
+_Fetch() is a modern interface that allows you to make HTTP requests to servers from web browers:
+_Requires only one parameter - URL of the resource
+_A fetch always returns a Promise.
+_Is also an APIs
+
+_fake server stimulate a real server to check their APIs and APIs responses
+_Most popular mock server is JSON (g means global)		->		-g json-server
+_JSON allow to get a full fake API for prototyping and mocking (do call)
+_JSON require a JSON file which will be where we getting our data from		data.json
+_What a mock server contain 					->		
+_We are treating JSON like a server for storing data
+_Inorder to run JSON server file that we want 			->		json-server data.json(file name)
+
+_To store file it work like this 
+{ "nameEndPoint" : 	[
+				{"nameID": "resource"}
+			]
+}
+
+_postman agent use for testing end point. Allow to insert change data.
+_Need to run on the background. 
+_To change data use post method, Choose body -> raw -> JSON and edit from there.
+_Data that we usually fetch from client side are in the form of JSON
+_To run the server without the need of refreshing it				 ->json-server --watch data.json(file name)
+_To get certain information from an endpoint (it try to find object with that ID)->GET /nameEndPoint/:ID
+_Work with GET, POST, PUT, PATCH, DELETE.
+_Post does not work with :ID because there is not routes/endpoints
+_RoutesOrEndpoints/HTTP Request/resources(any attribute from JSON)/:id
+
+_
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

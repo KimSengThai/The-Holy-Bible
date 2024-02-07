@@ -1,0 +1,358 @@
+
+*API Stuffs
+_Application Programming Interface (API). 
+_API is a software intermediary that allows two applications to talk to each other. 
+_Set of rules or protocals allow for software interaction. Act like a bridge.
+_Use it between Frontend and Backend. Use it to get the data.
+_Eg, weather (fecthing data from the server), log in with twitter or facebook account, payment (communicate with the server about payment processing)
+_Different Types of API: GraphQL, SOAP, REST:API, gRPC
+_They are architectural styles (how you want the data structure to look like)
+_REST:API is the most popular and most commonly use for the web development.
+_HTTP Protocol to interact with the API
+_APIs act as a language that allow application between frontend and backend to communicate with each other.
+_Middleware act as a postal system to ensure these communications get where they're supposed to go.
+
+
+*Structuring API
+_BaseURL/Endpoint			->	End point is a different route on the API provider server
+_BaseURL/Endpoint/?queryName=queryValue	->	A way to put key value pair (for filtering or searching multiple resources), 
+						& to add more query
+_BaseURL/Endpoint/{path-parameter}	->	Path Parameters use for find a resource in the API (id key to identify object uniquely)
+
+
+*Fetch (APIs Software in JavaScript) 
+_Fetch is a modern interface that allows you to make HTTP requests to servers from web browers
+_Fetch is a function and requires only one parameter - URL of the resource
+_A fetch always returns a Promise.
+_async - makes a function return a Promise (Return an object call Promise)
+_await - makes a function wait for a Promise (Can only exist inside async function())
+_To set our own method if we dont use GET	->	const request =
+								new Request("URL", {
+								method: "GET"
+							})
+
+_Default is already GET, returns a promises	->	const response = fetch(request)
+_To get response in json format			->	const data = response.json()
+
+
+*Vanilla Java, Fetch and JSON server. User input in HTML then send it to JSON using fetch in JavaScript
+_index.html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task App</title>
+        <script src="./index.js"></script>
+    </head>
+    <body>
+        <form>
+            <input type="text" name="taskName" />
+            <input type="submit" value="Add Task" />
+        </form>
+
+        <h2>Tasks:</h2>
+        <ul id="taskList">
+        </ul>
+
+    </body>
+    </html>
+
+
+_index.js
+    document.addEventListener("DOMContentLoaded", initialize)
+
+    async function initialize() {
+        
+        let form = document.querySelector("form")
+        let taskList = document.querySelector("#taskList")
+        let tasks = await getTasks()
+
+        displayTasks(tasks, taskList)
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            let newTask = await addTask(form["taskName"].value)
+
+            tasks.push(newTask);
+
+            displayTasks(tasks, taskList)
+
+            form.reset();
+        })
+        
+    }
+
+    function displayTasks(tasks, list) {
+        list.innerHTML = "";
+
+        tasks.forEach( task => {
+            let taskItem = document.createElement("li")
+        
+            taskItem.innerHTML = task.taskName
+
+            list.appendChild(taskItem)
+        })
+    }
+
+    function getTasks() {
+        return fetch("http://localhost:3000/tasks")
+        .then( response => response.json() )
+    }
+
+    function addTask(name) {
+        return fetch("http://localhost:3000/tasks", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            
+            body: JSON.stringify({
+                taskName: name
+            })
+        })
+        .then( response => response.json())
+    }
+
+
+_task.json
+    {
+    "tasks": [
+        {
+        "id": 1,
+        "taskName": "wash dishes"
+        },
+        {
+        "id": "cf89",
+        "taskName": "ok"
+        }
+    ]
+    }
+
+
+_Eg Recipt API
+_index.ejs (Review DOM to learn about Object)
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <title>Taco Recipes</title>
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+  </head>
+
+  <body>
+    <h1>Taco Town 🌮</h1>
+
+
+    <form action="/recipe" method="POST" class="buttons
+    ">
+      <button type="submit" value="chicken" name="choice">🍗</button>
+      <button type="submit" value="beef" name="choice">🥩</button>
+      <button type="submit" value="fish" name="choice">🐟</button>
+    </form>
+    <div id="recipeContainer" class="hidden">
+      <%if (locals.recipe) {%>
+
+        <h2 id="recipeTitle">
+          <%= recipe.name %>
+        </h2>
+
+        <h3>Ingredients:</h3>
+        <ul id="ingredientsList">
+          <li>
+            <%= recipe.ingredients.protein.name %>, <%= recipe.ingredients.protein.preparation %>
+          </li>
+          <li>
+            <%= recipe.ingredients.salsa.name %>
+
+          </li>
+          <% recipe.ingredients.toppings.forEach(topping=> { %>
+            <li>
+              <%= topping.quantity %> of <%= topping.name %>
+            </li>
+            <% }) %>
+        </ul>
+
+        <%} else {%>
+          <h2>Pick your favourite taco ingredient 👆</h2>
+          <%}%>
+    </div>
+  </body>
+
+  </html>
+
+
+_index.js (best coding practice Angela)
+  import express from "express";
+  import bodyParser from "body-parser";
+
+  const app = express();
+  const port = 3000;
+
+  const recipeJSON =
+    '[{"id": "0001","type": "taco","name": "Chicken Taco","price": 2.99,"ingredients": {"protein": {"name": "Chicken","preparation": "Grilled"},  "salsa": {"name": "Tomato Salsa","spiciness": "Medium"},  "toppings": [{"name": "Lettuce",  "quantity": "1 cup",  "ingredients": ["Iceberg Lettuce"]  },      {"name": "Cheese",  "quantity": "1/2 cup",  "ingredients": ["Cheddar Cheese", "Monterey Jack Cheese"]  },      {"name": "Guacamole",  "quantity": "2 tablespoons",  "ingredients": ["Avocado", "Lime Juice", "Salt", "Onion", "Cilantro"]  },      {"name": "Sour Cream",  "quantity": "2 tablespoons",  "ingredients": ["Sour Cream"]  }      ]    }  },{"id": "0002","type": "taco","name": "Beef Taco","price": 3.49,"ingredients": {"protein": {"name": "Beef","preparation": "Seasoned and Grilled"},  "salsa": {"name": "Salsa Verde","spiciness": "Hot"},  "toppings": [{"name": "Onions",  "quantity": "1/4 cup",  "ingredients": ["White Onion", "Red Onion"]  },      {"name": "Cilantro",  "quantity": "2 tablespoons",  "ingredients	": ["Fresh Cilantro"]  },      {"name": "Queso Fresco",  "quantity": "1/4 cup",  "ingredients": ["Queso Fresco"]  }      ]    }  },{"id": "0003","type": "taco","name": "Fish Taco","price": 4.99,"ingredients": {"protein": {"name": "Fish","preparation": "Battered and Fried"},  "salsa": {"name": "Chipotle Mayo","spiciness": "Mild"},  "toppings": [{"name": "Cabbage Slaw",  "quantity": "1 cup",  "ingredients": [    "Shredded Cabbage",    "Carrot",    "Mayonnaise",    "Lime Juice",    "Salt"          ]  },      {"name": "Pico de Gallo",  "quantity": "1/2 cup",  "ingredients": ["Tomato", "Onion", "Cilantro", "Lime Juice", "Salt"]  },      {"name": "Lime Crema",  "quantity": "2 tablespoons",  "ingredients": ["Sour Cream", "Lime Juice", "Salt"]  }      ]    }  }]';
+
+  app.use(express.static("public"));
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  let data;
+
+  app.get("/", (req, res) => {
+    res.render("solution.ejs", { recipe: data });
+  });
+
+  app.post("/recipe", (req, res) => {
+    switch (req.body.choice) {
+      case "chicken":
+        data = JSON.parse(recipeJSON)[0];
+        break;
+      case "beef":
+        data = JSON.parse(recipeJSON)[1];
+        break;
+      case "fish":
+        data = JSON.parse(recipeJSON)[2];
+        break;
+      default:
+        break;
+    }
+    res.redirect("/");
+  });
+
+  app.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
+  });
+
+
+_index.js (alternative method for easier understanding Kim) 
+  import express from "express";
+  import bodyParser from "body-parser";
+
+  const app = express();
+  const port = 3000;
+
+  const recipeJSON =
+    '[{"id": "0001","type": "taco","name": "Chicken Taco","price": 2.99,"ingredients": {"protein": {"name": "Chicken","preparation": "Grilled"},  "salsa": {"name": "Tomato Salsa","spiciness": "Medium"},  "toppings": [{"name": "Lettuce",  "quantity": "1 cup",  "ingredients": ["Iceberg Lettuce"]  },      {"name": "Cheese",  "quantity": "1/2 cup",  "ingredients": ["Cheddar Cheese", "Monterey Jack Cheese"]  },      {"name": "Guacamole",  "quantity": "2 tablespoons",  "ingredients": ["Avocado", "Lime Juice", "Salt", "Onion", "Cilantro"]  },      {"name": "Sour Cream",  "quantity": "2 tablespoons",  "ingredients": ["Sour Cream"]  }      ]    }  },{"id": "0002","type": "taco","name": "Beef Taco","price": 3.49,"ingredients": {"protein": {"name": "Beef","preparation": "Seasoned and Grilled"},  "salsa": {"name": "Salsa Verde","spiciness": "Hot"},  "toppings": [{"name": "Onions",  "quantity": "1/4 cup",  "ingredients": ["White Onion", "Red Onion"]  },      {"name": "Cilantro",  "quantity": "2 tablespoons",  "ingredients": ["Fresh Cilantro"]  },      {"name": "Queso Fresco",  "quantity": "1/4 cup",  "ingredients": ["Queso Fresco"]  }      ]    }  },{"id": "0003","type": "taco","name": "Fish Taco","price": 4.99,"ingredients": {"protein": {"name": "Fish","preparation": "Battered and Fried"},  "salsa": {"name": "Chipotle Mayo","spiciness": "Mild"},  "toppings": [{"name": "Cabbage Slaw",  "quantity": "1 cup",  "ingredients": [    "Shredded Cabbage",    "Carrot",    "Mayonnaise",    "Lime Juice",    "Salt"          ]  },      {"name": "Pico de Gallo",  "quantity": "1/2 cup",  "ingredients": ["Tomato", "Onion", "Cilantro", "Lime Juice", "Salt"]  },      {"name": "Lime Crema",  "quantity": "2 tablespoons",  "ingredients": ["Sour Cream", "Lime Juice", "Salt"]  }      ]    }  }]';
+
+  app.use(express.static("public"));
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.get("/", (req, res) => {
+    res.render("solution.ejs");
+  });
+
+  app.post("/recipe", (req, res) => {
+    switch (req.body.choice) {
+      case "chicken":
+        res.render("solution.ejs", { recipe: JSON.parse(recipeJSON)[0] });
+        break;
+      case "beef":
+        res.render("solution.ejs", { recipe: JSON.parse(recipeJSON)[1] });
+        break;
+      case "fish":
+        res.render("solution.ejs", { recipe: JSON.parse(recipeJSON)[2] });
+        break;
+      default:
+        break;
+    }
+  });
+
+  app.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
+  });
+
+
+
+*AXIOS
+_Server-Side API request with Axios
+_HTTP headers means additional information such as server, data, content type, etc that is not in the body.
+_Trying to GET our server to make a request to someone else server. Then they return response. (API Request)
+_Can use 	->	imports https from "https";
+_Steps		->	we set our hostname, path, and method.
+		->	we set our hostname, path, and method.we set our hostname, path, and method.
+		->	Response comein the form of call back
+		->	Once we receive the call back, we can then sue the data
+		->	try, catch(error) to check any error
+		->	request error if there is any error
+
+_Axios is used to shorten the steps (GET METHOD)					npm install axios
+
+    import axios from "axios";								//using axios package
+    app.get("/", async (req, res)	=>	{					//get method to make a request to the api with an end point
+      try	{
+        const response = await axios.get("URL", {					//await for response then render. That is why we have async function. (response is still JSON)
+	   params: {ID: 12345}								// Can pass in username, id or token, etc
+	});	
+        res.render("index.ejs", {activity: response.data});				//response.data will turn into JavaScript Object (means it turn response into JSO)
+      } catch (error) { 								//catch if there is any error
+        console.error("Failed to make request:", error.message);			//update the developer if there is any error
+        res.status(500).send("Failed to fetch activity. Please try again.");		//can also use res.render
+      }
+    });
+
+_With AXIOS we can also chain using .then .catch or .finally
+	.then(function (response) {
+	  res.json({ data: response.data});
+	})
+	.catch(function (response) {
+	  res.status(500).send(error.response.data);
+	})
+
+_In the past, with JavaScript Promise API we use chain		->	.get().then().then()
+_A more modern approach would be to use (2017)			->	async	await axois.get()
+
+
+*REST APIs
+_POST Method
+
+    import axios from "axios";								
+    app.get("/", async (req, res)	=>	{					
+      try	{
+        const response = await axios.post("URL", body, config);				// body of form data, config is our parameter
+        res.render("index.ejs", {activity: response.data});				//can also use PUT(repalce) /PATCH(modify)/ DELETE(no body)
+      } catch (error) { 								
+        console.error("Failed to make request:", error.message);			
+        res.status(500).send("Failed to fetch activity. Please try again.");		
+      }
+    });
+
+
+*API Authentication
+_0. No Authentisation			->	Apply Rate Limit
+_1. Basic Authorisation			->	Provide username and password
+					->	Pass over Base64 Encoding (binary number) 
+					->	Then can add that in Authorisation header
+					->	Body Paraser has authorization option
+_2. API Key Authorisation		->	Need to generate key, depend on the api sometimes you need to add to query or authorisation or header.
+					->	Then URL/filter?apiKey=...
+					->	Body Paraser has authorization option
+_3. Token Based Authentisation		->	Username and Password to generate a token
+					->	Then token act as a third party to API, eg: sign in with Google
+					->	This make the developer not needed username and password since token is generated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

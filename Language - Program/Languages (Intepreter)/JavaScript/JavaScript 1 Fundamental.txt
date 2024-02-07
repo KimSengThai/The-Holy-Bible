@@ -1,0 +1,517 @@
+
+*Javascript (+ need to review later)
+
+_Brendan Eich created JS (Used to call Live Script). Script stands for telling computer what to do. Support by all the browser.
+_Java is compilers (translates a programming language's source code into machine code, used for video gmaes or multimedia applications because it is faster to execute complex tasks) and interpreter and JavaScript is interpreters(Between you and compilers).  
+_Interpreters = JavaScript, Python, Ruby.
+_Compilers = Java, C/CC++, Swift, Rust.
+_IOS = Swift, Android = Java, Website/Webapp = JavaScript. 
+_Advance language = Program translate by 0 and 1. On and Off.
+_Node is an environment on how Java script can understand. eg. node demo.js
+_node file name to check
+_Javascript every line is a return value, that means Node help Java script how to translator.
+_JS can handle a lot of function such as auto update content such as social media, autmation visual elements (more  complex than css), loop, condition, function, etc.
+_JS can do FULL STACK also for apps.
+_JS is a losely type lanuguage meaning can assign different data type to variable
+_console.log(12+"type)" = 12type (it is explicit conversation = JS can identify what you want)
+_control c to stop
+
+
+*Shortcut Keys
+_Control F to find then replace the words
+
+
+*Symboles Rules
+`${number1}` -> JS expression (interpolation) 
+"" double quote -> Represent string, overwrite eveyrthing
+'' single quote -> Represent string
+`` backticks	-> Represent string	
++ to combine different variables
+
+
+*Syntax
+_promt("words in the promt instruction")	->	box will appear
+_alert("answer")				->	show answer
+_variable.length				->	word count with length
+_variable.slice(x,y)				->	means x to y. Programming always start from 0.
+_console.log(1+2)				->	Log for function output message to the console, only for developer for debugging.
+_name.length; 					->	To get the number of character, or index number of array
+_Math.random()					->	Number generator (pseudo number)
+
+
+*Variable
+_Number = dont need parenthesis
+_Text = need parenthesis
+_Name = can start with a letter, $, !, _, digits
+_Name = can not start with a number.
+	Multiple words = camile casing = ageAsTest
+_Case sensity
+_Can not use reserver word = let, class, return, function, etc.
+
+
+*Data types (variable)
+_Number = Infinity, NaN (not a number, when we do stupid shit) can not apply numerical operate: its an answer.
+_String = Text. Concatenation = combination of string name. ab = "a" + "b"
+_Boolean = true or false, trucey = non-empthy, falsey = empthy (0, nan, null, undefined)
+_null = no value
+_undefined 
+_console.log(typeof(data)) -> to check the data types
+
+
+*Basic Operators (program math)
+_Operators are 5*2, operands: 5 and 2
+_dividend, remainder % (Keep devide then drob, remainder by 2 if odd=1, else even=0, no decimal means 0) can use to check odd and even
+_Unary operators (+ and -)
+_Binary (the rest of program math)
+_Modify in place (+=, -=, *=, /=) Jump the variable and sign to the other side - on the left. Current variable stay the same. 
+_Increments/Decrements (++ or --) = use after increase by 1 after (post-fix), use before increase now by 1 (pre-fix) -> can use for looping.
+_~~ (~~5.2) to remove decimal: bitwise or use Math.floor(number)
+eg	x=5			x=5
+	console.log(x++)	console.log(++x)
+	-> x = 5		-> x = 6
+	console.log(x)
+	-> x = 6
+	_left means now, right means later
+
+
+*Comparisons
+_Will always provide true or false output
+_equal -> // or ==
+_inequal -> !=
+_ <= , >=
+_=== -> true equal including data types
+
+
+*Conditionals or Control Flow
+_If statement-> if condition is true then execute a block of code
+_Else statement -> if not true
+_else if -> basically another conditioning for if but not a second if
+_If and if -> will print both
+_Conditional Operator (3 types): Conditional or Logical AND (&&), Conditional or Logical OR (||), Ternary Operator (?:).
+	&& -> Both True
+	|| -> Only one need to be true
+	?: -> variable = (condition) ? expression1 : expression2  
+	   -> let final_mark = ()(grade >=) ? "pass" : "fail
+
+	if (condition) {
+		console.log("answer")
+	} else if (condition) {
+		console.log("answer")
+	} else {
+		console.log("answer")
+	}
+_Conditional (ternary) operator -> 	Alternate for if else statement.
+					return paremeter ? yes (if truthy) : yes (if falsy);
+
+
+*Switch statement
+_A switch statement can be replace with if statement or conditional operator. Use if there is a lot of if conditions.
+	If it satisfy then it will print and execute the rest even if it doesnt match anymore
+	Break -> force the flow of program to get out of the conditon if true
+	Advantage -> switch is more faster and efficient
+	Below statement mean -> if condition A = expression then answer
+	
+	switch (expression or variable that we want to compare with) {
+		case condition A: 
+			console.log("")
+			break;
+		case condition B: 
+			console.log("")
+			break;
+		default: 
+			console.log:("elseif")
+	}
+
+
+*Logical Operators
+_OR (||)	->	Atleast one is true, will always find the first truthy value then stop (left to right)
+_AND (&&)	->	Both are true, will always find the first falsy value then stop (left to right)
+_NOT (!)	->	Inverse Bolean value. Flip it around.
+
+
+*Looping
+	_While (count < 5) {
+	console.log("answer")
+	count++;
+	}
+	-> While Loop will not stop until condition become false. Check everything first before operate.
+	   Control C to stop.
+
+	_do	{
+	console.log("answer")
+	} while(count>0)
+	-> Do loop will do before checking, so it will always print the first one.
+
+	_ for (begin; condition; step) {
+	console.log("answer")	
+	}	
+	-> For loop is the most sosphsticated. Use it if you know when to stop.
+	-> Begin is the variable. Execute one time before the execution of code block.
+	-> Condition is to control how long the loop should run
+	-> Step can be incremented to increase or decrease. Execute everytime after the code block has been executed.
+
+
+*Function Declaration
+_Means a series of instruction package by a block of code (verbs). 3 version of function (Simplest to Hardest).
+_Once you have function, you can use it again easily.
+_Local Variables:	Creating a variable in function would only work in the function itself and not anywhere else.
+_Parameters:		Variable that the function can use. Paramaters can also be assigned default value (value that we represent).
+_Arguments:		The input that we are passing to the parameters.
+_Returns:		Pass back a value from a function.
+_Values in the paramaters will always get overwritten by the Arguments. If there are two paramters and 1 arguement then the argument will replace the left parameter.
+_Arguements value will always be correspond to Parameters value. Default value will always come last.
+_anonymous function is a function without a name.
+
+	1. Vanilla Version
+	_Creating Function
+					function name(parameters1, parameters2) {
+					}
+	_Calling Function
+					name(argument1, argument2);
+
+	2. Parameters and Arguments
+	_Creating Function
+					function name(parameters1, parameters2) {
+					}
+	_Calling Function
+					name(argument1, argument2);
+
+	3. Output and Return Values; 
+	_Creating Function
+					function name(parameters1, parameters2) {
+					return parameters1;
+					}
+	_Calling Function
+					var change = name(argument1, argument2);
+
+
+*Function expression
+_When you -> let x = function() -> You are assigning variables to the whole function but not the value.
+_Do this to assgin variable to the value of the function -> let x = function(arguement).
+_This means that a function will always be a value no matter how it coded.
+
+	_Creating Function
+					let name function(parameter) {
+					}
+	_Calling Function
+					name(argument);
+
+
+_continue; (continue statement will operate as skipping mechanism if the statement is true) use for looping function in if statement.
+_break; (break statement will operate as a cancel mechanism if the statement is true) use for looping in if statement.
+
+
+*Higher Order Functions and Passing Functions (Available in JavaScript, Swift, etc but not all program language)
+_Higher Order Functions can take other functions as inputs. So it make input less repetitive.
+_Callback Function -> Invoking another function with function.
+_Using Higher Order Function to pass functions. Note below code, action is not a command, it's a passing function.
+ 				
+				function name(action) {
+					action();
+				}
+				name(anotherFunctionNameWeWantToInvoke);
+
+_hello vs hello(). Left is function definition (callback, use it when you want a function to execute after an event occurs) and right is executing the function itself (invoking)
+_degugger; in chrome console for debug mode. See the process step by step to see what is wrong.
+_Example Caculator:
+
+	Callback Function	function multiply(num1, num2) {
+    					return num1 * num2;
+				}
+
+				function devide(num1, num2) {
+				    return num1 / num2;
+				}
+
+				function sum(num1, num2) {
+				    return num1 + num2;
+				}
+
+				function mutiply(num1, num2) {
+				    return num1 - num2;
+				}
+
+	Higher Order Function	function calculator(num1, num2, operator) {
+				    return operator(num1, num2);
+				}
+
+				calculator(2,3,devide)
+
+
+*Arrow Functions (=>)
+_Can be written as either concise (one line) or block body (multiple line expression)
+_When you wrap the curly brace around it eliminate the return statement. So when there are multiple lines, you need ti specify the return statement.
+				let func = (arrange1, arange2) => expression;
+
+				let func = (arrange1, arange2) => { 
+					return expression; 
+				}
+
+ 
+*Scope
+_Determines the accessibility of variables, objects and functions from different parts of the code.
+_Function scope (block of code anywhere inside the function -> var) vs block scope (scope within a block of code, only in that block of code think of it as child and parent -> let)
+_let vs var	-> let in function is better because it is easier to keep track off. NOTE: Block of code or function nested will also affect by let or var!!! So var or let will be global if store outside of function!
+_const		-> can not change variable at all or error will occur, NOTE: it refer only to referencing not array value.
+_Hoisting	-> Javascript understand that function declaration exist even if the calling function wrote before creating function. 
+			Note: HOisting is only for function declaration and not for function expression or arrow function because these expressions are not global.
+			Function declaration or arrow function are use for one time only. Declaration is global scope.
+_Global scope	-> Visible everywhere even outside the function or nested function. Declare by the name itself without any syntax. NEVER USE THIS IN FUNCTION, ITS TOO HARD TO KEEP TRACK!!!
+
+
+*Arrays
+_Storage to store data, collections of items. Generally tell by square symbol. Intended use for storing similar data such as a list of numbers or strings.
+_List to hold certain elements. Access through index.
+_Syntax						->	let namesArray = ["element1","element2","element3"]
+_To access element1				->	namesArray [0]
+_To access element2				->	namesArray [1]
+_Array length (size)				->	name.length
+_Must not do this -> name[2] = "element3" 	->	Because the value is being store to the memory location, so all the array will be copied. That is why we need to use spread operator to make a new memory location. This method can be use for object!!!
+_Push method (insert last element)		->	name.push("element4"); then the rest element shift
+_Pop method (remove the last element)		->	names.pop();
+_Unshift (insert beginning element)		->	names.unshift("element4"); then the rest element shift
+_Shift (delete the first element)		->	names.shift();
+_Splice method (inset element to any index)	->	names.splice(index position number, number of element you want to remove - splice, ["element4"]); :(can put 0 in the middle to note delete anything)
+_Spread operator (copy/paste to another array)	->	let nameCopy = [...name2, "insertAnotherElementToLastIndex"]
+_Include (computer to find the index,true/false)->	names.includes(element2); computer look through if the element is in the array or not.
+_Multi-dimensional arrays			->	arrayName = [ [1,2,3], [10,11,12] ]		->	this means that arrayName.length = 2,		To access 11 you must do	->	arrayName [1][1]
+_Enhance for loop (Use for looping array)	->	for (storageForElementOrParameter of arrayName) {			Method is cleaner.
+								expression;
+							}
+_For Each Function				->	nameArray.forEach( (storageForElement) => callBackFunction )
+_NOTE: How Enhance for loop and Each Function work is that for every element, the loop will go through and look for each element, starting from index 0 to arrayName.length.
+
+
+*Objects
+_Better way of storing data. Consist of a list of properties (key-value pairs). Allow to customise index.
+_Intended use for different types of data such as a person which can include age, date of birth, location, etc.
+_Collection of data to comprise of a common thing.
+_Syntax						->	var personObjects = {
+								name: "Kim",
+								age: 32,
+								field: "Engineer",
+							}
+_To access age; . dot				->	personObjects.age
+_To access age; [""] bracket			->	personObjects["age"]
+_To change name;				->	personObjects.field = "software engineer"
+_Delete method (delete element)			->	delete(personObjects.age)
+_Object element can be nested in element	->	var personObjects = {
+								name: "Kim",
+								age: 32,
+								field: {
+									engineer: "Civil",
+									bjj: "Blue Belt",
+									software: "cyberSecurity",
+								}
+								skillsArray: ["problemSolving", "teamwork", "communication"]
+							}
+_To access software				->	personObjects.field.software
+_To access "teamwork"				->	personObjects.skillsArray[2]
+_for loop in Objects				->	for (keyName in nameObject) {
+								expression;
+							}
+_If we're using a property or call method, we always use . notation.
+_Method has parenthesis and Property does not.
+_NOTE: Similar to above, each loop would go through object line by line.
+
+
+*Constructor Function
+_Name of this function has to be in cap. eg BellBoy. Has the word new in the syntax for initialise object (or calling function).
+_Allow to create new object quickly with function.
+_Use to invoked or called an object.		->	this.
+
+				creating	->	function HouseKeeper1 (yearsOfExperience, name, cleaningRepertoire) {
+							    this.yearsOfExperience = yearsOfExperience;
+							    this.name = name;
+							    this.cleaningRepertoire = cleaningRepertoire;
+							}
+
+				calling		->	var houseKeeper1 = new HouseKeeper1(12, "Jane", ["Engineer", "Bathroom", "Lobby"]);			
+
+
+*Object-oritented Programming (OOP)
+_Object					->	A data field that has unique state(value), identity (store in different memory) and behavior(function).
+
+
+*Structure of Object-oritented Programming				
+_Classes				->	User-defined data types that act as the blueprint for individual objects, attributes and methods. (structure)			
+_Objects				->	Instances of classes created with apecifically defined data. (endpoint)
+_Attributes				->	Defined in the class template and represent the state of an object. (value)
+_Methods				->	Functions that are defined inside a class that describe the behaviors of an object. (functions)
+_constructor				->	Purpose is to initialise that object
+
+_To create Object-oritented Programming	->	class objectsName {
+
+							classProperty = "attribute0"
+
+							Constructor(attribute1, attribute2) {
+								this.attribute1 = attribute1
+								this.attribute2 = attribute2
+							}
+							method1() {
+								return "to call attribute1" + this.attribute1
+							}
+						}
+						
+_To call a constructor				->	let object1 = new objectsName("inputToattribute1", "inputToattribute2"); object1.method1(toDOList)
+_objectsName will now belong to object1	
+_attribute will now have a new value
+					
+_Note! Class property always comes last because .this is instance.
+_Class property are intended for property which shares the same attribute.
+
+
+*Inheritance (OOP Concepts)
+_Means a parent/super/base class can pass down attributes and behaviours to its child class
+_Child class will inherit all the attributes and behaviours from its parents class
+_Parent can not inherit a child class, child can not pass on to its siblings
+_How to set up inheritance									->	class BaseClass extends DerivedClass {...}
+_To call a constructor parent as a child, (refer to object super class)				->	super(attribute1, attribute2)
+
+_eg, Basic concept of inheritance
+
+        class Person {
+            constructor(name, age, size, hairColor) {
+                this.name = name
+                this.age = age
+                this.size = size
+                this.hairColor = hairColor
+            }
+            walk(distance) {
+                return this.name + " walked " + distance + " meters."
+            }
+            eat(food) {
+                return this.name + " eats " + food;
+            }
+            speak(language) {
+                return this.name + " speak " + language;
+            }
+        }
+
+        let kim = new Person("Kim", 26, "small", "Black")   //Caling Person
+        console.log( kim.eat("burger"))        //Kim eats burger
+
+        class Student extends Person {         //Passing down supper class to child class using inheritance
+            constructor(name, age, size, hairColor, major) {                     
+                super(name, age, size, hairColor)           //Look for constructor in super class because it already defined
+                this.major = major                          //Creating new attribute
+            }
+            jog(distance) {
+                return super.walk(distance)                 //super.walk refer to the super class while this.walk refer to this current class
+            }
+        }
+
+        let student = new Student("EngineerKim", 26, "small", "black", "Computer Science");            //Calling Student
+        console.log( student.speak("English"))  //EngineerKim speak English
+        console.log( student.jog(500))   //EngineerKim  walked 500 meters
+
+
+_eg, Group Excercise Shape and Area
+
+        class Shape {
+            getArea() {
+                throw new Error("Shape is abstract.")
+        	}
+        }
+
+        class Circle extends Shape{
+            constructor (radius) {
+                super()
+                this.radius = radius
+            }
+            getArea () {
+                return Math.PI*this.radius**2
+            }
+        }
+
+
+        class Polygon extends Shape {
+            constructor (sides) {
+                super()
+                this.sides = sides
+            }
+        }
+
+        class Triangle extends Polygon {
+            constructor (base, height) {
+                super (3) // this.sides = 3
+                this.base = base
+                this.height = height
+            }
+            getArea() {
+                return this.base*this.height/2
+            }
+        }
+
+        class Rectangle extends Polygon {
+            constructor (sideA, sideB) {
+                super (4) // this.sides = 4
+                this.sideA = sideA
+                this.sideB = sideB
+            }
+            getArea() {
+                return this.sideA*this.sideB
+            }
+        }
+
+        class Square extends Rectangle {
+        constructor (side) {
+            super (side, side)
+            this.side = side
+        }
+        getArea() {
+            return this.side **2
+        }
+        }
+
+        let sq = new Square(10)
+        let tri = new Triangle(10, 15)
+        let circ = new Circle(5)
+        // console.log(sq.sideA)
+        // console.log(sq.sideB)
+        console.log("Area of Square: " + sq.getArea())
+        console.log("Area of Triangle: " + tri.getArea())
+        console.log("Area of Circle: " + circ.getArea())
+
+
+*Encapsulation (OOP Concepts)
+_Method to prevent anyone from accessing classes and attribute but allow for reference
+_Need to define individually
+_underscore the attribute to prevent it from being access		->	this._name = name
+_To access them we use Getter and Setter Method				->	get name(){return this._owner}
+_Reference these two in the object itself				->	set name(name){return this._owner}
+_To change name of encapsulate object (outside object)			->	person.name = "Kim"	
+
+
+*Abstraction (OOP Concepts)
+_To remove the function but it still exist				->	behaviour() {throw new Error("This is an error")}
+
+
+*Polymorphism (OOP Concepts)
+_Changes form in different context, achieve with method overwritting (eg overwrite a variable in the child and parent)	
+
+
+*Iterators 
+_The same process as for each function. Loop for finding element. Start from first element. {}Block body for multiples lines.
+	nameObject.find( (storeVariable) => condition)		->	Finding and returning the first element that meets a condition or true (first answer, output = first answer that's true)
+	nameObject.filter( (storeVariable) => condition)	->	Finding and returning a list of elements that meet a condition or true (all answer, output = all answer that's true)
+	nameObject.map( (storeVariable) => condition)		->	Modifying each element and returning the modified array, editing array using loop, map will return the full size where as filter will return only whats true 
+									(all answer, output = all answer that's true and false)
+	nameObject.reduce( (accumulator, currentValue, currentIndex) => accumulator + currentValue, initialValue)	->	Creating a summary or aggregation of values in an array (summary of all array, output = combine answer)
+														accumulator = The value resulting from the previous call to callbackFn. On the first call, its value is initialValue if the latter is specified; otherwise its value is array[0].
+														currentValue = The value of the current element. On the first call, its value is array[0] if initialValue is specified; otherwise its value is array[1].
+														currentIndex = The index position of currentValue in the array. On the first call, its value is 0 if initialValue is specified, otherwise 1.
+
+
+*Ellipsis
+_Use in REACT a lot. Similar to + in concatenation. This is use for Array ONLY. ONLY USE ELLIPSIS AT THE END!!!	
+_Syntax						->	...somethingName
+_Use In Rest Parameters (function)		->	Gathers the rest of the list of arguments into an array. Copy and paste in array. We want to put it as at the last parameter!!!
+_Use In Spread Operator (copy array)		->	Expands an array into a list. Use when you want to shallow copy in array.
+	
+
+*Destructing
+_Use in REACT a lot. This is use for Object ONLY. Changing the index name.
+_Syntax						->	{ indexNameOld: indexNameNew } = objectName
+_To copy the rest of object element		->	{ indexNameOld: indexNameNew, ...newObjectForTheRestOfTheElements } = objectName
+
