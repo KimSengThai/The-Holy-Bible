@@ -65,7 +65,7 @@ _git checkout (filename)	->	Convert to the last commit
 *GitHub repository 
 _Make a new repository in GitHub
 _Go to (push an existing repository from the command line) 	->	For existing local repository.
-_Follow the command in your desktop and make sure cd the folder you want!
+_Follow the command in your desktop and make sure cd the folder you want! (cpoy and paste command)
 
 
 *Update File To Github

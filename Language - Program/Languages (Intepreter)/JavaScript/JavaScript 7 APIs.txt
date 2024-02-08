@@ -13,6 +13,8 @@ _APIs act as a language that allow application between frontend and backend to c
 _Middleware act as a postal system to ensure these communications get where they're supposed to go.
 
 
+
+
 *Structuring API
 _BaseURL/Endpoint			->	End point is a different route on the API provider server
 _BaseURL/Endpoint/?queryName=queryValue	->	A way to put key value pair (for filtering or searching multiple resources), 
@@ -271,8 +273,8 @@ _Trying to GET our server to make a request to someone else server. Then they re
 _Can use 	->	imports https from "https";
 _Steps		->	we set our hostname, path, and method.
 		->	we set our hostname, path, and method.we set our hostname, path, and method.
-		->	Response comein the form of call back
-		->	Once we receive the call back, we can then sue the data
+		->	Response coming in the form of call back
+		->	Once we receive the call back, we can then use the data
 		->	try, catch(error) to check any error
 		->	request error if there is any error
 
