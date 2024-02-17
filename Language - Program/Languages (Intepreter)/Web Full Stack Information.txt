@@ -24,7 +24,7 @@ _Front-end (user)	->	HTML
 
 *Information stuffs about Backend
 _Front-End - Everything user can hear, see, or interact with.
-_Back-End  - User never get to see, touch or hear.
+_Back-End  - User never get to see, touch or hear. Treat this as an API!
 
 *Back-End
 _Server		->	Computer, live 24/7, any computer can act as a network.

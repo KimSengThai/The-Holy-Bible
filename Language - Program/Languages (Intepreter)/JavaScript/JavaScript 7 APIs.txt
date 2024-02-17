@@ -13,6 +13,31 @@ _APIs act as a language that allow application between frontend and backend to c
 _Middleware act as a postal system to ensure these communications get where they're supposed to go.
 
 
+*JSON
+_JavaScript Object Notation					->	A way to format data in a readable way
+_How to make the JSON file readable				->	https://jsonviewer.stack.hu/
+_JSON file contain, value can be string, array or number	->	
+									{ "nameEndPoint" : 	[
+													{
+													"keyID": "value",
+													"key": "value"
+													},
+												]
+									};
+_Convert JavaScript Object to JSON	->	const jsonData = JSON.stringify(data-JS Object);
+_Convert JSON to JavaScript Object	->	const jsonData = JSON.parse(data-JSON);
+
+
+*To create a fake server (JSON)
+_Use for front-end to create a quick API and test them
+_Popular mock server allow to get a full fake API for prototyping and mocking
+_To install JSON (g stand for global)				->	npm install -g json-server
+_JSON require a JSON file to store data				->	data.json
+_To run the server without the need of refreshing it		->	json-server --watch data.json(file name)
+_To get certain information from an endpoint 			->	GET /nameEndPoint/:ID
+_Work with GET, POST, PUT, PATCH, DELETE.
+_Post does not work with :ID because there is not routes/endpoints
+_RoutesOrEndpoints/HTTP Request/resources(any attribute from JSON)/:id
 
 
 *Structuring API

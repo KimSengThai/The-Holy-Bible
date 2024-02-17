@@ -1,0 +1,161 @@
+
+*React Documentation
+_How to insall globally			->		npm install -g create-react-app
+
+
+*Node
+_Node: Javascript runtime environment; NPM: Node's defaul package manager
+_NPM let us use a tool for publish packages, we can get them in (npmjs.com)
+_package.json: Central place to configure and describe how to interact and run your application, file where we put information about the project
+		scripts can be defined in package.json file to run CLI tools that are installed in the project's local contect. 
+_Dependencies: npm (usually start with major.minor.patch), "^1.4.4" means look for this version, "~" means look for the newest version
+_devDependencies: dependencies for the dev environment (its not being deploy real time)
+_package-lock.json: Information, can delete them but can not delete package.json. But not recommend to delete them if you want to look for compatibility issues.
+
+
+*Introduction to React
+_People argue as a framework or JavaScript-based UL development library
+_Rendering webpage, which means they are updating themselves without affecting the rest of the website. Rendering only the one that you want.
+_So they are easy to create of dynamic applications, improved performance, reusable components
+_Unidirectional data flow (can pass down data from parent to sibling and not just sibling to sibling)
+_Use declarative paradigm (Descript what the program does instead of describing how the program should do something)
+_Create our own HTML element, Combining all the file HTML, CSS and JS into one
+_Companies that use react: Airbnb, Uber, Facebook, Netflix, Instagram, Medium, Pinterest, Twitter, Reddit.
+
+
+*Features of React
+_Uses JSX	->	A JavaScript syntactic extension, neither a string nor HTML, instead embeds HTML into JavaScript code.
+_Virtual DOM	->	When an object's state changes, it updates only that object in the real DOM, only re-rendering a portion and not the whole thing.
+_MVC Architecture->	_MVC is an architectural pattern that splits application layer into Model, View and Controller.
+			_Model: relates to all data-related logic (interface with database)
+			_View: used for UL logic of the application (what user is seeing)
+			_Controller: interface between Model and View (rendering the form)
+_One-way data binding
+
+
+*CodeSandbox
+_Browser base developer environment		->		https://codesandbox.io/
+_Easy to install dependencies
+
+
+*Introduction to JSX and Babel
+_JSX is a JavaScript extension that allows creation of Document Object Model trees using an XML-like syntax.
+_Babel allow you to transfer from XML to Plain JavaScript for easier understanding.		->		https://babeljs.io/
+_Automate prettify code when save.
+ 
+
+*React Template 	
+
+  src/index.js
+        import React from "react";		// This line imports the React library, which is necessary for writing React code.
+        import ReactDOM from "react-dom";	// This line imports the ReactDOM library, which is used for rendering React components in the DOM (Document Object Model).
+
+        ReactDOM.render(			// This is a method provided by ReactDOM for rendering React elements into the DOM.
+        <>					// There can only be one main element, can also do <div> or <React.Fragment>
+            <h1>My Favourite Foods</h1>		// ReactDOM.render(what to show, where to show)
+            <ul>
+            <li>Bacon</li>
+            <li>Jamon</li>
+            <li>Noodles</li>
+            </ul>
+        </>,
+        document.getElementById("root")		// This part of the code selects an HTML element with the id "root"
+        );
+
+_Always put seft closing tag in HTML no matter what, etc. <br/> <input/>
+_If you want a JavaScript function then wrap it in, similar to EJS 	->	{}
+_Can not write JavaScript statement, can only write expression.
+_Statement is a set of instruction. Expression is asking for a value.
+_Class = "name" does not work in react. So we need to use		->	className = name
+_HTML Global Attributes - attributes work for all HTML elements.
+_Eg. contentEditable="true" (allow to edit content of an element). ALWAYS MAKE THEM CAMEL CASE!!!
+_Website to change the style for image					->	https://picsum.photos/
+_Inline styling, first is JavaScript for css then JavaScript in ReactDOM->	style={{color: "red"}}
+_We want to use inline styling to change on the go			->	customStyle.color = "blue"
+
+_How you normally do conditional	->	{value === 100 ? "Perfect" : "Not Perfect"}
+_How you normally do loop		->	
+						{
+						  names.map( name => {
+						     return <li> name </li>
+						  })	
+						}
+
+
+*Components in React
+_Components are the building blocks that comprise a React application representing a part of the user interface.
+_Components are like function()
+_Components are name in capital letters to differentiate witht he DOM, example function Heading(){}
+_To call components				->		<Heading />
+_Refer to this for best practice		->		https://github.com/airbnb/javascript/tree/master/react
+_Components are usually store in a seperate file (Heading.jsx)
+
+	src/Heading.jsx
+	import React from "react";
+	
+	function Heading() {
+	    return;
+	}
+
+	export default Heading;
+
+	src/index.js
+	import Heading from "./Heading"
+
+
+
+*Create React App
+_Create an app								->	create-react-app fileName
+_src folder is where we will be creating all our component
+_In CLI to initialise react (look at package.json)			->	npm start
+_Where we will render our application					->	App.j
+_Render specified components in return statement
+
+_Can only be one top level element (<h1> and <h2>), solve by wrapping them all in a fragment. <> </>
+_Or you can use 							->	<React.Fragment> </React.Fragment> 
+
+
+
+_Nested Components (To import file)
+
+Main file		->		Import importFiles from 'importFiles'
+Import File		->		Write a function, then at the bottom export default 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

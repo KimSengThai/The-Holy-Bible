@@ -1,0 +1,204 @@
+
+*MongodDB Stuffs
+_Cloud Server mongodb.com/atlas
+_Easier to work with than SQL, not as complicated
+_Data is store as a jason like structure
+_Allow a document to nest inside a document
+_Allow the structure of data to be more flexible
+_Easy to write and read method
+_Object Data Modeling (ODM) library for MongoDB in Node.js		->		npm i mongoose
+_NPM documentation for mongoose, npm to use MongoDB			->		https://mongoosejs.com/
+
+
+*Web Blog (node.js,express and mongodb)
+_npm init -y
+_npm install bcrypt connect-mongo cookie-parser dotenv ejs express express-ejs-layouts express-session jsonwebtoken method-override mongoose
+_npm i nodemon --save-dev
+_"start": "app.js",     "dev": "nodemon app.js"
+_Tutorial ()						->			https://www.youtube.com/watch?v=FjuctFNN0FA&list=PL4cUxeGkcC9hAJ-ARcYq_z6lDZV7kT1xD&index=4
+
+
+*My Second Project (How I install mongol DB)
+_npm i body-parser mongoose connect-mongo dotenv method-override
+_Create .env (for password mongo storing)
+_Create .gitignore: (Put below inside exactly like that) 
+			node_modules/
+			.env
+
+_Create a new project in mongooDB -> Create New Project Dabase (Project2PersonalBlog) -> Create -> MO(Free) -> Make sure you save password to .env file -> Select My Local Environment
+_After creating a project	  -> Connect -> MongoDB for VS Code -> Copy deployment link to .env -> Cut password to <password> -> Make the whole link equal to a variable (eg. MONGODB_URI) -> Can name the database at the end of node (.net/blogData)
+
+_How to connect MongoDB to our project:
+
+      import mongoose from 'mongoose';
+      import MongoStore from 'connect-mongo';
+      import dotenv from 'dotenv';
+
+	dotenv.config();							//Load .env
+
+	const connectDB = async () => {						//Function to connect to MongoDB
+	  try {
+	    mongoose.set('strictQuery', false);					//disable strictQuery, 
+	    const conn = await mongoose.connect(process.env.MONGODB_URI);	//establish connection to MongoDB
+	    console.log(`Database Connected: ${conn.connection.host}`);
+	  } catch (error) {
+	    console.log(error);
+	  }
+	}
+
+	connectDB();								//Calling for connection again
+
+_To create Model after connection Schema:
+
+      const Schema = mongoose.Schema;						//Import Schema class from mongoose
+      const PostSchema = new Schema({						//Change variable Schema to PostSchema
+        title: {
+          type: String,
+          required: true							//Variable is required in every document
+        },
+        body: {
+          type: String,
+          required: true
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now							//Date of action
+        },
+        updatedAt: {
+          type: Date,
+          default: Date.now
+        }
+      })
+
+_Define the Model above as Post
+
+      const Post = mongoose.model('Post', PostSchema);				 // define the model, (name of MongoDB, mongoose.Schema), recommended to name MongoDB same as const for consistancy.
+
+
+_Create a function to insert to MongoDB at the beginning, need to delete after using it or put it comment:
+
+      // function to insert data to MongoDB					 // function to insert data in VS code to MongoDB, have to delete after.
+      function insertPostData () {
+        Post.insertMany([
+          {
+            title: "Building APIs with Node.js",
+            body: "Learn how to use Node.js to build RESTful APIs using frameworks like Express.js"
+          }
+        ])
+      }
+
+      insertPostData();
+
+_After this you can find you data in MongoDB Database/Browse Collections. Delete the function insertPostData() after.
+_To insert the data to the web, we need async function (try, catch)
+
+      app.get("/", async (req, res) => {
+        try {
+          const data = await Post.find();			//Post.find() will try to find all the data existed
+          res.render("home.ejs", {data: data});
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
+_To get different post
+
+      app.get("/post/:id", async (req, res) => {		//Route we want to get to (have to be the same as input action).
+        try {							// ":" express will extract id and make it available as req.params
+          let slug = req.params.id;				//Get _id from mongoDB
+
+          const data = await Post.findById({ _id: slug});	//find the id from all the data exist in mongoDB
+          res.render("post.ejs", {data: data});			//File we want to render
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
+_Search keywords (POST)
+
+      app.post("/search", async (req, res) => {
+        try {
+          let searchTerm = req.body.searchTerm;
+          const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "")		/Remove special characters
+
+          const data = await Post.find({						//This is moongoose 
+            $or: [									//or in mongoose
+              { title: { $regex: new RegExp(searchNoSpecialChar, 'i') }},		//match with the title in or
+              { body: { $regex: new RegExp(searchNoSpecialChar, 'i') }}			//match with the body in or
+            ]										//RegExp is for case insensitive
+          });
+          res.render("search.ejs", {data: data});
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
+_POST METHOD (Add Post)
+
+      app.post("/composer", async (req, res) => {
+        try {
+          const newPost = new Post({				//Input variable newPost with object from red.body
+            title: req.body['blogTitleInput'],
+            body: req.body['blogBodyInput']
+          })
+          await Post.create(newPost);				//Telling mongo to create(newPost)
+          res.redirect("/");					//Then going back to home directory and under the whole thing. Can use res.render but the route would be still /composer
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
+
+_PUT METHOD (To Edit Post). This method also uses methodOverride
+
+  index.ejs										// <%= data._id %> ID of the post being edited
+	<form action="/postedit/<%= data._id %>?_method=PUT" method="post">		// once again action only direct user to that route, 
+    		<input type="submit" value="Update" class="btn btn-primary">		// query parameters ?_method=PUT help methodOverride to identify the request as PUT
+	</form>
+
+  index.js
+      import methodOverride from 'method-override';					//HTTP only suppport GET and PUT, so we use methodOverride to tunnel in PUT AND DELETE
+
+      app.use(methodOverride('_method'));						//Express will intepret "_method" as query parameters in incoming requests and override the HTTP method accordingly
+      app.put("/postedit/:id", async (req, res) => {					// ":" express will extract id and make it available as req.params
+        try{										
+          await Post.findByIdAndUpdate(req.params.id, {					// find ID with req.params.id which is from ":id"
+            title: req.body.title,							// change title with req.body.title
+            body: req.body.body,							// change body with req.body.title
+            updatedAt: Date.now()							// update the Date.now()
+          });										
+          res.redirect('/');
+        } catch(error) {
+          console.log(error);
+        }
+      });
+
+
+_DELETE METHOD (To Delete Post). This method also uses methodOverride (Look at Put method above to understand)
+
+  index.ejs
+    <form action="/postdelete/<%= data._id %>?_method=DELETE" method="post">
+        <input type="submit" value="Delete" class="btn btn-danger">
+    </form>
+
+  index..js
+      app.delete("/postdelete/:id", async (req, res) => {				// ":" express will extract id and make it available as req.params
+        try {
+          let slug = req.params.id;
+
+          await Post.deleteOne({ _id: slug});
+          res.redirect('/');
+        } catch(error) {
+
+        }
+      });
+
+
++Code challenge (Do this later after I created a full stack maybe)
+Do edit about and edit contact
+
+
+
+
+
+

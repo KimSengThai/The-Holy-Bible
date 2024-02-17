@@ -112,33 +112,11 @@ _Code for index.js (5)
 	});
 
 
-*JSON
-_JavaScript Object Notation					->	A way to format data in a readable way
-_How to make the JSON file readable				->	https://jsonviewer.stack.hu/
-_JSON file contain, value can be string, array or number	->	
-									{ "nameEndPoint" : 	[
-													{
-													"keyID": "value",
-													"key": "value"
-													},
-												]
-									};
-_Convert JavaScript Object to JSON	->	const jsonData = JSON.stringify(data-JS Object);
-_Convert JSON to JavaScript Object	->	const jsonData = JSON.parse(data-JSON);
-
-
-*To create a fake server (JSON)
-_Popular mock server allow to get a full fake API for prototyping and mocking
-_To install JSON (g stand for global)				->	npm install -g json-server
-_JSON require a JSON file to store data				->	data.json
-_To run the server without the need of refreshing it		->	json-server --watch data.json(file name)
-_To get certain information from an endpoint 			->	GET /nameEndPoint/:ID
-_Work with GET, POST, PUT, PATCH, DELETE.
-_Post does not work with :ID because there is not routes/endpoints
-_RoutesOrEndpoints/HTTP Request/resources(any attribute from JSON)/:id
-
-
-
+*Explaination:
+_HTML Form Action (action="/server"): Where the data would be submitted to, from frontend to backend
+_HTML Form Value: Container for input. Defined what is being displayed or submitted.
+_HTML Form Name: Kinda like ID, so Input ID. Use for labeling
+_Express Route ('/server'): Defines the route that we are working on.
 
 
 
