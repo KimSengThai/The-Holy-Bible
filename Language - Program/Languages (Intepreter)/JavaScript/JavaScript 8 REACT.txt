@@ -3,14 +3,29 @@
 _How to insall globally			->		npm install -g create-react-app
 
 
-*Node
-_Node: Javascript runtime environment; NPM: Node's defaul package manager
-_NPM let us use a tool for publish packages, we can get them in (npmjs.com)
-_package.json: Central place to configure and describe how to interact and run your application, file where we put information about the project
-		scripts can be defined in package.json file to run CLI tools that are installed in the project's local contect. 
-_Dependencies: npm (usually start with major.minor.patch), "^1.4.4" means look for this version, "~" means look for the newest version
-_devDependencies: dependencies for the dev environment (its not being deploy real time)
-_package-lock.json: Information, can delete them but can not delete package.json. But not recommend to delete them if you want to look for compatibility issues.
+*Iterators 
+_The same process as for each function. Loop for finding element. Start from first element. {}Block body for multiples lines.
+	nameObject.find( (storeVariable) => condition)		->	Finding and returning the first element that meets a condition or true (first answer, output = first answer that's true)
+	nameObject.filter( (storeVariable) => condition)	->	Finding and returning a list of elements that meet a condition or true (all answer, output = all answer that's true)
+	nameObject.map( (storeVariable) => condition)		->	Modifying each element and returning the modified array, editing array using loop, map will return the full size where as filter will return only whats true 
+									(all answer, output = all answer that's true and false)
+	nameObject.reduce( (accumulator, currentValue, currentIndex) => accumulator + currentValue, initialValue)	->	Creating a summary or aggregation of values in an array (summary of all array, output = combine answer)
+														accumulator = The value resulting from the previous call to callbackFn. On the first call, its value is initialValue if the latter is specified; otherwise its value is array[0].
+														currentValue = The value of the current element. On the first call, its value is array[0] if initialValue is specified; otherwise its value is array[1].
+														currentIndex = The index position of currentValue in the array. On the first call, its value is 0 if initialValue is specified, otherwise 1.
+
+
+*Ellipsis
+_Similar to + in concatenation. This is use for Array ONLY. ONLY USE ELLIPSIS AT THE END!!!	
+_Syntax						->	...somethingName
+_Use In Rest Parameters (function)		->	Gathers the rest of the list of arguments into an array. Copy and paste in array. We want to put it as at the last parameter!!!
+_Use In Spread Operator (copy array)		->	Expands an array into a list. Use when you want to shallow copy in array.
+	
+
+*Destructing
+_This is use for Object ONLY. Changing the index name.
+_Syntax						->	{ indexNameOld: indexNameNew } = objectName
+_To copy the rest of object element		->	{ indexNameOld: indexNameNew, ...newObjectForTheRestOfTheElements } = objectName
 
 
 *Introduction to React
@@ -42,7 +57,7 @@ _Easy to install dependencies
 _JSX is a JavaScript extension that allows creation of Document Object Model trees using an XML-like syntax.
 _Babel allow you to transfer from XML to Plain JavaScript for easier understanding.		->		https://babeljs.io/
 _Automate prettify code when save.
- 
+
 
 *React Template 	
 
@@ -66,12 +81,106 @@ _Always put seft closing tag in HTML no matter what, etc. <br/> <input/>
 _If you want a JavaScript function then wrap it in, similar to EJS 	->	{}
 _Can not write JavaScript statement, can only write expression.
 _Statement is a set of instruction. Expression is asking for a value.
-_Class = "name" does not work in react. So we need to use		->	className = name
+_Class = "name" does not work in react. So we need to use		->	className = name (can only do this in HTML tag and not React Components Tag)
 _HTML Global Attributes - attributes work for all HTML elements.
 _Eg. contentEditable="true" (allow to edit content of an element). ALWAYS MAKE THEM CAMEL CASE!!!
 _Website to change the style for image					->	https://picsum.photos/
 _Inline styling, first is JavaScript for css then JavaScript in ReactDOM->	style={{color: "red"}}
 _We want to use inline styling to change on the go			->	customStyle.color = "blue"
+_React fragment used so that you dont get confuse with <div>		->	<> </>
+_React fragment used cases: Return Multiple Elements, Conditional Rendering and Arrays (Key props) 
+
+
+*Components in React
+_Components are the building blocks that comprise a React application representing a part of the user interface.
+_Components are like function()
+_Components are name in capital letters to differentiate with the DOM, example function Heading(){}
+_To call components				->		<Heading />
+_Refer to this for best practice		->		https://github.com/airbnb/javascript/tree/master/react
+_Components are usually store in a seperate file (App.jsx)
+
+   src/App.jsx
+	import React from "react";						
+	
+	function App() {
+	    return <Heading />;							// Components are name in capital letters to differentiate with the DOM, example function <Heading />
+	}
+
+	export default App;							// export the function App()
+
+
+   src/index.js
+        import React from "react";
+        import ReactDOM from "react-dom";
+	import App from "./components/App"					// import export default App() from App.jsx, can name App any name.
+
+        ReactDOM.render(<App />, document.getElementById("root"));
+
+
+_To import and export multiple variables, you must add {}, eg.
+
+   src/App.jsx
+	function App() {
+	  return (
+	    <div>
+	      <Header />
+	      <Note />
+	      <Footer />
+	    </div>
+	  );
+	}
+
+	export default App;							
+	export {Heading, Footing};						// if its a function then no bracket until inside ReactDOM.render{}; because you are calling it not invoking
+
+
+   src/index.js
+	import App, {Heading, Footing} from "./components/App"			// if the names are not default (App), then you must call the same name as the one you are exporting.
+										// We can restructure the name as well import App, {Heading as NewHeadering}
+
+
+*Create React App
+_Create an app								->	create-react-app filename
+_src folder is where we will be creating all our component		->	cd filename
+_In CLI to initialise react (look at package.json)			->	npm start
+_Remove unnecessary files in public folder				->	robit.txt, manifest.json, logo512.png, logo192.png
+_Render specified components in return statement
+_Where we will render our application					->	App.jsx
+_Can only be one top level element (<h1> and <h2>), solve by wrapping them all in a fragment. <> </>
+_Or you can use 							->	<React.Fragment> </React.Fragment> 
+
+
+*React Props
+_Props means passing the value in the components. Treat it as arguement. 
+_Allow components to be reuse.
+_Props are read only, you can not change props. You can only change props in the parent or source
+_In summary, treat react Component and Props as Function() and Arguements, allowing you to customise HTML element rather than the predetermine tag (eg. placeholder, id, etc)
+
+     Card.jsx
+	function Card(props) {
+	  <>
+	   return {props.name}
+	  </>
+	}
+
+     App.js
+	return <Card name="item1"/>
+
+
+*React Map
+_Keys is an id value for props. Allow you to get that object (same concept as MongoDB)
+_Key used in map, need to put key in the most parent element (React.Fragment)
+
+     Card.jsx
+	function Card(props) {
+	  <>
+	   return {props.name}
+	  </>
+	}
+
+     App.js
+	return <Card key={student.id} name="item1"/>
+
 
 _How you normally do conditional	->	{value === 100 ? "Perfect" : "Not Perfect"}
 _How you normally do loop		->	
@@ -82,60 +191,14 @@ _How you normally do loop		->
 						}
 
 
-*Components in React
-_Components are the building blocks that comprise a React application representing a part of the user interface.
-_Components are like function()
-_Components are name in capital letters to differentiate witht he DOM, example function Heading(){}
-_To call components				->		<Heading />
-_Refer to this for best practice		->		https://github.com/airbnb/javascript/tree/master/react
-_Components are usually store in a seperate file (Heading.jsx)
-
-	src/Heading.jsx
-	import React from "react";
-	
-	function Heading() {
-	    return;
-	}
-
-	export default Heading;
-
-	src/index.js
-	import Heading from "./Heading"
-
-
-
-*Create React App
-_Create an app								->	create-react-app fileName
-_src folder is where we will be creating all our component
-_In CLI to initialise react (look at package.json)			->	npm start
-_Where we will render our application					->	App.j
-_Render specified components in return statement
-
-_Can only be one top level element (<h1> and <h2>), solve by wrapping them all in a fragment. <> </>
-_Or you can use 							->	<React.Fragment> </React.Fragment> 
-
-
-
-_Nested Components (To import file)
-
-Main file		->		Import importFiles from 'importFiles'
-Import File		->		Write a function, then at the bottom export default 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*React Bootstrap
+_Installation						->	npm install react-bootstrap bootstrap
+_Import bootstrap to CSS. for className			->	import 'bootstrap/dist/css/bootstrap.min.css'
+_Import Components					->	import Button from 'react-bootstrap/Button'
+_Always put them at the top so App.css can render last!
+_Put the component in className
+_Grid System
+_Components
 
 
 

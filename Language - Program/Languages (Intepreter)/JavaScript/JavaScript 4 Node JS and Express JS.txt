@@ -31,6 +31,16 @@ fs.readFile("./message.txt",'utf8', (err, data) => {
   }); 
 
 
+*Node
+_Node: Javascript runtime environment; NPM: Node's defaul package manager
+_NPM let us use a tool for publish packages, we can get them in (npmjs.com)
+_package.json: Central place to configure and describe how to interact and run your application, file where we put information about the project
+		scripts can be defined in package.json file to run CLI tools that are installed in the project's local contect. 
+_Dependencies: npm (usually start with major.minor.patch), "^1.4.4" means look for this version, "~" means look for the newest version
+_devDependencies: dependencies for the dev environment (its not being deploy real time)
+_package-lock.json: Information, can delete them but can not delete package.json. But not recommend to delete them if you want to look for compatibility issues.
+
+
 *Node Package Manager (step by step to install NPM)
 _NPM			->	Created by GutHub where there are utilities and tools to help you write node. Community tools library.
 _NPM href		->	https://www.npmjs.com/

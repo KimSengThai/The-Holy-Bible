@@ -408,15 +408,15 @@ _eg, Basic concept of inheritance
 
 _eg, Group Excercise Shape and Area
 
-        class Shape {
-            getArea() {
-                throw new Error("Shape is abstract.")
+        class Shape {							// Shape is the super or parent
+            getArea() {							
+                throw new Error("Shape is abstract.")				
         	}
         }
 
-        class Circle extends Shape{
+        class Circle extends Shape{					// Over writting the shape in the constructor and call it circle
             constructor (radius) {
-                super()
+                super()							// its the same as this.sides
                 this.radius = radius
             }
             getArea () {
@@ -425,16 +425,16 @@ _eg, Group Excercise Shape and Area
         }
 
 
-        class Polygon extends Shape {
+        class Polygon extends Shape {					// Over writting the shape in the constructor and call it polygon
             constructor (sides) {
                 super()
                 this.sides = sides
             }
         }
 
-        class Triangle extends Polygon {
+        class Triangle extends Polygon {				// Over writting the shape in the constructor and call it triangle
             constructor (base, height) {
-                super (3) // this.sides = 3
+                super (3) // this.sides = 3				// Set the parameter as 3, meaning number of side, its the same as this.sides
                 this.base = base
                 this.height = height
             }
@@ -443,7 +443,7 @@ _eg, Group Excercise Shape and Area
             }
         }
 
-        class Rectangle extends Polygon {
+        class Rectangle extends Polygon {				// Over writting the shape in the constructor and call it rectangle
             constructor (sideA, sideB) {
                 super (4) // this.sides = 4
                 this.sideA = sideA
@@ -454,9 +454,9 @@ _eg, Group Excercise Shape and Area
             }
         }
 
-        class Square extends Rectangle {
+        class Square extends Rectangle {				// Over writting the shape in the constructor and call it square
         constructor (side) {
-            super (side, side)
+            super (side, side)						
             this.side = side
         }
         getArea() {
@@ -489,6 +489,20 @@ _To remove the function but it still exist				->	behaviour() {throw new Error("T
 
 *Polymorphism (OOP Concepts)
 _Changes form in different context, achieve with method overwritting (eg overwrite a variable in the child and parent)	
+
+
+*Prototypal Inheritance
+_Objects in JavaScript (repeating ourselves)
+_Factory function to create new instances
+_Constructor Functions
+_Prototype (let us inherit all prototype)
+
+*Class Components (ss - we dont use it anymore instead we do function component now)
+	class ComponentName extends React.Component {
+		render() {
+			return (this.prop.name)
+		}	
+	}
 
 
 *Iterators 
