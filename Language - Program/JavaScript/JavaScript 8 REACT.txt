@@ -1,0 +1,837 @@
+
+***React Documentation
+_How to insall globally			->		npm install -g create-react-app
+_Doc					->		<https://react.dev/learn>
+
+***TABLE OF CONTENT
+*Iterators 
+*Ellipsis
+*Destructing
+*Introduction to React
+*Features of React
+*Introduction to JSX and Babel
+*React Template
+*Styling in React
+*React Components
+*Create React App
+*React Dev Tool
+*React Props
+*React Map
+*React Filter
+*React Reduce
+*React Find
+*React FindIndex
+*React Arrow Functions (ES6)
+*React Ternary Operator (if statement)
+*React State (Declarative vs Imperative)
+*React Hooks - useState
+*React Hooks - useState Terminology
+*React Hooks - useState syntax
+*React Hooks - State Destructuring
+*React Event Handling
+*React Forms
+*React Changing Complex State (using multiple state)
+*React ES6 Spread Operator
+*React To Do List (Final)
+
+
+*Iterators 
+_The same process as for each function. Loop for finding element. Start from first element. {}Block body for multiples lines.
+	nameObject.find( (storeVariable) => condition)		->	Finding and returning the first element that meets a condition or true (first answer, output = first answer that's true)
+	nameObject.filter( (storeVariable) => condition)	->	Finding and returning a list of elements that meet a condition or true (all answer, output = all answer that's true)
+	nameObject.map( (storeVariable) => condition)		->	Modifying each element and returning the modified array, editing array using loop, map will return the full size where as filter will return only whats true 
+									(all answer, output = all answer that's true and false)
+	nameObject.reduce( (accumulator, currentValue, currentIndex) => accumulator + currentValue, initialValue)	->	Creating a summary or aggregation of values in an array (summary of all array, output = combine answer)
+														accumulator = The value resulting from the previous call to callbackFn. On the first call, its value is initialValue if the latter is specified; otherwise its value is array[0].
+														currentValue = The value of the current element. On the first call, its value is array[0] if initialValue is specified; otherwise its value is array[1].
+														currentIndex = The index position of currentValue in the array. On the first call, its value is 0 if initialValue is specified, otherwise 1.
+
+
+*Ellipsis
+_Similar to + in concatenation. This is use for Array ONLY. ONLY USE ELLIPSIS AT THE END!!!	
+_Syntax						->	...somethingName
+_Use In Rest Parameters (function)		->	Gathers the rest of the list of arguments into an array. Copy and paste in array. We want to put it as at the last parameter!!!
+_Use In Spread Operator (copy array)		->	Expands an array into a list. Use when you want to shallow copy in array.
+	
+
+*Destructing
+_Changing the index name. Syntax		->	{ indexNameOld: indexNameNew } = objectName
+_To copy the rest of object element		->	{ indexNameOld: indexNameNew, ...newObjectForTheRestOfTheElements } = objectName
+
+
+*Introduction to React
+_People argue as a framework or JavaScript-based UL development library
+_Rendering webpage, which means they are updating themselves without affecting the rest of the website. Rendering only the one that you want.
+_So they are easy to create of dynamic applications, improved performance, reusable components
+_Unidirectional data flow (can pass down data from parent to sibling and not just sibling to sibling)
+_Use declarative paradigm (Descript what the program does instead of describing how the program should do something)
+_Create our own HTML element, Combining all the file HTML, CSS and JS into one
+_Companies that use react: Airbnb, Uber, Facebook, Netflix, Instagram, Medium, Pinterest, Twitter, Reddit.
+
+
+*Features of React
+_Uses JSX	->	A JavaScript syntactic extension, neither a string nor HTML, instead embeds HTML into JavaScript code.
+_Virtual DOM	->	When an object's state changes, it updates only that object in the real DOM, only re-rendering a portion and not the whole thing.
+_MVC Architecture->	_MVC is an architectural pattern that splits application layer into Model, View and Controller.
+			_Model: relates to all data-related logic (interface with database)
+			_View: used for UL logic of the application (what user is seeing)
+			_Controller: interface between Model and View (rendering the form)
+_One-way data binding
+
+
+*Introduction to JSX and Babel
+_JSX is a JavaScript extension that allows creation of Document Object Model trees using an XML-like syntax.
+_Babel allow you to transfer from XML to Plain JavaScript for easier understanding.		->		https://babeljs.io/
+_Automate prettify code when save.
+
+
+*React Template 	
+
+  src/index.js
+        import React from "react";		// This line imports the React library, which is necessary for writing React code.
+        import ReactDOM from "react-dom";	// This line imports the ReactDOM library, which is used for rendering React components in the DOM (Document Object Model).
+
+        ReactDOM.render(			// This is a method provided by ReactDOM for rendering React elements into the DOM.
+        <>					// There can only be one main element, can also do <div> or <React.Fragment>
+            <h1>My Favourite Foods</h1>		// ReactDOM.render(what to show, where to show)
+            <ul>
+            <li>Bacon</li>
+            <li>Jamon</li>
+            <li>Noodles</li>
+            </ul>
+        </>,
+        document.getElementById("root")		// This part of the code selects an HTML element with the id "root"
+        );
+
+_Always put seft closing tag in HTML no matter what, etc. <br/> <input/>
+
+
+*React Style (CSS and inline)
+_If you want a JavaScript function then wrap it in, similar to EJS 	->	{}
+_Can not write JavaScript statement, can only write expression.
+_Statement is a set of instruction. Expression is asking for a value.
+_Class = "name" does not work in react. So we need to use		->	className = name (can only do this in HTML tag and not React Components Tag)
+_HTML Global Attributes - attributes work for all HTML elements.
+_Eg. contentEditable="true" (allow to edit content of an element). ALWAYS MAKE THEM CAMEL CASE!!!
+_Website to change the style for image					->	https://picsum.photos/
+_Inline styling, first is JavaScript for css then JavaScript in ReactDOM->	style={{color: "red"}}
+_We want to use inline styling to change on the go			->	customStyle.color = "blue"
+_React fragment used so that you dont get confuse with <div>		->	<> </>
+_React fragment used cases: Return Multiple Elements, Conditional Rendering and Arrays (Key props) 
+
+
+*React Components
+_Components are the building blocks that comprise a React application representing a part of the user interface.
+_Components are like function()
+_Components are name in capital letters to differentiate with the DOM, example function Heading(){}
+_To call components				->		<Heading />
+_Refer to this for best practice		->		https://github.com/airbnb/javascript/tree/master/react
+_Components are usually store in a seperate file (App.jsx)
+_Class (See JavaScript 1 Fundamental) vs Functional
+_Class involve too much boiler plate code, confusing to read with "this." and require binding making it harder to read.
+_You can only use Hooks in functional component and not class.
+_Class and functional can be mixed.
+
+   src/App.jsx
+	import React from "react";						
+	
+	function App() {
+	    return <Heading />;							// Components are name in capital letters to differentiate with the DOM, example function <Heading />
+	}
+
+	export default App;							// export the function App()
+
+
+   src/index.js
+        import React from "react";
+        import ReactDOM from "react-dom";
+	import App from "./components/App"					// import export default App() from App.jsx, can name App any name.
+
+        ReactDOM.render(<App />, document.getElementById("root"));
+
+
+_To import and export multiple variables, you must add {}, eg.
+
+   src/App.jsx
+	function App() {
+	  return (
+	    <div>
+	      <Header />
+	      <Note />
+	      <Footer />
+	    </div>
+	  );
+	}
+
+	export default App;							
+	export {Heading, Footing};						// if its a function then no bracket until inside ReactDOM.render{}; because you are calling it not invoking
+
+
+   src/index.js
+	import App, {Heading, Footing} from "./components/App"			// if the names are not default (App), then you must call the same name as the one you are exporting.
+										// We can restructure the name as well import App, {Heading as NewHeadering}
+
+
+*Create React App
+_Create an app (filename can not be cap)				->	create-react-app filename
+_src folder is where we will be creating all our component		->	cd filename
+_In CLI to initialise react (look at package.json)			->	npm start
+_Remove unnecessary files in public folder				->	robit.txt, manifest.json, logo512.png, logo192.png
+_Render specified components in return statement
+_Where we will render our application					->	App.jsx
+_Can only be one top level element, solve by wrapping in a fragment	->	<> </>
+_Or you can use 							->	<React.Fragment> </React.Fragment> 
+
+
+*React Dev Tool
+_Allow you to check which get pass and which is rendering
+_Add chrome extension here					->	https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
+_Go to inspect							-> 	Components
+_If you want to find the HTML element then switch on the filter in the components settings
+
+
+*React Props
+_Props means passing the value in the components. Treat it as arguement. 
+_Allow components to be reuse.
+_Props are read only, you can not change props. You can only change props in the parent or source
+_In summary, treat react Component and Props as Function() and Arguements, allowing you to customise HTML element rather than the predetermine tag (eg. placeholder, id, etc)
+
+     Card.jsx (function)
+	function Card(props) {
+	  <>
+	   return {props.name}
+	  </>
+	}
+
+     App.js (invoking function)
+	return <Card name="item1"/>
+
+
+_Can also past a nest inside a nest
+
+     Para.jsx (function)
+     function Para(props) {
+       return (
+         <>
+           <p className="info">{props.detail}</p>
+         </>
+       );
+     }
+
+     Card.jsx (invoking function)
+	function Card(props) {
+	   return 
+	     <>        
+		<Para detail={props.tel} />
+        	<Para detail={props.email} />
+	     </>
+	}
+
+
+*React Map
+_Useful for transforming data or generating a new array based on existing array elements.
+_Map allow you to past in a function value and perform similar to forEarch()
+_It is require to use key when using map
+_key is an id value for props. Allow you to get that object (same concept as MongoDB)
+_key used in map, need to put key in the most parent element (React.Fragment)
+_key is not a prop, it use to ensure the right order and render efficiently
+_<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map>
+_How you normally do loop
+	
+	function createCard(contacts) {
+	  return (
+	    <Card
+	      key={contacts.id}
+	      name={contacts.name}
+	      img={contacts.imgURL}
+	      tel={contacts.phone}
+	      email={contacts.email}
+	    />
+	  );
+	}
+
+	return <> {contacts.map(createCard)} </>
+
+_Project (Best Practices)
+
+	function App () {emojipedia.map(createEmoji)}		//Calling map through array(emojipedi) and function(createEmoji).
+								//Map - Create a new array by doing something with each item in an array.
+        function createEmoji(emojiTerm) {			//Function call Entry to render custome HTML element, emojiTerm act as an array similar to forEach(emojiTerm)
+          return (
+            <Entry
+              key={emojiTerm.id}
+              img={emojiTerm.emoji}
+              name={emojiTerm.name}
+              meaning={emojiTerm.meaning}
+            />
+          );
+        }
+
+        function Entry(props) {					//Components using props and key to passing the layout
+          return (
+            <>
+              <div className="term" key={props.id}>
+                <dt>
+                  <span className="emoji" role="img" aria-label="Tense Biceps">
+                    {props.img}
+                  </span>
+                  <span> {props.name} </span>
+                </dt>
+                <dd>{props.meaning}</dd>
+              </div>
+            </>
+          );
+        }
+
+_Example
+
+      var numbers = [3, 56, 2, 48, 5];
+
+      function double(x) {
+      return x * 2;
+      }
+
+      const newNumbers = numbers.map(double);
+      console.log(newNumber); [6, 112, 4, 96, 10]
+
+
+*React Filter
+_Create a new array by keeping the items that return true.
+_<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter>
+
+	var numbers = [3, 56, 2, 48, 5];
+
+	const newNumber = numbers.filter((array) => {
+	  return array > 10;
+	});
+
+	console.log(newNumber); [58, 48]
+
+
+*React Reduce
+_Accumulate a value by doing something to each item in an array.
+_accumulator start as [0] then after the calculation, move to that result.
+_currentNumber act as a forEach(array), move from [1] to array.length
+_<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce>
+
+	var numbers = [3, 56, 2, 48, 5];
+
+	const newNumber = numbers.reduce((accumulator, currentNumber) => {
+	  return accumulator + currentNumber;
+	});
+
+	console.log(newNumber); [114]
+
+
+*React Find
+_Find the first item that matches from an array.
+_<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findindex>
+
+	var numbers = [3, 56, 2, 48, 5];
+
+	const newNumber = numbers.find((array) => {
+	  return array > 10;
+	});
+
+	console.log(newNumber); [56]
+
+
+*React FindIndex
+_Find the index of the first item that matches.
+_<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findindex>
+
+	var numbers = [3, 56, 2, 48, 5];
+
+	const newNumber = numbers.findIndex((array) => {
+	  return array > 10;
+	});
+
+	console.log(newNumber); [1]
+
+
+**Summary
+_map()		->	create a new array
+_filter()	->	create a new array if forEachArray is true
+_reduce()	->	add and create a single index
+_find()		->	find the first array
+_findIndex()	->	find the first index of the array
+_substring()	->	put a limit to number of characters
+
+
+*React Arrow Functions (ES6)
+_Arrow Function				->				() => {return }
+_If there is only 1 line and parameter	->				x => x + x
+_<https://hacks.mozilla.org/2015/06/es6-in-depth-arrow-functions/>
+
+
+*React Ternary Operator (if statement)
+_Main Syntax of Ternary Operator	->	CONDITION	  ?	Do if true	:	Do if false
+_How you normally do conditional	->	isCloudy === true ? 	bringUmbrella() : 	bringSunscreen()
+_Tip, can also use null to show nothing	->							null
+_Because of the way && work in JS, if the beginning is false then it will stop rendering. Below is best practice.
+_Best coding practice			->	currentTIme > 12	&&	<h1> Why are you still working? </h1>
+
+
+*React State (Declarative vs Imperative)
+_UI (User Interface) = f(State)
+_Declarative = How the UI should look by using declaring variable (var action = true/false)
+_Imperative  = By using event listener and DOM manipulation (But this style is unchangable). (React Hooks is required to make website interactable)
+
+Props:	Use Case	->	Data is passed from one component to another
+	Mutability	->	Immutable, read only, unless change from the source
+	Update		->	Parent component sets props for the child components
+
+State:	Use Case	->	Data is passed within the component only
+	Mutability	->	Mutable 
+	Update		->	Event handlers generally update state
+
+
+
+*React Hooks - useState
+<https://react.dev/reference/react/hooks>
+_Hooks let you use different React features from your components.
+_Hooks must be used inside a functional component. (MUST PUT INSIDE A FUNCTIONAL COMPONENT!!!!!)
+_In React, hooks are functions that let you use state and other React features in functional components
+_This hook allows functional components to manage local state. It returns a stateful value and a function to update it.
+
+*React Hooks - useState Terminology
+_initialState: The value you want the state to be initially.
+_useState: The current state. First it will render the initialState then update base on setState
+_setState or set function: Let you update the state and trigger a re-render. You can pass the next state directly, or a function that calculates it from the previous state.
+_setState(e.target.value): Let you put the state as target input value from the user.
+_setState() use it inside a updateTime() with a combination of onClick={updateTime} for button.
+
+*React Hooks - useState syntax
+_Import React, {useState} from "react"; (for short cut, so you dont have to put React.useState();)
+
+_useState (function)			->	const [state, setState] = useState(initialState)
+_useState (new state or change state)	->	setState(e.target.value) or setState(state + 1)
+_useState (call)			->	{state} = Initial State, after that change base on setState 
+
+*React Hooks - State Destructuring
+_Destructuring			->	Destructure a complex structure (object and array)
+_Destructuring Example State 1	->	const [count] = useState(212)
+_Destructuring Example State 2	->	console.log(count) = 212
+
+_Array Destructuring
+_Names need to be unique and can not be re declared
+_Destructuring Example Part 1	->	const [red, green, blue] = [9, 132, 227]
+_Destructuring Example Part 2	->	console.log(green) = 132
+_Inside nested array		->	coloursByPopularity: [teslaTopColour], = cat
+_Order needs to be matter in array
+
+_Object Destructuring
+_Names of object need to be the same as objectKey
+_Rename in object can be very simple, just use 			->	{name: newName} = cat
+_Insert default value to the object if there is no name to api 	->	{name = "newName"} = cat
+_Inside nested object descutring, so food = catFood		->	{name, feeding: {water, food}} = cat
+_Order does not matter in object because it identify by name
+
+
+*React Event Handling
+_HTML event attributes, same as Event Listerner but instead its in HTML
+_<https://www.w3schools.com/tags/ref_eventattributes.asp>
+_Examples of popular HTML event attributes:
+
+	onClick: 				->	Fires when a user clicks on an element.
+	onChange: 				->	Fires when the value of an input element changes (e.g., input, textarea, select).
+	onSubmit: 				->	Fires when a form is submitted.
+	onKeyDown/onKeyUp/onKeyPress: 		->	Fires when a keyboard key is pressed down, released, or pressed and released, respectively.
+	onMouseOver/onMouseOut: 		->	Fires when the mouse pointer moves over/out of an element.
+	onFocus/onBlur: 			->	Fires when an element gains/loses focus.
+	onLoad/onUnload: 			->	Fires when a resource (e.g., image, document) finishes loading or unloading.
+	onError: 				->	Fires when an error occurs during the loading of an external resource (e.g., image, script).
+	onScroll: 				->	Fires when the user scrolls an element.
+	onResize: 				->	Fires when the browser window or an element is resized.
+	onDoubleClick: 				->	Fires when an element is double-clicked.
+	onContextMenu: 				->	Fires when the right mouse button is clicked to open the context menu.
+	onTouchStart/onTouchMove/onTouchEnd: 	->	Fires when a touch event starts/moves/ends (for touch-enabled devices).
+
+_Example project (my method):
+
+        function App() {
+          const [headingText, setHeadingText] = useState("Hello");
+
+          function handleClick() {
+            setHeadingText("Submitted");
+          }
+
+          const [currentColor, setCurrentColor] = useState("white");
+
+          function mouseOverStuffs() {
+            setCurrentColor("black");
+          }
+
+          function mouseOutStuffs() {
+            setCurrentColor("white");
+          }
+
+          return (
+            <div className="container">
+              <h1>{headingText}</h1>
+              <input type="text" placeholder="What's your name?" />
+              <button
+                style={{ backgroundColor: currentColor }}				//Inline styling for input
+                onMouseOut={mouseOutStuffs}						//Set in event attributes
+                onMouseOver={mouseOverStuffs}						//Set in event attributes
+                onClick={handleClick}							//Set in event attributes
+              >
+                Submit
+              </button>
+            </div>
+          );
+        }
+
+_Alternative solution (more readable and versatile)
+
+        function App() {
+          const [headingText, setHeadingText] = useState("Hello");
+
+          function handleClick() {
+            setHeadingText("Submitted");
+          }
+
+          const [currentColor, setCurrentColor] = useState(false);
+
+          function mouseOverStuffs() {
+            setCurrentColor(true);
+          }
+
+          function mouseOutStuffs() {
+            setCurrentColor(false);
+          }
+
+          return (
+            <div className="container">
+              <h1>{headingText}</h1>
+              <input type="text" placeholder="What's your name?" />
+              <button
+                style={{ backgroundColor: currentColor ? "black" : "white" }}
+                onMouseOut={mouseOutStuffs}
+                onMouseOver={mouseOverStuffs}
+                onClick={handleClick}
+              >
+                Submit
+              </button>
+            </div>
+          );
+        }
+
+
+*React Forms
+_HTML input element. We can get event.target.value/placeholder/type
+_In HTML, the element themselves are responsible for handling their own state.
+_In React input value should be set to the state. So there is only one truce. 
+_This is call a controlled component. This include <input />, <textarea />, <select />
+_Normally we put input and button in form. However it refeshes when we finish submitting.
+_To prevent the website from refeshing, we use event.preventDefault() inside a function.
+_This prevent the form from refeshing.
+_Eg form with event.preventDefault(). Preventing <form> from refreshing so the heading get updated.
+
+
+*React Changing Complex State (using multiple state)
+_useState({}) can also be use to store object.
+_Can destructure e.target with const {value}
+
+
+*React ES6 Spread Operator
+_const citrus = ["Lime", "Lemon", "Orange"]
+_const fruits = ["Apple", "Banana", "Coconut"]
+
+_To add cirtus array to fruits at any position, do 	...	->	["Apple", ...citrus, "Banana", "Coconut"]
+_To insert object, we can do the same thing.
+
+	const user = {
+	    ...thingsWeTarget,
+	    id:1
+	}
+
+_Note it is not the same as this. The below code give a nest object while the above spread to the user object.
+	const user = {
+	    thingsWeTarget,
+	    id:1
+	}
+
+_From above, this is a shorter code.
+    setContact((prevValue) => {
+      return {
+        ...prevValue,					// Putting the previous value of fName, lName, email to the object state
+        [name]: value,					// What ever is the target name it is equal to the target value
+      };
+    });
+
+
+***To Do List React (Final)
+_App.js
+      import React, { useState } from "react";
+      import Header from "./Header";
+      import Footer from "./Footer";
+      import Note from "./Note";
+      import CreateArea from "./CreateArea";
+
+      function App() {
+        const [addNote, setAddNote] = useState([]);
+
+        function addNoteList(note) {			        //(note) is the function that got pass by CreateArea
+          setAddNote((previousValue) => {			  
+            return [...previousValue, note];			//Making sure it add all the previous note and add note in the end, also note is an object
+          });
+        }
+
+        function deleteNote(id) {
+          setAddNote((previousValue) => {
+            return previousValue.filter((array, index) => {	//filter pass three argument, value , index (work the same with map), id is pass on by Note.jsx function
+              return index !== id;				//index is filter function and id corresponds to the index of the note in the addNote array that you want to delete. Filtering out the note with the matching index (id). 
+            });							//So we create a new array that does not match with id: index (one value that we click).
+          });
+        }
+
+        return (
+          <div>
+            <Header />
+            <CreateArea onAdd={addNoteList} />			//We pass a function addNoteList as a prop with prop name being onAdd, note onAdd can be any name just like how we pass variable
+            {addNote.map((array, index) => {			//With addNote, we use map to return <Note />, passing index from the function number
+              return (						//Return is a must in filter or map
+                <Note
+                  key={index}
+                  id={index}					//Using id, we need that so we can do filter, so we pass onto Note.jsx and comes back with function deleteNote(id)
+                  title={array.title}
+                  content={array.content}
+                  onDelete={deleteNote}			
+                />
+              );
+            })}
+            <Footer />
+          </div>
+        );
+      }
+
+      export default App;
+
+
+_CreateArea.jsx
+      import React, { useState } from "react";
+
+      function CreateArea(props) {
+        const [note, setNote] = useState({ title: "", content: "" });	//Using deconstruct, we combine title and content to note
+
+        function noteInput(e) {
+          const { value, name } = e.target;				//Using deconstruct, we dont have to do value=e.target.value, that is also why we need to put it as an object{}
+          setNote((previousValue) => {
+            return { ...previousValue, [name]: value };			//We insert the previousValue(note state) to the object. Then at the end, we render e.target.name: e.target.value, [name] is computed property names, without it JS will interpreted name as string
+          });
+        }
+
+        function submitButton(e) {
+          props.onAdd(note);						//Function from App.js, (note) is what we pass back to App.js which is an object.
+          setNote({ title: "", content: "" });				//Reset back note in input after we press submit button
+          e.preventDefault();						//In a form, we must use e.preventDefault to the submit button so that website does not reset.
+        }
+
+        return (
+          <div>
+            <form onSubmit={submitButton}>				//Adding function to submit button
+              <input
+                onChange={noteInput}					//Call on noteInput function
+                name="title"
+                placeholder="Title"
+                value={note.title}					//Value to make it combine with one condition, one source of truth
+              />
+              <textarea
+                onChange={noteInput}					//Call on noteInput function
+                name="content"
+                placeholder="Take a note..."
+                rows="3"
+                value={note.content}					//Value to make it combine with one condition, one source of truth
+              />
+              <button type="submit">Add</button>
+            </form>
+          </div>
+        );
+      }
+
+      export default CreateArea;
+
+
+_Note.jsx
+      import React from "react";
+
+      function Note(props) {
+
+        function deleteSubmit() {
+          props.onDelete(props.id);					//Passing back (id:index), index of the current note that you click, which we got from App.js to use in delete function
+        }								//Its not a form so we dont need e.preventDefault()
+
+        return (
+          <div key={props.key} className="note">			//Passing key which is always recommend when using map in React.
+            <h1>{props.title}</h1>
+            <p>{props.content}</p>
+            <button onClick={deleteSubmit}>DELETE</button>		//When delete is click, it invoke deleteSubmit()
+          </div>
+        );
+      }
+
+      export default Note;
+
+
+*React Bootstrap
+_Installation						->	npm install react-bootstrap bootstrap
+_Website and Documentation				->	<https://react-bootstrap.netlify.app/>
+_Import bootstrap to CSS. for className			->	import 'bootstrap/dist/css/bootstrap.min.css';
+_Import Components, similar to import React from 'react'->	import Button from 'react-bootstrap/Button'
+_Always put them at the top so App.css can render last!
+_Put the component in className to import the styling
+
+
+*React State Class Component
+_Expample, (update name in real time)
+            import { Component, useCallback } from "react";
+
+            class Form extends Component {
+            constructor(props) {
+                //To set a state you need constructor first
+                super(props); //this.props=props
+                this.state = {					                //State being updated
+                title: "",
+                genre: "",
+                };
+            }
+
+            handleTitleChange = (e) => {
+                //With ()=>{} you dont need to use bind method
+                this.setState({ title: e.target.value });
+            };
+
+            handleGenreChange = (e) => {
+                //With ()=>{} you dont need to use bind method
+                this.setState({ genre: e.target.value });
+            };
+
+            render() {
+                return (
+                <>
+                    <h1>Title: {this.state.title}</h1>
+                    <h1>Genre: {this.state.genre}</h1>
+                    <form>
+                    <label>Title: </label>
+                    <input
+                        type="text"
+                        value={this.state.title}
+                        onChange={this.handleTitleChange}
+                    />
+
+                    <label>Genre: </label>
+                    <select value={this.state.genre} onChange={this.handleGenreChange}>
+                        <option value="Horror">Horror</option>
+                        <option value="Action">Action</option>
+                        <option value="Fantasy">Fantasy</option>
+                    </select>
+                    </form>
+                </>
+                );
+            }
+            }
+
+            export default Form;
+
+
+*Controlled Form (Class Component)
+_State is maintained in the parent, udpated value as props to the controlled component.
+_Provide real-time update especially if state is shared with our siblings. (such as create a tally counter app that let the user update)
+_Example of Control Form (update color in real time)
+_App.js
+      import { Component } from "react";
+      import ColorPicker from "./component/ColorPicker";
+      import Tally from "./component/Tally";
+
+      export default class App extends Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            color: "yellow",
+          };
+        }
+
+        updateColor = (color) => {
+          this.setState({ color: color });
+        };
+        render() {
+          return (
+            <div
+              style={{
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: this.state.color,
+              }}
+            >
+              <ColorPicker color={this.state.color} updateColor={this.updateColor} />
+            </div>
+          );
+        }
+      }
+
+_ColorPicker.jsx
+      import { Component } from "react";
+
+      export default class ColorPicker extends Component {
+        constructor(props) {
+          super(props);
+        }
+
+        render() {
+          return (
+            <select
+              value={this.props.color}
+              onChange={(e) => {
+                this.props.updateColor(e.target.value);
+              }}
+            >
+              <option value="white">White</option>
+              <option value="black">Black</option>
+              <option value="green">Green</option>
+              <option value="yellow">Yellow</option>
+            </select>
+          );
+        }
+      }
+
+
+*Demon: Information Flow
+_Shopping Card
+
+
+*Side Effects
+_useEffect help us move things like setInterval() ourside the rendering calculation. It accepts a callback function with all the calculations.
+_By default, useEffect hook runs on every render
+
+_example:
+	import React, { useEffect, useState } from "react";
+
+	export default function Clock() {
+	  const [counter, setCounter] = useState(0);
+
+	  useEffect(() => {
+	    setInterval(() => {
+	      setCounter(count => count + 1)
+	    }, 1000);
+	  }, [])
+
+	  return (
+	    <p>{counter} seconds have passed.</p>
+	  );
+	}
+
+_In general 
+	useEffect(() => {
+	  // This runs after every render
+	});
+
+	useEffect(() => {
+	  // This runs only on mount (when the component appears)
+	}, []);
+
+	useEffect(() => {
+	  // This runs on mount *and also* if either a or b have changed since the last render
+	}, [a, b]);
+
+
