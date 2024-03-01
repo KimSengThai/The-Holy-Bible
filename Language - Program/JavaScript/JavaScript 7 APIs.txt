@@ -360,7 +360,15 @@ _3. Token Based Authentisation		->	Username and Password to generate a token
 
 
 
-
+*Crud Operation 
+_Allow you to make your own API
+_Need Crud Operation, Method, URL
+GET (all) api/website/
+GET (one) api/website/:id
+POST
+PUT	  api/website/:id
+PATCH
+DELETE	  api/website/:id
 
 
 

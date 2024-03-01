@@ -61,6 +61,13 @@ _Four Types of Middleware:
 	Authentication - checking if the client is authorise to make a request
 	Error Handling - identify errors
 
+_Normally this is needed (next), however middleware automatically import next() so we dont need to use it when using NPM
+// app.use((req, res, next) => {
+//   res.status404().json({
+//     status: "fail",
+//   });
+// });
+
 
 *Body Parser
 _Mainly deal with user input
@@ -70,18 +77,10 @@ _Eg of Body Parsing (Body parsing middleware, request a body property)
 
 	import express from "express";								// import body parser module using import method
 
-	import bodyParser from 'body-parser';
-
-	import { dirname } from "path";								// this three lines allow for __dirname (user name etc) to direct to our directory
-	import { fileURLToPath } from "url";
-	const __dirname = dirname(fileURLToPath(import.meta.url));
-
-	var urlencodedParser = bodyParser.urlencoded({ extended: true })
-
 	const app = express();
 	const port = 3000;
 
-	app.use(bodyParser.urlencoded({ extended: true }));					// mount middleware (body parser) using .use() method
+	app.use(express.json());								//Only need this line to use req.body as json format
 
 	app.get("/", (req, res) => {								// sumit button from HTML to here. Request a resource from the server (Get)
   		res.sendFile(__dirname + "/public/index.html");					// req is the request object from the server
@@ -94,6 +93,8 @@ _Eg of Body Parsing (Body parsing middleware, request a body property)
 	app.listen(port, () => {
   		console.log(`Listening on port ${port}`);
 	});
+
+_Express and Body Parser is now integrated, dont need to use it as NPM anymore.
 
 
 *Morgan
@@ -139,7 +140,7 @@ _Eg for custom middleware (we name it logger)
 	function logger(req, res, next) {				// created a custom function for method of getting request and request url
   		console.log("Request Method: ", req.method)
   		console.log("Request URL: ", req.url)
-  		next();
+  		next();							// needed if we are using our own NPM
 	}
 
 	app.get("/", (req, res) => {

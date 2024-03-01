@@ -1,0 +1,126 @@
+
+*Postgre SQL
+_Download		->		<https://www.enterprisedb.com/downloads/postgres-postgresql-downloads>
+_SQL Shell (psql)	->		localhost default, postgres=# means it success
+_Documentation		->		https://www.postgresql.org/docs/
+_Tutorial		->		https://www.postgresqltutorial.com/
+_To connect to node.js	=>		https://node-postgres.com/
+
+*SQL Shell (psql)
+_SQL Shell (psql)	->		\? (for look at command prompt or goodle)
+_SQL Shell (psql)	->		\l (list database)
+_SQL Shell (psql)	->		\d (list all table in the database)
+_SQL Shell (psql)	->		\d columnname (to see the structure of the column and row)
+_Create database	->		CREATE DATABASE namewewant; (dont need capitalise but its good practice)
+_To connect to databse	->		\c namewewant (NOTE once we create a database we can open that database in the beginning by typing its name)
+
+*SQL Tables
+_A table represents a subject or event in an application (each table represent something)
+_A table is made up of columns and rows
+_Each Column represents a different ATTRIBUTE (id, name, age, sex)
+_Each Row represents a different ENTRY (1, Kim, 26, Male)
+
+
+*Create Table (in db.sql)
+_Syntax
+CREATE TABLE [IF NOT EXISTS] table_name (
+   column1 datatype(length) column_constraint,
+   column2 datatype(length) column_constraint,
+   ...
+   table_constraints
+);
+
+_Example (NOT NULL means we can not have a blank id, it will keep incrementing for us, PRIMARY KEY means the unique key in each table)
+CREATE TABLE accounts (
+  id BIGSERIAL NOT NULL PRIMARY KEY,
+  user_id SERIAL PRIMARY KEY, 
+  username VARCHAR (50) UNIQUE NOT NULL, 
+  password VARCHAR (50) NOT NULL, 
+  email VARCHAR (255) UNIQUE NOT NULL, 
+  created_at TIMESTAMP NOT NULL, 
+  last_login TIMESTAMP
+  price_range INT NOT NULL check(price_range >= 1 and price_range <=5)
+);
+
+_After typing that in db.sql, copy and paste that in the SQL Shell (psql)
+
+
+*Add Column
+ALTER TABLE table_name
+ADD COLUMN new_column_name data_type;
+
+
+*Remove Column
+ALTER TABLE table_name
+DROP COLUMN new_column_name;
+
+
+*Remove Table
+DROP TABLE table_name;
+
+
+*Delete Database
+DROP DATABASE database_name;
+
+
+*Create Database
+CREATE DATABASE database_name;
+
+
+*How to insert data (INSERT 0 1 means its good)
+INSERT INTO table_name(column1, column2, ...)
+VALUES (value1, value2, ...);
+
+
+*View data in the table (* means everything, can use column name to see only specific columns)
+SELECT * FROM tableName; 
+
+
+*Connect to Node
+_To connect to node.js	->		https://node-postgres.com/
+_NPM installation	->		npm install pg
+_My db/index.js file usually starts out like this:
+
+	import { Pool } from 'pg'							//Deconstructing the word Pool from pg
+ 
+	const pool = new Pool()								//Connecting to our postgres database
+ 
+	export const query = (text, params) => pool.query(text, params);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -799,6 +799,12 @@ _ColorPicker.jsx
 *Demon: Information Flow
 _Shopping Card
 
+data.js
+ProductApp.js
+
+
+
+
 
 *Side Effects
 _useEffect help us move things like setInterval() ourside the rendering calculation. It accepts a callback function with all the calculations.
@@ -833,5 +839,54 @@ _In general
 	useEffect(() => {
 	  // This runs on mount *and also* if either a or b have changed since the last render
 	}, [a, b]);
+
+
+*Type Checking with PropTypes
+_Checking a peice of code is using the correct data types for variables, function parameters and return values.
+_We are using PropTypes to check the props
+_Installation			->		npm install --save prop-types
+_Import				->		import PropTypes from 'prop-types';
+
+_Exmaple - RenderName is a component, name is a prop and expected to be string
+
+	const RenderName = (props) => {
+	  return <div>{props.name}</div>;
+	};
+
+	RenderName.propTypes = {
+	  name: PropTypes.string.isRequired,
+	}
+
+	export default RenderName;
+
+
+*React Router
+_Client-side routing help build SPAs (Single Page Applications) without refreshing as the user navigates.
+_To install router package	->	import { createBrowserRouter } from 'react-router-dom';
+
+_import { useParams } from 'react-router-dom'
+
+_const params = useParams();
+_return( {params.profileId} )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
