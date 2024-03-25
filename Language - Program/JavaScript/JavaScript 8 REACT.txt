@@ -33,6 +33,17 @@ _Doc					->		<https://react.dev/learn>
 *React Changing Complex State (using multiple state)
 *React ES6 Spread Operator
 *React To Do List (Final)
+*React Bootstrap
+*React State Class Component
+*Controlled Form (Class Component)
+*Demo: Information Flow (Shopping Card)
+*Side Effects
+*Fetching with React
+*Project (Render StudentForm and StudentList. We need a state that lets us toggle between the form and the list)
+*Class Component: Component Life Cycle
+*Type Checking with PropTypes
+*React Router
+*Refactoring the router
 
 
 *Iterators 
@@ -796,31 +807,186 @@ _ColorPicker.jsx
       }
 
 
-*Demon: Information Flow
-_Shopping Card
+*Demo: Information Flow (Shopping Card)
 
-data.js
-ProductApp.js
+_index.js (where everything is render, including boostrap import)
+      import React from "react";
+      import ReactDOM from "react-dom/client";
+      import "bootstrap/dist/css/bootstrap.min.css";					//Import react bootstrap
+      import "./index.css";
+      import ProductApp from "../src/component/ProductApp";
+  
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(
+        <React.StrictMode>
+          <ProductApp />								//Rendering ProductApp, our main component
+        </React.StrictMode>
+      );
 
 
+_data.js (where the data is store)
+      const products = [								//Making product as array then object
+        {
+          id: 1,
+          name: "Phone",
+          price: 100,
+        },
+        {
+          id: 2,
+          name: "Macbook",
+          price: 2000,
+        },
+        {
+          id: 3,
+          name: "Watch",
+          price: 500,
+        },
+        {
+          id: 4,
+          name: "Bag",
+          price: 400,
+        },
+      ];
 
+      export { products };								//Exports const product
+
+
+_ProductApp.js (Parent, receving data from data.js)
+      import React, { useState } from "react";
+      import { products } from "./data";
+      import ProductList from "./ProductList";
+      import ProductTotal from "./ProductTotal";
+      import Container from "react-bootstrap/Container";
+
+      export default function ProductApp() {
+        const [addedItems, setAddedItems] = useState([]);				//State for total number
+
+        return (
+          <Container>									//Container from bootstrap
+            <ProductTotal addedItems={addedItems} />					//State for total number component, to be pass back
+            <ProductList
+              products={products}							//Product cart (individual)
+              addedItems={addedItems}							//State for total number component
+              setAddedItems={setAddedItems}						//State for total number, to be pass to
+            />
+          </Container>
+        );
+      }
+
+_ProductTotal.js (For total cost when items are add or remove)
+      import React from "react";
+
+      export default function ProductTotal({ addedItems }) {
+	
+        return (									//Reducer function take the previous value and sum them up
+          <h1>Total: ${addedItems.reduce((total, item) => total + item.price, 0)}</h1>  //addedItems are state from ProductApp
+        );										//total is the added sum, item is the previous number, reduce work different than map and filter.
+      }											//item.price is the array.price of the object from addedItems pass by ProductApp
+											//Setting the initial value to be 0
+        
+_ProductList.js (Rendering the card list, multiple ProductCard)
+      import React from "react";
+      import Row from "react-bootstrap/Row";
+      import Col from "react-bootstrap/Col";
+      import ProductCard from "./ProductCard";
+
+      export default function ProductList({ products, setAddedItems, addedItems }) {	//Props pass down by ProductApp, products is from data.js, the last two is state
+        return (
+          <Row>
+            {products.map((product) => (
+              <Col sm={3} key={product.id}>						//sm is for small device, we want 3 columns in small device
+                <ProductCard
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  addedItems={addedItems}
+                  setAddedItems={setAddedItems}
+                />
+              </Col>
+            ))}
+          </Row>
+        );
+      }
+
+
+_ProductCard.js (Rendering the card, individual)
+      import React, { useState } from "react";
+      import Card from "react-bootstrap/Card";
+
+      export default function ProductCard({
+        id,
+        name,
+        price,
+        setAddedItems,
+        addedItems,
+      }) {
+        //State is use to make sure that there is no repeated added
+        const [isAdded, setIsAdded] = useState(false);
+
+        //function for adding button
+        function addToCart() {
+          let newItem = {
+            id: id,
+            name: name,
+            price: price,
+          };
+          //If we click the button then isadded is false, so it can go through. But addAdded will turn true after so we cant add anymore
+          if (!isAdded) {
+            setAddedItems((prev) => [...prev, newItem]);
+            setIsAdded(true);
+          }
+        }
+
+        //function for deleting button
+        function removeFromCart() {
+          const updatedItems = addedItems.filter((item) => item.id !== id);
+          setAddedItems(updatedItems);
+          setIsAdded(false);
+        }
+
+        return (
+          <Card>
+            <Card.Body>
+              <Card.Title>{name}</Card.Title>
+              <Card.Subtitle>${price}</Card.Subtitle>
+              {isAdded ? (
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={removeFromCart}
+                >
+                  Remove from Cart
+                </button>
+              ) : (
+                <button type="button" className="btn btn-primary" onClick={addToCart}>
+                  Add to Cart
+                </button>
+              )}
+            </Card.Body>
+          </Card>
+        );
+      }
 
 
 *Side Effects
-_useEffect help us move things like setInterval() ourside the rendering calculation. It accepts a callback function with all the calculations.
-_By default, useEffect hook runs on every render
+_A side effect is any execution that affects something outside the scope of the function being executed.
+_React Hook that lets you synchronize a component with an external system
+_Example: Fetching API, start or stop a timer, manually change the DOM, get the user's location
+_Syntax:  useEffect(setup, optional:dependencies)
+_Need to remove <React.StrictMode> to stop react from calling it twice
 
 _example:
-	import React, { useEffect, useState } from "react";
+	import React, { useEffect, useState } from "react";				//import useEffect from react module
 
 	export default function Clock() {
-	  const [counter, setCounter] = useState(0);
+	  const [counter, setCounter] = useState(0);					//set useState
 
-	  useEffect(() => {
+	  useEffect(() => {								//useEffect
 	    setInterval(() => {
 	      setCounter(count => count + 1)
 	    }, 1000);
-	  }, [])
+	    return () => clearTimeout(timer)						//Use this to avoid running double time since we put [time], (clean up function)
+	  }, [timer])
 
 	  return (
 	    <p>{counter} seconds have passed.</p>
@@ -829,16 +995,259 @@ _example:
 
 _In general 
 	useEffect(() => {
-	  // This runs after every render
+	  // This runs after every render, for constant data fetching
 	});
 
 	useEffect(() => {
-	  // This runs only on mount (when the component appears)
+	  // This runs only on mount (when the component appears), for loading initial data
 	}, []);
 
 	useEffect(() => {
-	  // This runs on mount *and also* if either a or b have changed since the last render
+	  // This runs on mount and also if either a or b have changed since the last render
 	}, [a, b]);
+
+
+*Fetching with React
+_Fetching image
+      import { useState, useEffect } from "react";				
+
+      const useImageURL = () => {	
+        const [imageURL, setImageURL] = useState(null);						//State for imageURL
+        const [error, setError] = useState(null);						//State for error
+        const [loading, setLoading] = useState(true);						//State for loading
+
+        useEffect(() => {
+          fetch("https://jsonplaceholder.typicode.com/photos", { mode: "cors" })		//Fetch for GET request, with cors mode enabled
+            .then((response) => {
+              if (response.status >= 400) {
+                throw new Error("server error");
+              }
+              return response.json();
+            })
+            .then((response) => setImageURL(response[0].url))
+            .catch((error) => setError(error))
+            .finally(() => setLoading(false));
+        }, []);
+
+        return { imageURL, error, loading };
+      };
+
+      const Image = () => {
+        const { imageURL, error, loading } = useImageURL();
+
+        if (error) return <p>A network error was encountered</p>;
+        if (loading) return <p>Loading...</p>;
+
+        return (
+          <>
+            <h1>An image</h1>
+            <img src={imageURL} alt={"placeholder text"} />
+          </>
+        );
+      };
+
+
+*Project (Render StudentForm and StudentList. We need a state that lets us toggle between the form and the list)
+
+_db.json (mock server, treat it as a backend, json-server --watch db.json --port 4000)
+      {
+        "students": [
+          {
+            "id": "1",
+            "name": "Kim"
+          },
+          {
+            "id": "2",
+            "name": "Me"
+          },
+          {
+            "id": "4",
+            "name": "My name"
+          },
+          {
+            "id": "7320",
+            "name": "Seng"
+          }
+        ]
+      }
+
+_StudentApp.js
+      import { useState, useEffect } from "react";					
+      import StudentList from "./StudentList";							// Importing StudentList component
+      import StudentForm from "./StudentForm";							// Importing StudentForm component
+
+      export default function StudentApp() {
+        const [studentList, setStudentList] = useState([]);					// State for passing json data
+        const [display, setDisplay] = useState("list");						// State for toggling between StudentForm and StudentList
+        const [prompt, setPrompt] = useState("");						// State for wording update
+
+        useEffect(() => {									// Using useEffect to fetch initial student data
+          fetch("http://localhost:4000/students")						// Fetching student data from the mock server (GET method)
+            .then((response) => response.json())						// Parsing response data as JSON. then(function())
+            .then((json) => setStudentList(json));						// Setting data to setStudentList (studentList state)
+        }, []);											// Ensuring the useEffect runs only once when component mount (initial data)
+
+        function deleteStudent(id) {								// Using function to delete a student
+          fetch(`http://localhost:4000/students/${id}`, {					// Fetching student data from mock server, end point to be base on the id
+            method: "DELETE",									// (Delete method)
+          }).then((response) => {								// Handling response from server
+            if (response.ok) {									// If response successful
+              const newStudentList = studentList.filter(					// Filtering out delete student from the list
+                (student) => student.id != id
+              );
+              setStudentList(newStudentList);							// Updating studentList state with the new list
+            }
+          });
+        }
+
+        return (
+          <>
+            <select value={display} onChange={(e) => setDisplay(e.target.value)}>		{/* Dropdown menu to switch between list and form */}
+              <option value="list">Student List</option>					{/* Option for displaying student list */}
+              <option value="form">Student Form</option>					{/* Option for displaying student form */}
+            </select>
+            <p>{prompt}</p>									{/* Option for displaying student list, from prompt state */}
+            {display === "list" ? (
+              <StudentList									// Rendering StudentList Component
+                studentList={studentList}							// Passing props, studentList state
+                deleteStudent={deleteStudent}							// Passing props, deleteStudent function
+                setPrompt={setPrompt}								// Passing props, setPrompt state
+              />
+            ) : (
+              <StudentForm setStudentList={setStudentList} />					// Rendering StudentForm Component, setStudentList state
+            )}
+          </>
+        );
+      }
+
+_StudentForm.js
+        import { useState } from "react";
+
+        export default function StudentForm({ setStudentList }) {				// setStudentList as props, (object)				
+        const [nameInput, setNameInput] = useState("");						// Initializing state for input field value
+        const [Notif, setNotif] = useState(null);						// Initializing state for notification message
+
+        function handleSubmit(e) {								// Function to handle form submission
+            e.preventDefault();									// Preventing form button to reset
+            fetch("http://localhost:4000/students", {						// Fetching student data from the mock server
+            method: "POST",									// (POST method)
+            headers: {
+                "Content-Type": "application/json",						// Specifying content type as JSON
+            },
+            body: JSON.stringify({ name: nameInput }),						// Converting form data to JSON string
+            })
+            .then((response) => response.json())						// Parsing response data as JSON
+            .then((json) => {									// Creating a newStudent object with response data, response if success
+                const newStudent = {
+                id: json.id,
+                name: json.name,
+                };
+                setStudentList((prev) => [...prev, newStudent]);				// Updating setStudentList state with the newStudent, passed by props		
+                setNameInput("");
+                setNotif(`${json.name} is added successfully.`);
+            });
+	   .catch((error) => {									// Handle error here
+      		console.error("Error adding book:", error);
+            });
+        }
+        return (
+            <>
+            <form onSubmit={handleSubmit}>							// Submit form for adding students
+                <lable>Name:</lable>
+                <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}					// Event handler for nameInput for one truth
+                />
+                <br />
+                <button type="submit">Add Student</button>
+            </form>
+            <h5>{Notif}</h5>									// Notif State
+            </>
+        );
+        }
+
+_StudentList.js
+        import StudentInfo from "./StudentInFo";						// Importing StudentInfo component
+
+        export default function StudentList({ studentList, deleteStudent, setPrompt }) {	// Passing from App
+        return (
+            <>
+            <h1>Student List</h1>
+            <ul>
+                {studentList.map((student) => {							// Rendering StudentInfo component for each student (array)
+                return (
+                    <li>
+                    <StudentInfo
+                        id={student.id}								// Passing student id as props
+                        name={student.name}							// Passing student name as props
+                        deleteStudent={deleteStudent}						// Passing deleteStudent function as props
+                        setPrompt={setPrompt}							// Passing setPrompt function as props
+                    />
+                    </li>
+                );
+                })}
+            </ul>
+            </>
+        );
+        }
+
+_StudentInfo.js
+        import { useEffect } from "react";
+
+        export default function StudentInfo({ id, name, deleteStudent, setPrompt }) {		// Passing from StudentList from App
+        useEffect(() => {									// Using useEffect for component cleanup
+            return () => [setPrompt(`${name} is successfully implemented`)];			// Setting prompt message when component unmounts
+        }, []);											// Empty dependency array ensures useEffect runs only once after component mounts
+        return (
+            <>
+            <h1>{name}</h1>									{/* Displaying student name */}
+            <button type="button" onClick={() => deleteStudent(id)}>				{/* Button to delete the student, passing id back to App to compare */}
+                Delete
+            </button>
+            </>
+        );
+        }
+
+
+*Class Component: Component Life Cycle (This is for class component, I personally still do not understand)
+_There are two phases, render and commit phase.
+_Render phase -> Pure and has no side effects. May be paused, aborted or restarted by React.
+_Commit phase -> Can work with DOM run side effects, schedule updates.
+_Component Lifecycle (by order) -> constructor(), render(), componentDidMount(), componentDidUpdate(), componentWillUnmount()
+
+            import React, { Component } from "react";
+
+            export default class ClassInput extends Component {
+            constructor(props) {
+                super(props);
+            }
+            // Some more code goes here
+
+            render() {
+              return (
+                <section>
+                    <h3>{this.props.name}</h3>
+                    {/* The input field to enter To-Do's */}
+                    <form>
+                    <label htmlFor="task-entry">Enter a task: </label>
+                    <input type="text" name="task-entry" />
+                    <button type="submit">Submit</button>
+                    </form>
+                    <h4>All the tasks!</h4>
+                    {/* The list of all the To-Do's, displayed */}
+                    <ul></ul>
+                </section>
+                );
+              }
+            }
+
+_How useEffect() combines the lifecycle methods
+_useEffect is essentially a combination of componentDidMount, componentDidUpdate, and componentWillUnmount.
+  useEffect(() => {
+    placeholderFunction();
+    return () => cleanupFunction();
+  }, [])
 
 
 *Type Checking with PropTypes
@@ -862,25 +1271,161 @@ _Exmaple - RenderName is a component, name is a prop and expected to be string
 
 *React Router
 _Client-side routing help build SPAs (Single Page Applications) without refreshing as the user navigates.
-_To install router package	->	import { createBrowserRouter } from 'react-router-dom';
-
-_import { useParams } from 'react-router-dom'
-
-_const params = useParams();
-_return( {params.profileId} )
+_npm packages			->	npm install react-router-dom
 
 
+_To add Router (Profile component/router), Have a look down below for better routes practice
+	import { Outlet } from "react-router-dom";		//Outlet is a nested routes.
+
+	const Profile = () => {
+	  return (
+	    <div>
+	      <h1>Hello from profile page!</h1>
+	      	<Outlet />					//When rendering child routing (spinach), <Outlet /> will be replace with child component.
+	    </div>
+	  );
+	};
+
+	export default Profile;
 
 
+_To reference it at App.js (Main router)
+	import { Link } from "react-router-dom";						//Note if you use <Link>, you have to import!
 
 
+	<Link to="profile">Profile page</Link>							//Use this to prevent the webpage from reloading
+	<a href="profile">Profile page</a>							//Use this if you want the webpage to reload
 
 
+_Index.js (Router Directory)
+    import { createBrowserRouter, RouterProvider } from "react-router-dom";
+    import App from "./App";
+    import Profile from "./Profile";
+    import ErrorPage from "./ErrorPage";
+
+    const router = createBrowserRouter([
+      {
+        path: "/",
+        element: <App />,
+	errorElement: <ErrorPage />,							// Use this to handle any error routes (routes with no params)
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+        children: [
+	  { index: true, element: <DefaultProfile /> },					// Render something as a default component when no path is added
+          { path: "spinach", element: <Spinach /> },					// Use this to ensure the child gets rendered alongside the parent
+          { path: "popeye", element: <Popeye /> },					// Allow us to add <Outlet /> to the parent (<Profile />)
+        ],										// <Outlet /> allow to render only in that section, take a look at Profile.jsx
+      },
+      {
+          path: "profile/:name",							// This method allow to run dynamic segment, 
+          element: <Profile />,								// : turns path after into dynamic segement also known as URL params
+      },										// Have a look at Profile below (rewrite)
+    ]);
+
+    ReactDOM.createRoot(document.getElementById("root")).render(
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    );
 
 
+_Error route, to handle any route without params or wrong path
+	import { Link } from "react-router-dom";
+
+        const ErrorPage = () => {
+        return (
+            <div>
+            <h1>Oh no, this route doesn't exist!</h1>
+            <Link to="/">
+                You can go back to the home page by clicking here, though!
+            </Link>
+            </div>
+        );
+        };
+
+        export default ErrorPage;
 
 
+_Default component (no path is added, work similar to outlet). This still need <Outlet /> in Profile inorder to render!
+        const DefaultProfile = () => {
+        return <p>Oh, nothing to see here!</p>;
+        };
 
+        export default DefaultProfile;
+
+
+_Profile.jsx (rewrite for params routes, :name)
+        import { useParams } from "react-router-dom";			//Import params hook
+        import DefaultProfile from "./DefaultProfile";
+        import Spinach from "./Spinach";
+        import Popeye from "./Popeye";
+
+        const Profile = () => {
+        const { name } = useParams();					//Deconstruct for name from the useParams()
+
+        return (
+            <div>
+            <h1>Hello from profile page!</h1>
+            <p>So, how are you?</p>
+            <hr />
+            <h2>The profile visited is here:</h2>
+            {name === "popeye" ? (					//If param name is popeye
+                <Popeye />
+            ) : name === "spinach" ? (					//If param name is spinach
+                <Spinach />
+            ) : (
+                <DefaultProfile />					//If param name is other than the first two					
+            )}
+            </div>
+        );
+        };
+
+        export default Profile;
+
+
+*Refactoring the router to make everything much more neater
+
+_Create a component call Router.jsx
+
+        import { createBrowserRouter, RouterProvider } from "react-router-dom";
+        import App from "./App";
+        import Profile from "./components/Profile";
+        import ErrorPage from "./components/ErrorPage";
+
+        const Router = () => {
+        const router = createBrowserRouter([
+            {
+            path: "/",
+            element: <App />,
+            errorElement: <ErrorPage />,
+            },
+            {
+            path: "profile/:name",
+            element: <Profile />,
+            },
+        ]);
+
+        return <RouterProvider router={router} />;
+        };
+
+        export default Router;
+
+
+_Index.js
+
+      import Router from "./Router";
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        <React.StrictMode>
+          <Router />
+        </React.StrictMode>
+      );
+
+
+*Context Provider App
+_Use built in contect provider in Outlet to pass data		->		https://reactrouter.com/en/main/hooks/use-outlet-context
 
 
 

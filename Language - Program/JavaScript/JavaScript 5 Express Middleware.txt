@@ -72,7 +72,7 @@ _Normally this is needed (next), however middleware automatically import next() 
 *Body Parser
 _Mainly deal with user input
 _An npm module used to process data send in an HTTP request body.
-_Create request under 									->	req.body property.
+_Create request under 									->	req.body
 _Eg of Body Parsing (Body parsing middleware, request a body property)
 
 	import express from "express";								// import body parser module using import method
@@ -140,7 +140,7 @@ _Eg for custom middleware (we name it logger)
 	function logger(req, res, next) {				// created a custom function for method of getting request and request url
   		console.log("Request Method: ", req.method)
   		console.log("Request URL: ", req.url)
-  		next();							// needed if we are using our own NPM
+  		next();							// needed if we are using our own NPM, just a function to pass to next middleware, which is app.get
 	}
 
 	app.get("/", (req, res) => {

@@ -4,9 +4,21 @@ _Download		->		<https://www.enterprisedb.com/downloads/postgres-postgresql-downl
 _SQL Shell (psql)	->		localhost default, postgres=# means it success
 _Documentation		->		https://www.postgresql.org/docs/
 _Tutorial		->		https://www.postgresqltutorial.com/
-_To connect to node.js	=>		https://node-postgres.com/
+_To connect to node.js	->		https://node-postgres.com/
 
-*SQL Shell (psql)
+
+*PresgreSQL (ubunto)
+_Start server		->		sudo -i -u postgres
+_Open database		->		sudo psql -u my_pgdb
+_Leave database		->		\q
+_Create database	->		postgres@DESKTOP-SOBD4MM:~$		=		CREATEDB my_pgdb
+
+_Web browser		->		http://localhost/pgadmin4
+_Email/password		->		kimseng.thai@hotmail.com	lolimthebest
+_Username		->		postgres
+
+
+*SQL Shell (psql)dd
 _SQL Shell (psql)	->		\? (for look at command prompt or goodle)
 _SQL Shell (psql)	->		\l (list database)
 _SQL Shell (psql)	->		\d (list all table in the database)
@@ -34,7 +46,7 @@ _Example (NOT NULL means we can not have a blank id, it will keep incrementing f
 CREATE TABLE accounts (
   id BIGSERIAL NOT NULL PRIMARY KEY,
   user_id SERIAL PRIMARY KEY, 
-  username VARCHAR (50) UNIQUE NOT NULL, 
+  username CHAR (50) UNIQUE NOT NULL, 
   password VARCHAR (50) NOT NULL, 
   email VARCHAR (255) UNIQUE NOT NULL, 
   created_at TIMESTAMP NOT NULL, 
@@ -79,29 +91,110 @@ SELECT * FROM tableName;
 *Connect to Node
 _To connect to node.js	->		https://node-postgres.com/
 _NPM installation	->		npm install pg
-_My db/index.js file usually starts out like this:
-
-	import { Pool } from 'pg'							//Deconstructing the word Pool from pg
- 
-	const pool = new Pool()								//Connecting to our postgres database
- 
-	export const query = (text, params) => pool.query(text, params);
 
 
+*PERN (Backend only, to do list) (Postgress, Express, React, Node)
+
+_database.sql (not a file, just for copy and paste to http://localhost/pgadmin4)
+        CREATE DATABASE perntodo;						//For creating database
+
+        CREATE TABLE todo(							//In that perntodo database, create a table with define columns
+            todo_id SERIAL PRIMARY KEY,
+            DESCRIPTION VARCHAR(255)
+        );
 
 
+_db.js
+      import pg from "pg";							//Import pg
+      const { Pool } = pg;							//const pool from pg
+
+      const pool = new Pool();							//password hint, messenger Kim Seng, make sure name is all lowercase
+
+      export const query = (text, params, callback) => {			//Call back to main file
+        return pool.query(text, params, callback);
+      };
 
 
+PGHOST=localhost
+PGUSER=postgres
+PGDATABASE=yelp
+PGPASSWORD=password
+PGPORT=5432
 
 
+_index.js
+      import "dotenv/config";							//To import .env, and input password
+      import express from "express";
+      import cors from "cors";
+      import * as db from "./db/db.js";
 
+      const app = express();
+      const port = 3000;
 
+      app.use(cors());										//allow for frontend and backend request. It’s for cross origin resource sharing. Meaning it lets you make a request from the frontend to an external backend server.
+      app.use(express.json());									//from body-parser, no longer middleware, its part of express now
 
+      app.get("/todos", async (req, res) => {
+        try {											//with express we always want to wrap async and wait in try catch block
+          const allTodos = await db.query("SELECT * FROM todo");				//to select everything(*) from the table (todo)
+          res.json(allTodos.rows);								//send back the table
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
 
+      app.get("/todos/:id", async (req, res) => {
+        try {
+          const { id } = req.params;								//destructuring id from req.params
+          const todo = await db.query("SELECT * FROM todo WHERE todo_id = $1", [id]);		//select everything with where todo_id, $1 is a placeholder for id, this method is safer
+          res.json(todo.rows[0]);
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
 
+      app.post("/todos", async (req, res) => {
+        try {
+          const { description } = req.body;
+          const newTodo = await db.query(
+            "INSERT INTO todo (description) VALUES ($1) RETURNING *",				//INSERT is adding to the table (columns) (value), then RETURNING everything back (postgres by default does not return any data)
+            [description]									//$1 is a placeholder for description, destription is from the client
+          );
+          res.json(newTodo.rows[0]);								//Send the data back to the client (res), look into console.log(newTodo) and see why we do .row[0] 
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
 
+      app.put("/todos/:id", async (req, res) => {
+        try {
+          const { id } = req.params;
+          const { description } = req.body;
+          const updateToDo = await db.query(
+            "UPDATE todo SET description = $1 WHERE todo_id = $2",				//Same concept, just the two above combine to this one, $1 is always first then $2 and so on.
+            [description, id]									//use , to add more column, no bracket like INSERT
+          );
+          res.json("to do was updated");
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
 
+      app.delete("/todos/:id", async (req, res) => {
+        try {
+          const { id } = req.params;
+          const deletetodo = await db.query("DELETE FROM todo WHERE todo_id = $1", [
+            id,
+          ]);
+          res.json("To do was deleted");
+        } catch (err) {
+          console.error(err.message);
+        }
+      });
 
+      app.listen(port, () => {
+        console.log(`Listening on port ${port}`);
+      });
 
 
 

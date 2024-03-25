@@ -62,6 +62,19 @@ _Default is already GET, returns a promises	->	const response = fetch(request)
 _To get response in json format			->	const data = response.json()
 
 
+*Basic Fetch Request 
+      const image = document.querySelector("img");
+
+      fetch("https://jsonplaceholder.typicode.com/photos", {				//URL we want to fetch from
+        mode: "cors",									//cors enable to fetch, GET request so we dont need to specify method
+      })
+        .then((response) => response.json())						//turn response to javascript object from jason
+        .then((response) => {
+          image.src = response[0].url;
+        })
+        .catch((error) => console.error(error));					//catch any error
+
+
 *Vanilla Java, Fetch and JSON server. User input in HTML then send it to JSON using fetch in JavaScript
 _index.html
     <!DOCTYPE html>

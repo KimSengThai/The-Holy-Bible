@@ -194,8 +194,7 @@ _DELETE METHOD (To Delete Post). This method also uses methodOverride (Look at P
       });
 
 
-+Code challenge (Do this later after I created a full stack maybe)
-Do edit about and edit contact
+
 
 
 
