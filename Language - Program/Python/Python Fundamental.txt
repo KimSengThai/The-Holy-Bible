@@ -1,7 +1,319 @@
 
-*Python (+ need to review later)
+**Python Stuffs (+ need to review later)
 
-_
+*Print
+_Print = Console.log() in JavaScript.
+_To print:
+
+eg: (same line print).
+greet = ("Hello World")
+print(greet, end="!")
+_Output: 	Hello World!
+_Note: 		Indentation and line-break matter and are very important
+
+eg: ("")
+print("A 'single quote' inside a double quote")
+print('A "double quote" inside a single quote')
+print("Alternatively you can just \"escape\" the quote")
+
+eg: (different line print)
+print("Hello World!\nHello World!")
+
+eg: (Concatination)
+print("Hello" + " Kim")
 
 
-*Shortcut Keys
+*Input (CommandLine)
+_input()	->	Function required user to inpput something into the commandline.
+			When combine with print(), python will print line by line.
+
+eg (Input):
+print("Hello " + input("What is your name?"))
+_Output:	Print "Hello there, what is your name?" -> Ask for input() -> Print "Hello input()"
+
+
+*Variables
+_Naming variable need to be in snake case, denote with "_" and cannot start with a number. Eg: my_python
+	joined_lower						->		functions, methods, attributes, variables
+	joined_lower or ALL_CAPS				->		constants
+	StudlyCaps 						->		classes
+_Python variables are dynamically typed and strongly typed.
+	Dynamically typed Variables (same as JS)		->		Can change variable or data types such as string or boolean.
+	Stronly typed varable (opposite from JS)		->		Can not automatically convert data, so have to be concise!
+
+eg: (Dynamically)
+data=1
+print(data)
+data="false"
+print(data)
+_Output:	Print both 1 and false
+
+eg: (Strongly)
+data=1
+print("this will give error!" + data)
+print("this will not give error!" + str(data))
+
+*Data Types
+_String can be "" or ''. (/br in JS replace with real line-break). Interpolation using f and {}.
+
+eg: (Interpolation, f = format)
+name="Kim"
+print(f"hello, {name}")
+_Output:	Print hello, Kim
+
+eg: (Format to 3 decimal places)
+num = 100.525145234623
+print(f"{num:.3f}")
+
+_variable[i:n]			->	Slice string, i = start string, n = last string. Negative number means counting from the end.
+_variable.strip()		->	use to remove all the white spaces
+_variable.split(x)		->	x = "where to split or seperator", use to split the strings
+_variable.replace("x","y")	->	Replace x with y value, use to replace strings
+
+_Numbers (int and float)	->	Calculation between integer would always give a float value (decimal).
+					To give whole value, you can use // to divide (/)
+
+_bool()				->	To test for falsey and trucey similar to how it work in JS (Booleans).
+
+_List				->	[] Order is important, unmuted - can make any changes, similar to arrays, 
+
+eg: (List)
+variable = [1, 2, 3, 4, 5]
+print(variable[n])
+_Note: n = index number
+
+_Tuple 				->	() Order is important, muted - can not make any changes, use for constant value such as coordinate, color - RBG, etc.
+
+eg: (Tuple)
+variable = (1, 2, 3, 4, 5)
+print(variable(n))
+_Note: n = index number
+
+_Set				->	{} Order is not important, similar to object in JS, no repeated items, access via looping.
+
+eg: (Set)
+months = {"Jan", "Feb", "Mar"}
+for month in months:
+    print(month)
+_Note: months (can be any name) represent individual in month.
+
+_Dictionary			->	{} (order is important with newer version, similar to object in JS, no duplicate, access normally)
+
+eg: (Dictionary)
+person = {"name":"Kim", "age": 26}
+another_person = dict(name = "John", age = 20)
+print(person["name"])
+_Note: If you dont want to wrap the key in string use dict.
+
+_len(variable) means to ask for the length of index
+
+
+*Operators
+_Arithmetic		->		Calulation		+, -, *, /, %, **, //
+_Assignment:		->		Equation		=, +=, -=, *=, /=, %=, etc.
+_Comparison:		->		Compare			==, !=, >, <, >=, <=
+_Logical: 		-> 		Condition		and, or, not (similar to || and && in JS)
+_Identity:		->     		Boolean answer		is, is not (check for if something is not or is)
+_Membership:		->   		Boolean answer		in, not in (if something is in a variable or not, return boolean)
+
+eg: word = "hello everyone and the rest of the world"
+print("hello" in word)
+_Output: true
+
+_To add -> variable.add("")
+_To update -> variable.update("")
+_To remove -> variable.remove("") or .pop()
+
+
+*Conditional
+_If statement		->		Indentation is very important
+
+eg: (Conditional)
+x = 10
+if x >= 10:
+     print("OK")
+elif x < 0:
+     print("Negative")    
+else:
+    print("NO OK") 
+
+eg: (Conditional Expressed)
+name="Hello"
+print('Hello') if name == "Kim" else print("Bye")
+_Output: This will print Hello
+
+
+*Pass Statement
+_Invoke a pass keyword if you want to leave a conditional statement blank
+
+eg:  (Conditional continue...)
+else:
+    pass
+
+
+*Switch Statement
+Similar to JS			->		match...case
+
+eg:
+x = 1
+match(x):
+    case 1: do something
+    case 2: do something
+
+
+*Excersise (Program ask 3 inputs, check for equilateral, scalene, isosceles)
+
+side1 = float(input("Input Side A: "))
+side2 = float(input("Input Side B: "))
+side3 = float(input("Input Side C: "))
+
+if side1 == side2 == side3:
+    print("equilateral")
+elif side1 != side2 and side2 != side3 and side1 != side3:
+    print("scalene")
+else:
+    print("isosceles")
+
+_Note: We can also use "or" "and" to check for isosceles. float to convert string input to integer
+
+
+*Looping (While Loop, continue executing)
+_break -> will make the loop stop
+_continue -> will make the loop keep going, skip the one that doesnt match the statement
+_i start at 0 which is numbers[index]
+_loop will stop when i is >= to len(numbers)
+_print numbers[index] when numbers[index] is even number
+_else in loop -> after finishing the loop, else will executed, however break will not work as looping will stop forcefully!
+
+eg: (While Loop, print even number)
+numbers = [10, 20, 4, 8, 5, 16, 100]
+
+i = 0
+while i < len(numbers):
+    if numbers[i] % 2 != 0:
+        i += 1
+        continue
+    print(numbers[i])
+    i += 1
+else: 
+    print("Looping is done!")
+
+*Looping (For Loop, discontinue executing, range function)
+_Below is excuting to leave if the number bigger than 10.
+
+eg: (For Loop, print number less than 10)
+numbers = [10, 20, 4, 8, 5, 16, 100]
+for num in numbers:
+    if num > 10:
+        continue
+    print(num)
+else:
+    print("For Loop finish")
+
+*Range function
+_range(0, 5), if you want a range from 0 to 4. Second argument is a -1.
+
+eg: (Range)
+for num in range(0, 5):
+    print(num)
+
+
+*Asking the user if they want to continue or stop, (Traiangle Problem in the above)
+_Using While loop because we dont know when to stop
+
+cont = "y"
+while cont == "y":
+    side1 = float(input("Input Side A: "))
+    side2 = float(input("Input Side B: "))
+    side3 = float(input("Input Side C: "))
+
+    if side1 == side2 == side3:
+        print("equilateral")
+    elif side1 == side2 or side2 == side3 or side1 == side3:
+        print("isosceles")
+    else:
+        print("scalene")
+    print("Do you want to continue? y for yes and any key for no")
+    cont = input()
+
+
+*Functions
+_Define by 			->		def function_name(params):
+						function body
+_Arbitrary Arguement		->		Use * to group arguments together (List)
+_Arbitrary Keyword Arguement	->		Use **
+_Recurrsion			->		Calling the function inside a function. Cons = complex and hard to debug.
+
+eg: (def = defining function)
+def sum_of_two_numbers(x, y):
+    print(x + y)
+sum_of_two_numbers(5, 10)
+
+eg: (Arbitrary Arguement)
+def sample(*args):
+    print(args)
+sample(1, 2, 3)
+
+eg: (name printing)
+def sample(*args):
+    print("First name: " + args[0])
+    print("Last name: " + args[1])
+sample("Kim", "Thai")
+
+eg: (average numbers)
+def average(*numbers):
+    sum = 0
+    for num in numbers:
+        sum += num
+    return sum / len(numbers)
+print(average(3, 4, 10))
+
+eg: (Arbitrary Keyword Arguement, pass in as Dictionary - including keys such as name, age and country)
+def person_details(**data):
+    print(data)
+person_details(name="Kim", age=26, country="Cambodia")
+
+eg: (Recursion, 5 to 0)
+def print_num(n):
+    print(n)
+    if n == 0:
+        return n
+    return print_num(n-1)
+print_num(5)
+
+
+*Lambda
+_Small anonymous function		->		Can take any number of arguments, but can only have one expression
+							Act as a function with unlimited argument.
+_Use Case:				->		Use as an anonymous function inside another function
+_Syntax					->		lambda arguments: expression
+
+eg: (Lambda, will print 17 as 5 + 12)
+x=lambda num: num + 5
+print(x(12))
+
+eg: (Lambda, inside another function)
+def my_function(num):
+    return lambda x : x * num
+double = my_function(2)
+print(double(3))
+_Output: 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
