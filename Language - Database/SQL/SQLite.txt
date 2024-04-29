@@ -1,0 +1,13 @@
+
+
+*sqlite3		->		To open SQL in terminal
+
+
+
+
+
+
+
+
+
+
