@@ -29,3 +29,9 @@ INSERT INTO book (title, author, genre) VALUES ('The Great Gatsby', 'Anthiathia 
 INSERT INTO book (title, author, genre) VALUES ('Moby Dick', 'Issi Heinz', 'Mystery');
 INSERT INTO book (title, author, genre) VALUES ('Pride and Prejudice', 'Carita Croy', 'Thriller');
 
+-- Relational Databases
+    -- Primary Key and Foreign Keys
+-- JOIN Clause
+-- Table Relationships
+    -- one to many
+    -- one to many
