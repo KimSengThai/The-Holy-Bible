@@ -1,0 +1,57 @@
+
+**Data Structure (List [], Tuple (), Set {}, Dictionay {})
+
+*List 	[] 
+_Order is important
+_Unmuted - can make any changes 
+_Similar to arrays in JavaScript, 
+
+eg: List
+variable = [1, 2, 3, 4, 5]
+print(variable[n])
+_Note: n = index number
+
+_To extract the list with :
+		variable[:2]		->	[1, 2]
+		variable[1:3]		->	[2, 3]
+_To object to the end of the list	->	list_name.append("Insert Object")
+_To add multiple items to end of list	->	list_name.extend(["object1", "object2"])
+_Adding two list inside a list		->	list_name = [list_small_1, list_small_2]
+_To replace the list			->	list_name["index"] = "Object to replace"
+
+
+*Tuple	() 
+_Order is important
+_Muted - can not make any changes
+_Use for constant value such as coordinate. Eg. color - RBG, etc.
+
+eg: Tuple
+variable = (1, 2, 3, 4, 5)
+print(variable(n))
+_Note: n = index number
+
+
+*Set	{} 
+_Order is not important
+_Similar to object in JS
+_No repeated items
+_Access via looping.
+
+eg: Set
+months = {"Jan", "Feb", "Mar"}
+for month in months:
+    print(month)
+_Note: months (can be any name) represent individual in month.
+
+
+*Dictionary {} 
+_Order is important with newer version
+_Similar to object in JS
+_No duplicate
+_Access normally via keys
+
+eg: Dictionary
+person = {"name":"Kim", "age": 26}
+another_person = dict(name = "John", age = 20)
+print(person["name"])
+_Note: If you dont want to wrap the key in string use dict.

@@ -1,5 +1,5 @@
 
-*MongodDB Stuffs
+*MongodDB Stuffs (Node.JS)
 _Cloud Server mongodb.com/atlas
 _Easier to work with than SQL, not as complicated
 _Data is store as a jason like structure

@@ -1,0 +1,112 @@
+
+Lecture 12 - start from curor, do it in python then copy it to note!
+
+
+*Python Database Stuffs (SQLite)
+
+
+*Connecting to SQLite to Python
+_Open python command shell
+_import sqlite3
+_CONN = sqlite3.connect("demo.db")
+_CURSOR = CONN.cursor()						->	Cursor cct as a middleware between SQL query and database connection
+
+_.quit								->	To quit command shell
+
+*CURSOR Method (Table list in Python)
+_CURSOR.execute("SELECT * FROM table") 				->	Return cursor object
+_CURSOR.execute("SELECT * FROM table WHERE id=?", (1,))		->	Return cursor object, need to be tuple, single tuple need ","
+_CURSOR.fetchall()						->	Return current cursor object as a list of tuple
+_CURSOR.fetchone()						->	Return current cursor object as a tuple, will always return the first one
+_CURSOR.fetchmany(3)						->	Return current cursor object as a specific (3) list of tuple
+_CURSOR.execute("SELECT * FROM table").fetchall()		->	Return a list by combining execute and fetchall
+
+_CURSOR.executemany("INSERT INTO table (column) VALUES (?)", [("value",),("value",)])
+
+_Best Coding Practice SQL in Python
+import sqlite3
+
+conn = sqlite3.connect('your_database_name.db')							->	Connect to the SQLite database
+cursor = conn.cursor()
+
+insert_statement = "INSERT INTO your_table_name (column1, column2, ...) VALUES (?, ?, ...)"	->	Define your INSERT statement
+
+values = ('value1', 'value2', ...)  								->	Replace with the actual values you want to insert		
+
+cursor.execute(insert_statement, values)							->	Execute the INSERT statement with the values
+
+conn.commit()											->	Commit the transaction to save the changes
+
+cursor.close()											->	Close the cursor and the connection
+conn.close()
+
+
+*Object Relational Mapping (ORM)
+_ORM is a technique of accessing in a relational database using an object-oriented programming language
+
+
+*Mapping Python Classes to a Database
+import sqlite3					->	Common practice to put these in a seperate files. Using:	from file_name import CONN, CURSOR
+
+conn = sqlite3.connect('../name.db')
+CURSOR = CONN.cursor()
+	
+class Student:
+	
+	def __init__(self, name, degree, year_level):
+		self.id = None
+		self.name = name
+		self.degree = degree
+		self.year_level = year_level
+
+	def save(self):
+		sql = """
+		    INSERT INTO students (name, degree, year_level) VALUES
+		    (?, ?, ?)
+		    """
+		
+		CURSOR.execute(sql, (self.name, self.degree, self.year_level))
+		CONN.commit()
+
+	@classmethod
+	def new_from_db(cls, row):
+		student = cls(row[1], row[2], row[3])					->	Get this from data base, name, degree, etc.
+		student.id = row[0]
+		return student
+
+	@classmethod
+	def create_table(cls):
+		sql = """
+		    CREATE TABLE IF NOT EXISTS table(
+			......
+			......
+		    )
+
+		CURSOR.execute(sql)
+
+
+_Import to a new file
+
+from student import STUDENT
+
+Student.create_table()
+
+student1 = Student("Kim", "Civil", 4)
+student2 = Student("Kim", "Civil", 4)
+student3 = Student("Kim", "Civil", 4)
+
+student1.save()
+student2.save()
+student3.save()
+
+
+
+
+
+
+
+
+
+
+
+

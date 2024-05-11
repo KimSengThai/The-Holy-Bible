@@ -1,5 +1,5 @@
 
-**Python Stuffs (+ need to review later)
+**Python Stuffs
 
 *Print
 _Print = Console.log() in JavaScript.
@@ -295,47 +295,6 @@ print(double(3))
 _Output: 6
 
 
-**Data Structure (List, Tuple, Set, Dictionay)
-*List				->	[] Order is important, unmuted - can make any changes, similar to arrays, 
-
-eg: List
-variable = [1, 2, 3, 4, 5]
-print(variable[n])
-_Note: n = index number
-
-_To extract the list with :
-		variable[:2]		->	[1, 2]
-		variable[1:3]		->	[2, 3]
-_To object to the end of the list	->	list_name.append("Insert Object")
-_To add multiple items to end of list	->	list_name.extend(["object1", "object2"])
-_Adding two list inside a list		->	list_name = [list_small_1, list_small_2]
-_To replace the list			->	list_name["index"] = "Object to replace"
-
-
-*Tuple 				->	() Order is important, muted - can not make any changes, use for constant value such as coordinate, color - RBG, etc.
-
-eg: Tuple
-variable = (1, 2, 3, 4, 5)
-print(variable(n))
-_Note: n = index number
-
-
-*Set				->	{} Order is not important, similar to object in JS, no repeated items, access via looping.
-
-eg: Set
-months = {"Jan", "Feb", "Mar"}
-for month in months:
-    print(month)
-_Note: months (can be any name) represent individual in month.
-
-
-*Dictionary			->	{} (order is important with newer version, similar to object in JS, no duplicate, access normally)
-
-eg: Dictionary
-person = {"name":"Kim", "age": 26}
-another_person = dict(name = "John", age = 20)
-print(person["name"])
-_Note: If you dont want to wrap the key in string use dict.
 
 
 

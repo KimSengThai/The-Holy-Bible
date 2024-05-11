@@ -1,8 +1,214 @@
 
-**SQLite Stuffs
-*sqlite3		->		To open SQL in terminal
+**TABLE OF CONTENT
+*Database
+1. SQLite Command (Important)
+2. SQL Tools (Important)
+3. Other Command
+4. SQLite Table
+5. SQLite Edit Table
+6. SQLite Delete Table
+7. CRUD Operations of Table (Create, Read, Update, Delete)
+8. Modifiers
+9. Functions
+10. Queries and Clauses
+11. Relational Databases
+12. Inserting Data To Table with FOREIGN KEY
+13. Changing existing column as FOREIGN KEY
+14. JOIN Clause also know as INNER JOIN
+15. Table Relationships
+16. Excercise (music.sql, Many to Many Relationship)
+17. SQL Exports
 
-*Relational Databased
+
+*Database
+_Store and retrieve stored data by using SQL(Structured Query Language)
+_MySQL, Postgres, SQLite
+_Database Concepts:	Table column (Attribute of data), Table row (Attribute of data)
+_List of data types: NULL, INTEGER, REAL (float number), TEXT, BLOB (large data type, eg audio, video, etc)
+
+*SQLite Command (Important)
+_sqlite3		->	To open SQL in terminal
+_.open file.db		->	Create or open database file
+_.schema		->	Open table and columns
+
+
+*SQL Tools (Important)
+_.headers on		->	Header option, make it neater
+_.mode columns		->	Certain width per column, make it neater
+_.shell clear		->	Clear shell
+_.exit			->	Exit shell
+
+
+*Other Command
+_.help			->	List of command
+_.read "db.sql"		->	Read sql file (database) and make a table
+_.output text.txt	->	Export file to any file types
+_.table			->	Check for list of table exist
+
+
+*SQLite Table
+_CREATE TABLE IF NOT EXISTS students (			-> 	Create Table name students, good practice to have NOT EXISTS
+   ...> id INTEGER PRIMARY KEY,				->	Auto incremented
+   ...> name TEXT,
+   ...> degree TEXT);
+
+
+*SQLite Edit Table 
+_ALTER TABLE students RENAME TO main_students;
+_ALTER TABLE students ADD COLUMN level INTEGER;
+
+
+*SQLite Delete Table
+_DROP TABLE students;
+
+
+*CRUD Operations of Table (Create, Read, Update, Delete)
+_INSERT INTO table (columns) VALUES (values);		->	Adding new entry into existing table and columns, can do multiple values at once!
+_SELECT column1, column2 FROM table;			->	Read the existing columns, .use header on, .mode column
+_SELECT * FROM table;					->	Read everything from that table
+_SELECT * FROM table WHERE column="something";		->	Can use equality such as < or > or !=
+_UPDATE table SET column="something" WHERE id=n;	->	Edit existing value in column, can also use AND OR to check for WHERE id=n AND year-3;
+_UPDATE table SET column="something"			->	Edit existing value in column, everything
+_DELETE FROM table WHERE id=n;
+
+
+*Modifiers
+_SELECT * FROM table ORDER BY column DESC;		->	It sorts the records in ascending (ASC) order by default
+_SELECT * FROM table LIMIT 6;				->	Number of set
+_WHERE column IN (value1, value2);			->	The IN operator is used to specify multiple values in a WHERE clause.
+_IS NULL						->	Missing or unkown data
+_WHERE column BETWEEN valuerange AND valuerange;	->	Used to filter results within a specified range. Always include begin and end operator.
+_GROUP BY 						->	Clause is used to group rows that have the same values into summary rows. Conjunction with function.
+	SELECT department, AVG(salary) AS avg_salary	->	Will show department and avg_salary column, make sure you put GROUP BY at the end
+	FROM employees
+	GROUP BY department;
+
+
+*Functions
+_Aggregate Functions: (COUNT, MAX, MIN, AVG, SUM)
+	SELECT COUNT(*) AS value1 FROM column;		->	An aggregate function that returns the number of rows that match a specified condition.
+	SELECT MAX(id) FROM table;
+
+_Other Functions: (UPPER, LOWER, LENGTH)
+	SELECT UPPER(title) FROM books;			->	Convert all character to uppercase
+
+
+*Queries and Clauses
+_AND, OR
+_LIKE OPERATOR: Case insentitive, %(Look for as many that start with that) , -(Look for either that one or/and follow by a single characters)
+				SELECT * FROM students WHERE name LIKE "K%";
+
+_GLOB OPERATOR:	Case sentitive, *(Look for as many that start with that) , ?(Look for either that one or/and follow by a single characters)
+				SELECT * FROM students WHERE name GLOB "K*";	
+
+_HAVING CLAUSE: Used in conjunction with the GROUP BY clause to filter rows returned by a GROUP BY operation based on a specified condition
+				SELECT customer_id, SUM(total_amount) AS total_spent
+				FROM orders
+				GROUP BY customer_id
+				HAVING SUM(total_amount) > 1000;
+			
+_DISTINCT: Used to remove duplicate rows from the result set returned by a SELECT statement.
+				SELECT DISTINCT column1, column2, ...
+				FROM table;
+
+
+*Relational Databases
+_A relational database, is a database structured to recoginize relations among stored items of information.
+_Instead of having a single table, we put the table into seperate tables and use Primary Key (PK) and Foreign Key (FK - Primary Key from another table).
+_Like Book and Reviewers (StorySpotlight)
+
+
+CREATE TABLE book (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    genre TEXT DEFAULT 'Non-Fiction'
+);
+
+CREATE TABLE reviewer (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    book_id INTEGER,									->	Create ID for book(id)
+    FOREIGN KEY (book_id) REFERENCES book(id)						->	Foreign Key the next line with book_id REFERENCES to book(id)
+);
+
+
+*Inserting Data To Table with FOREIGN KEY
+_When inserting data to the foreign key to a tables, you need to make sure the primary key of that table exist first.
+_So we insert book data first then insert review. With book_id, book we want to insert to.
+
+_eg:
+-- Step 1: Ensure Referenced Values Exist
+INSERT INTO book (title, author, genre) VALUES ('Book Title', 'Author Name', 'Genre');
+
+-- Step 2: Insert Data with Foreign Key
+INSERT INTO reviewer (name, email, book_id) VALUES ('Reviewer Name', 'reviewer@example.com', 1);
+
+
+*Changing existing column as FOREIGN KEY
+ALTER TABLE tableFK
+ADD CONSTRAINT fk_columnTarget
+FOREIGN KEY (columnTarget) REFERENCES tablePK(columnPK);
+
+
+*JOIN Clause also know as INNER JOIN
+_JOIN 				->	Half Half
+_LEFT OUTER JOINT		->	100% Half
+_FROM 				->	Table to get reference from		
+
+
+SELECT column_names FROM table_left							->	Or select *
+JOIN table_right
+ON table_left.column = table_right.cloumn;						->	Can also do WHERE table.column = "Example"
+
+_eg (Two Tables):
+SELECT * FROM book									->	Can also select column we want to display
+   ...> JOIN reviewer
+   ...> ON book.id = reviewer.book_id;
+
+_eg (Two Tables):
+SELECT p.name, p.type, o.name FROM pets p JOIN pet_owners o ON p.pet_owner_id = o.id;	->	Another way to make innerjoin
+
+
+*Table Relationships
+_One to Many			->	Eg: customers to orders, doctor to appointments, owner to pets
+
+
+_Many to Many			->	Eg: students and classes, actors and movies
+
+_eg (Three Tables):
+_author:		id, name
+_textbooks:		id, title, genre
+_authored_books		id, author_id, book_id, 
+
+SELECT a.name, b.title FROM authored_books ab JOIN authors a ON ab.author_id = a.id JOIN textbooks b ON ab.book_id = b.id WHERE ab.id = 1;
+Answer		->	name (author), title (textbooks)
+
+SELECT a.name, b.title: 		This part of the query specifies the columns we want to retrieve.
+FROM authored_books ab: 		This specifies the primary table we are querying from. We are selecting data from the authored_books table, as ab.
+JOIN authors a ON ab.author_id = a.id: 	This is a JOIN operation that connects the authored_books table (ab) with the authors table (a). It joins rows where the author_id column in the authored_books table matches the id column in the authors table.
+JOIN textbooks b ON ab.book_id = b.id: 	This is another JOIN operation that connects the authored_books table (ab) with the textbooks table (b). It joins rows where the book_id column in the authored_books table matches the id column in the textbooks table.
+WHERE ab.id = 1: 			This is a condition that filters the results. It specifies that only rows where the id column in the authored_books table (ab) is equal to 1 should be included in the result set.
+
+
+*Excercise (music.sql, Many to Many Relationship)
+_Refer to index.sql for queries and excercise
+_Refer to music.sql for command
+_Database store into demo.db
+_.read "music.sql" 				->	Read the data
+
+
+*SQL Exports
+_Exporting entire database to a file		->	.output name_of_file		then		.dump
+_Exporting specific table			->	.output name_of_file		then		.dump name_of_table
+_Exporting the schema to a file			->	.output name_of_file		then		.schema or .schema name_of_table
+
+
+
+
+
+
 
 
 
