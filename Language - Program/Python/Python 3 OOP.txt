@@ -105,6 +105,7 @@ Something is happening after the function is called.
 *Class Attributes
 _class attribute (inside the class itself) can not be change via data structures 
 _You need to update the class attribute via the class itself (inside the class)
+_num_of_cars = 0
 
 
 *Class Methods
@@ -118,7 +119,7 @@ _Class methods can be used to create alternative constructors or to operate on c
 
 _Example:
 class Car:
-    # Class attribute
+
     num_of_cars = 0							# This is a class attribute that keeps track of the total number of Car instances created.
 
     def __init__(self, model, year):					# Constructor (__init__ method)
@@ -132,41 +133,134 @@ class Car:
         return cls.num_of_cars						# The cls parameter refers to the class itself (Car in this case).
 
     @classmethod
-    def from_string(cls, car_string):
+    def from_string(cls, car_string):					# This class method provides an alternative way to create a Car instance from a string (e.g., "Nissan Altima-2019").
         """Class method to create a Car instance from a string"""
-        model, year = car_string.split('-')
+        model, year = car_string.split('-')				# It splits the input string into model and year, and then calls the class constructor cls(model, int(year)).
         return cls(model, int(year))
 
     def display(self):
         """Instance method to display car details"""
-        print(f"Car Model: {self.model}, Year: {self.year}")
+        print(f"Car Model: {self.model}, Year: {self.year}")		# This instance method prints the details of the car (model and year).
 
-# Creating instances using the __init__ method
-car1 = Car("Toyota Camry", 2020)
+car1 = Car("Toyota Camry", 2020)					# Creating instances using the __init__ method
 car2 = Car("Honda Accord", 2021)
-
-# Displaying car details
+									# Displaying car details. The display method is called on each instance to print the details.
 car1.display()  							# Output: Car Model: Toyota Camry, Year: 2020
 car2.display()  							# Output: Car Model: Honda Accord, Year: 2021
 
-# Using class method to get the total number of cars
-print(Car.total_cars())  # Output: 2
+print(Car.total_cars())  						# Using class method to get the total number of cars
 
-# Creating an instance using the from_string class method
-car3 = Car.from_string("Nissan Altima-2019")
-
-# Displaying the newly created car details
+car3 = Car.from_string("Nissan Altima-2019")				# Creating an instance using the from_string class method
+									# Displaying the newly created car details
 car3.display()  							# Output: Car Model: Nissan Altima, Year: 2019
 
-# Using class method to get the updated total number of cars
+									# Using class method to get the updated total number of cars
 print(Car.total_cars())  						# Output: 3
 
 
 *Class Constant
 _Class value that can not be change.
+_CONSTANT_UPPER_CASE_LETTER = "Value"
 
 
-*Four Pillars Of OOP
+*Four Pillars Of OOP (Inheritance, Abstraction, Polymorphism, Encapsulation)
+_Inheritance: 	Circle, Rectangle, and Square inherit attributes and methods from Shape.
+_Polymorphism: 	Same method get_area() is called on different objects, and its behavior varies depending on the object's type.
+_Abstraction: 	The Shape class provides a generic method get_area() that is meant to be overridden by subclasses, 
+		allowing for abstraction of common behavior among different shapes.
+
+
+_Example of Inheritance, Abstraction and Polymorphism
+class Shape:
+# Instance method (Inheritance)
+    def __init__(self, no_of_sides, color) -> None:
+        self.no_of_sides = no_of_sides
+        self.color = color
+
+# Abstraction because constant, it is method overriding
+    def get_area(self):
+        return "Shape is not specific"
+
+# Child
+class Circle(Shape):
+# Polymorphism because they behave different, radius and sides
+    def __init__(self,color, radius ) -> None:
+        super().__init__(0, color)          			#Parameter from Parent passing
+        self.radius = radius
+
+    def get_area(self):
+        return 3.14 * self.radius ** 2
+
+class Rectangle(Shape):
+    def __init__(self, color, length, width) -> None:
+        super().__init__(4, color)          			#Parameter from Parent passing
+        self.length = length
+        self.width = width
+
+    def get_area(self):
+        return self.length * self.width
+
+class Square(Rectangle):
+    def __init__(self, color, side) -> None:
+        super().__init__(color, side, side)
+        self.side = side
+
+shape = Shape(0, "red") 					# shape with 0 sides, Circle
+circle = Circle("blue", 10)
+rect = Rectangle("green", 3, 4)
+sqaure = Square("yellow", 5)
+
+print( shape.get_area() )
+print( circle.get_area() )
+print( rect.get_area() )
+print( sqaure.get_area() )
+
+
+_Encapsulation
+Encapsulation hides the internal state of an object from the outside world and only exposes the necessary functionality through well-defined interfaces.
+
+class Car:
+    def __init__(self, make, model, year):
+        self.__make = make  # Private attribute
+        self.__model = model  # Private attribute
+        self.__year = year  # Private attribute
+
+    def get_make(self):
+        return self.__make  # Getter method for make attribute
+
+    def set_make(self, make):
+        self.__make = make  # Setter method for make attribute
+
+    def display_info(self):
+        print(f"Make: {self.__make}, Model: {self.__model}, Year: {self.__year}")
+
+# Creating an instance of Car
+my_car = Car("Toyota", "Camry", 2020)
+
+# Accessing and modifying private attributes using getter and setter methods
+print(my_car.get_make())  # Output: Toyota
+my_car.set_make("Honda")
+print(my_car.get_make())  # Output: Honda
+
+# Attempting to access private attributes directly will raise an AttributeError
+# print(my_car.__make)  # Raises AttributeError
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
