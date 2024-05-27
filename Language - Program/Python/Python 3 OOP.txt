@@ -1,2 +1,176 @@
 
 **Object Oriented Program STUFFS
+
+*Creating Class
+_Class is a blue print of the structure. Name must be in CamelCasing
+_Python is consider a pure OOP, which means everything is an object. That is why we want to capitalise ClassName
+
+
+*Syntax
+class ClassName:
+name_of_instance = ClassName()
+__init__()
+__str__()
+
+
+*Example
+class Person:
+    def __init__(self, name, age):			# special method in Python classes known as the initializer or constructor 
+        print("A person object is created")		# self refer to the class itself, name and age are additional parameters 
+        self.name = name				# assigns the value of the name parameter to the name attribute of the object. 
+        self.age = age					# assigns the value of the age parameter to the age attribute of the object. 
+
+    def __str__(self):					# This method defines how the Person object is represented as a string. Default method!
+        return f"{self.name} - {self.age} years old."	
+
+    def talk(self, message):				# Instance method, allow us to customise the method.
+        return f"{self.name}: {message}"
+
+person = Person("Kim", 26)				# Creating an Instance of the Person Class, represent by person variable
+
+print(f"Person's name: {person.name}")
+print(f"Person's age: {person.age}")
+print(person)						# Will print string method
+print(person.talk("Hello there!"))			# Will print Kim: Hello There!	
+
+
+*Inheritance
+_Creating					->	Class Parent	to	Class Child(Parent)
+_A child will inherit a parent character.
+_A parent will not inherit a child.
+
+*Example
+class Person:
+    def __init__(self, name, age):
+        print("A person object is created")
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"{self.name} - {self.age} years old."
+    
+    def talk(self, message):
+        return f"{self.name}: {message}"
+
+person = Person("Kim", 26)
+
+class Student(Person):					# Child class initialise. 
+    def __init__(self, name, age, degree):
+        super().__init__(name, age)			# Invoking the parent class by using super().__init__()
+        self.degree = degree				# Student unique parameter
+
+    def __str__(self):
+        return super().__str__() + f"Degree is {self.degree}"
+
+student = Student("Seng", 20, "CS")
+print(student)
+
+
+*Decorators @
+_Function is consider as a First-Class Objects because:
+	_It can be assign to variables				->	list_of_function = function_name
+	_Can Store in data structures				->	list_of_function = [function_name_1, function_name_2]
+	_Pass as arguments to other functions			->	function_name(another_function)
+	_Return as values from other functions
+
+_The @ symbol is used to define decorators. Decorators are a powerful and expressive way to modify the behavior of functions or methods. 
+_Allowing you to execute code before and/or after the wrapped function runs, modify its arguments, or even replace it entirely.
+_Common Use Cases for Decorators:
+					Logging: Automatically log function calls and results.
+					Authentication: Check if a user is authenticated before allowing access to certain functionality.
+					Caching: Cache the results of expensive function calls.
+					Validation: Validate inputs to functions.
+
+_Example:
+
+def my_decorator(func):							->	my_decorator is a function that takes another function func as its argument.
+    def wrapper():							->	Inside my_decorator, a new function wrapper is defined.
+        print("Something is happening before the function is called.")	
+        func()								->	The wrapper function adds additional behavior before and after calling func.
+        print("Something is happening after the function is called.")
+    return wrapper							->	my_decorator returns the wrapper function.
+
+@my_decorator								->	The @my_decorator syntax is used to apply the decorator to the say_hello function.
+def say_hello():							->	This is equivalent to say_hello = my_decorator(say_hello).
+    print("Hello!")
+
+say_hello()								->	When say_hello() is called, it actually calls the wrapper function returned by my_decorator
+
+_Output
+Something is happening before the function is called.
+Hello!
+Something is happening after the function is called.
+
+
+*Class Attributes
+_class attribute (inside the class itself) can not be change via data structures 
+_You need to update the class attribute via the class itself (inside the class)
+
+
+*Class Methods
+_The @classmethod decorator in Python is used to define a method that is bound to the class and not the instance of the class. 
+_This means that the method can access and modify class state that applies across all instances of the class.
+_The first parameter to a class method is traditionally named cls, which stands for class
+_It refers to the class itself rather than an instance of the class.
+_@classmethod is used to define methods that operate on the class itself rather than instances.
+_cls is used to refer to the class within the class method.
+_Class methods can be used to create alternative constructors or to operate on class-level data.
+
+_Example:
+class Car:
+    # Class attribute
+    num_of_cars = 0							# This is a class attribute that keeps track of the total number of Car instances created.
+
+    def __init__(self, model, year):					# Constructor (__init__ method)
+        self.model = model
+        self.year = year
+        Car.num_of_cars += 1  						# Increment class attribute each time a new car is created
+
+    @classmethod							# This class method returns the total number of Car instances created.
+    def total_cars(cls):
+        """Class method to return the total number of cars"""
+        return cls.num_of_cars						# The cls parameter refers to the class itself (Car in this case).
+
+    @classmethod
+    def from_string(cls, car_string):
+        """Class method to create a Car instance from a string"""
+        model, year = car_string.split('-')
+        return cls(model, int(year))
+
+    def display(self):
+        """Instance method to display car details"""
+        print(f"Car Model: {self.model}, Year: {self.year}")
+
+# Creating instances using the __init__ method
+car1 = Car("Toyota Camry", 2020)
+car2 = Car("Honda Accord", 2021)
+
+# Displaying car details
+car1.display()  							# Output: Car Model: Toyota Camry, Year: 2020
+car2.display()  							# Output: Car Model: Honda Accord, Year: 2021
+
+# Using class method to get the total number of cars
+print(Car.total_cars())  # Output: 2
+
+# Creating an instance using the from_string class method
+car3 = Car.from_string("Nissan Altima-2019")
+
+# Displaying the newly created car details
+car3.display()  							# Output: Car Model: Nissan Altima, Year: 2019
+
+# Using class method to get the updated total number of cars
+print(Car.total_cars())  						# Output: 3
+
+
+*Class Constant
+_Class value that can not be change.
+
+
+*Four Pillars Of OOP
+
+
+
+
+
+
+

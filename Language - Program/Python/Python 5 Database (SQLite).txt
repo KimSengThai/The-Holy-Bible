@@ -1,20 +1,17 @@
 
-Lecture 12 - start from curor, do it in python then copy it to note!
-
-
 *Python Database Stuffs (SQLite)
 
 
 *Connecting to SQLite to Python
 _Open python command shell
-_import sqlite3
-_CONN = sqlite3.connect("demo.db")
+_import sqlite3							->	Import sqlite to python
+_CONN = sqlite3.connect("demo.db")				->	Connect to the database file
 _CURSOR = CONN.cursor()						->	Cursor cct as a middleware between SQL query and database connection
 
 _.quit								->	To quit command shell
 
 *CURSOR Method (Table list in Python)
-_CURSOR.execute("SELECT * FROM table") 				->	Return cursor object
+_CURSOR.execute("SELECT * FROM table") 				->	Return cursor object, use fetch to retreive the tables.
 _CURSOR.execute("SELECT * FROM table WHERE id=?", (1,))		->	Return cursor object, need to be tuple, single tuple need ","
 _CURSOR.fetchall()						->	Return current cursor object as a list of tuple
 _CURSOR.fetchone()						->	Return current cursor object as a tuple, will always return the first one
@@ -100,9 +97,13 @@ student2.save()
 student3.save()
 
 
+*ORM (Object Relational Mapping)
+_Classes	->	Tables
+_Instances	->	Rows
 
 
-
+*Python class to a Database
+_Rule of thumb, method of dropping table always before creating table
 
 
 
