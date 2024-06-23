@@ -1,0 +1,273 @@
+
+*Flask Stuffs
+_Flask is a backend framework for python (micro web framework)
+_Model-View-Controller (MVC) Architecture
+_Simple, Flexible, Extendsive
+_Werkzeug: 	Interface between app and server
+_Jinja:		Templating tool, similar to EJS 		{{expression}}			{%function%}
+
+For if statement, we need to use endif to close it with {% end if %}
+{% if students: %}
+{% else: %}
+{% end if %}
+
+
+*Model-View-Controller (MVC) Architecture
+_The Model-View-Controller (MVC) architecture is a design pattern. 
+_Used for developing user interfaces that separates an application into three interconnected components: Model, View, and Controller. 
+_This separation helps in managing the complexity of code and improves the modularity and maintainability of software systems.
+
+_Model		->	Responsible for communicating and responding to the database. Where the data will be coming from.
+_View		->	What the user will be interacting with. Presenting data to the user.
+_Controller	->	Bridge between Model and View. Process user request, update the Model, select Views, etc.
+
++------------+        +------------+        +------------+
+|            |        |            |        |            |
+|   Model    |<------>| Controller |<------>|    View    |
+|            |        |            |        |            |
++------------+        +------------+        +------------+
+
+
+*Building Flask with Models (Many to many relationships, Doctor to Patient)
+
+
+***Creating Flask in Virtual Environment
+pipenv install flask flask-sqlalchemy flask-migrate datetime
+pipenv install sqlalchemy_serializer
+pipenv shell
+
+_Flask			->	Web framework for Python
+_Flask-SQLAlchemy	->	Flask extension that support SQLAlchemy (SQL toolkit and Object-Relational Mapping (ORM), way to interact with databases)
+_Flask-Migrate		->	Flask extension that handles SQLAlchemy database using Alembic (version control)
+_datetime		->	Import date time format
+_sqlalchemy_serializer	->	Create to_dict(). Allow for quicker respond time than manually adding json file. + include, - exclude
+
+
+
+***models.py (Databases)
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy_serializer import SerializerMixin
+
+db = SQLAlchemy()
+
+class Doctor(db.Model, SerializerMixin):
+    __tablename__ = "doctors"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    specialization = db.Column(db.String)
+
+    appointments = db.relationship('Appointment', back_populates='doctor')
+    patients = association_proxy('appointments', 'patient', creator=lambda p: Appointment(patient=p))
+
+    # Exclude appointments to avoid recursion
+    serializer_rules = ('-appointments.doctor',)
+    # def to_json(self):
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name,
+    #         "specialization": self.specialization
+    #     }
+
+    def __repr__(self):
+        return f"<Doctor {self.id}: {self.name} - {self.specialization}>"
+
+class Patient(db.Model, SerializerMixin):
+    __tablename__ = "patients"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    birthdate = db.Column(db.Date, nullable=False)
+
+    appointments = db.relationship('Appointment', back_populates='patient')
+    doctors = association_proxy('appointments', 'doctor', creator=lambda d: Appointment(doctor=d))
+
+    # Exclude appointments to avoid recursion
+    serializer_rules = ('-appointments.patient',)
+    # def to_json(self):
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name,
+    #         "birthdate": str(self.birthdate)
+    #     }
+
+    def __repr__(self):
+        return f"{self.id}: {self.name}"
+
+class Appointment(db.Model, SerializerMixin):
+    __tablename__ = "appointments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
+    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'))
+    complaint = db.Column(db.String, nullable=False)
+
+    doctor = db.relationship('Doctor', back_populates='appointments')
+    patient = db.relationship('Patient', back_populates='appointments')
+
+    # Exclude back references to avoid recursion
+    serializer_rules = ('-doctor.appointments', '-patient.appointments')
+
+    def __repr__(self):
+        return f"Appointment {self.id}: {self.complaint}"
+
+
+
+
+***Initiate alembic
+flask db init
+flask db revision --autogenerate -m "Create Doctor and Patient models"
+flask db upgrade head
+
+
+
+
+***app.py
+from flask import Flask # type: ignore
+from flask_migrate import Migrate # type: ignore
+from models import db
+from bp.doctor_bp import doctor_bp
+from bp.patient_bp import patient_bp
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.register_blueprint(doctor_bp)
+app.register_blueprint(patient_bp)
+
+migrate = Migrate(app, db)
+db.init_app(app)
+
+@app.route('/')
+def index():
+    return "Welcome to the Hospital App"
+
+if __name__ == "__main__":
+    app.run(port=4000, debug=True)
+
+
+
+
+***bp/doctor_bp.py
+from flask import Blueprint, request, make_response, jsonify
+from models import db, Doctor
+
+doctor_bp = Blueprint('doctor', __name__, url_prefix="/doctors")
+
+@doctor_bp.route('/')
+def index():
+    doctors_from_db = Doctor.query.all()
+    doctors = [doctor.to_dict(rules=('-appointments.doctor',)) for doctor in doctors_from_db]
+    return make_response(jsonify(doctors), 200)
+
+@doctor_bp.route('/', methods=['POST'])
+def create():
+    new_doctor = Doctor(
+        name=request.json.get('name'),
+        specialization=request.json.get('specialization')
+    )
+    db.session.add(new_doctor)
+    db.session.commit()
+
+    if new_doctor.id:
+        return make_response(jsonify(new_doctor.to_dict(rules=('-appointments.doctor',))), 201)
+
+    return make_response(jsonify({"message": "Create unsuccessful!"}), 404)
+
+
+
+
+***bp/patient_bp.py
+from flask import Blueprint, request, make_response, jsonify
+from models import db, Patient, Doctor, Appointment
+from datetime import datetime
+
+patient_bp = Blueprint('patient', __name__, url_prefix="/patients")
+
+@patient_bp.route('/')
+def index():
+    patients_from_db = Patient.query.all()
+    patients = [patient.to_dict(rules=('-appointments.patient',)) for patient in patients_from_db]
+    return make_response(jsonify(patients), 200)
+
+@patient_bp.route('/', methods=['POST'])
+def create():
+    birthdate = datetime.strptime(request.json['birthdate'], '%Y-%m-%d')
+    new_patient = Patient(
+        name=request.json.get('name'),
+        birthdate=birthdate
+    )
+    db.session.add(new_patient)
+    db.session.commit()
+
+    if new_patient.id:
+        return make_response(jsonify(new_patient.to_dict(rules=('-appointments.patient',))), 201)
+
+    return make_response(jsonify({"message": "Create unsuccessful!"}), 404)
+
+@patient_bp.route('/<int:patient_id>')
+def show_by_id(patient_id):
+    patient = Patient.query.filter(Patient.id == patient_id).first()
+    if patient:
+        return make_response(jsonify(patient.to_dict(rules=('-appointments.patient',))), 200)
+    return make_response(jsonify({"error": "Patient not found"}), 404)
+
+@patient_bp.route('/<int:patient_id>/consult_doctor', methods=['POST'])
+def consult_doctor(patient_id):
+    patient = Patient.query.filter(Patient.id == patient_id).first()
+    if patient:
+        doctor = Doctor.query.filter(Doctor.id == request.json['doctor_id']).first()
+        if doctor:
+            appointment = Appointment(patient_id=patient.id, doctor_id=doctor.id, complaint=request.json['complaint'])
+            db.session.add(appointment)
+            db.session.commit()
+
+            if appointment.id:
+                return make_response(jsonify({"message": "Appointment made!"}), 200)
+        else:
+            return make_response(jsonify({"message": "No Doctor found"}), 404)
+    return make_response(jsonify({"message": "Patient not found"}), 404)
+
+
+
+
+
+***Run localhost
+flask --app app.py run --port 4000 --debug
+
+or
+
+flask run --debug
+_For general run, it will normally work by (CLI): 
+	export FLASK_APP=app.py
+	export FLASK_RUN_PORT=4000 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

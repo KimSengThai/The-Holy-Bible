@@ -1,0 +1,47 @@
+Blog (JavaScript)	->	Issue retention the content so I rewatch the lecture and speed it up by 1.5 to save time, also wrote note in notepad to kill 2 birds in one stone by getting used to reading computer screen and better at typing.
+				Very fun to learn, very rewarding, felt so great after solving problems.
+				Go above and beyong by getting ahead of class with Udemy course and self learning.
+				I cover important topics such as..... and make a note out of everything.
+				Background explain at the intro, civil egineer, research the correct bootcamp.
+				Mobile friendly by making it touch the heading the play
+				
+
+
+Project 1 Frontend (Vanilla JS) with API	-> one page application, vinilla JS, api, button change the dynamic  Nav bar, single page render dynamic (data come from api or mock server), click on titem render more informations, pokimond api
+						-> Joker API, user to filter words through searching and save jokes in history tap (stats)
+						-> Filter through language
+
+						-> Duplicate joke problems. Store ID as well as well. If statement use. 
+						-> Remove. Context (x button). Too Easy to remove. 
+						-> Toggle, no Joke on favourite list.
+						-> CLick to show Favourite remove. Change color. Layout
+						-> Searcnh function button to the button
+						-> No joke to the current list.
+
+						-> Change name and add footer
+
+Project 1B Backend (node) with API		-> Using Node.js and Express.js (set up), EJS (templating), MongoDB (databases). Login as an admin for now. No need for SQL and User Authentication yet.
+						-> Blog Application
+						-> Middleware: I use body-parser to pass in the data. Have not learn databses yet and authentication
+						-> I was going to use API for this, however 
+						-> I use bootstrap to create a good template, for now im focusing on backend only.
+						-> Issue i find, I need to have something to store without it, the project is not good.
+						-> Initially i started off using JSON file but it cant hole onto a lot of data.
+						-> So i decided start learning MongoDB.
+						-> Challenging at first because i have not touch it yet.
+
+						-> Make it a full stack, add Authentification and make the css similar to the portfolio project.
+
+Project 2A Frontend (React JS) with API ()	-> React, single page, routing, PERN stack, notebook
+
+Project 2B React (Backend JS) 			-> Add, Express, EJS, Authentification and database SQL
+
+Project 3 Backend				-> understand phyton and how we use database SQL
+
+
+Project 4 Backend API (Combine that with final)	-> Back end API, framework FlaskPhyton
+							SASS,  Microsoft Azur, AWS
+
+
+Final Project 5 Full Stack			-> Full stack website
+						-> something that auto generate and recommendation for the users (martial art training, personalise workout)

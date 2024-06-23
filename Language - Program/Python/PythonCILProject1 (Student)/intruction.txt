@@ -1,0 +1,12 @@
+School Mgt. App
+
+As a user,
+_create new students
+_view students
+_view course
+_enrol a student to a course
+
+Models
+_Student: id, name, degree
+_Couse: id, title
+_Enrolment: id, student_id, course_id

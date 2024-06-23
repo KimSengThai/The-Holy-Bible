@@ -1,0 +1,14 @@
+Movies:
+
+Genre:
+
+Actor:
+
+User:
+
+Many to Many Between Movies and Genere. Joint together by using MovieGenre
+Many to Many Between Movies and Actor. Joint together by using CAST
+Many to Many Between Movies and User. Joint together by using FAVE
+
+
+

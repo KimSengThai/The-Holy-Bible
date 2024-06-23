@@ -1,0 +1,183 @@
+
+*SQLAlchemy is primarily used for interacting with the database, defining models, and performing CRUD operations.
+
+*One-to-One Relationships
+_Foreigh key on any side.
+
+
+
+*One-to-Many Relationships
+_relationship() is used to define how two tables relate to each other.
+_back_popuklates allow you to define biderectional thus allow you to navigate from either side of the table.
+_Use a foreign key in the table on the “many” side to reference the primary key of the table on the “one” side.
+
+***class Many(base):
+one_id = Column(Integer(), ForeignKey('one_table.id'))
+one_attribute = relationship('One', back_populates='many_attributes')
+
+***class One(base):
+many_attributes = relationship('Many', back_populates='one_attribute')
+
+
+
+*Many-to-Many Relationships
+_Many to Many relationships requres a proxy(Joint Model) to connect the two tables together.
+_Treat the Many table to Joint Model as a One to Many relationship, respectively!!! 
+_SO NOW IT IS REVERSE MANY TO ONE!
+_Then use association_proxy() to relate between Many to Many table
+_association_proxy() simplifies working with many to many relationships by abstracting the Joint Model.
+_Attributes (variable) in association does not relate to anything, it is only use for clarification, which is why we put plural.
+_We use these attributes for later access.
+
+***class Many_A(Base):
+joint_attributes = relationship('Joint_Model', back_populates='many_A_attribute')
+many_B_attribute_plural = association_proxy('joint_model_table', 'many_B_attribute', creator=lambda p: Joint_Model(many_B_attribute=p))
+
+***class Many_B(Base):
+joint_attributes = relationship('Joint_Model', back_populates='many_B_attribute')
+many_A_attribute_plural = association_proxy('joint_model_table', 'many_A_attribute', creator=lambda p: Joint_Model(many_A_attribute=p))
+
+***class Joint_Model(Base)
+many_A_id = Column(Integer(), ForeignKey('many_A_table.id'))
+many_B_id = Column(Integer(), ForeignKey('many_B_table.id'))
+many_A_attribute = relationship('Many_A', back_populates='joint_attributes')
+many_B_attribute = relationship('Many_B', back_populates='joint_attributes')
+
+
+
+*Alembic is used to handle database schema migrations, ensuring that changes to the database structure are versioned and 
+can be applied in a controlled manner.
+
+alembic init alembic								#Initialise
+alembic revision --autogenerate -m "Create users and addresses tables"		#Update new or existing Models
+alembic upgrade head								#Push Models
+
+
+
+*PythonCILProject1 (Student and School) (1 to Many)
+
+***Installation of virtual environment (root folder)
+pipenv install alembic sqlalchemy
+
+
+***Run Virtual Environment
+pipenv shell
+
+***models.py
+use for data structure and table quiery (SQLite)
+
+***After Creating models.py, Initialise alembic and store in migrations folder
+alembic init migrations
+
+_Then, in migrations/alembic.ini (we need to specify where we are connecting to)
+sqlalchemy.url = driver://user:pass@localhost/dbname		->		sqlalchemy.url = sqlite:///lib/data.db
+
+_After that, in migrations/env.py (Base from models.py)
+target_metadata = None						->		from lib.models import Base
+										target_metadata = Base.metadata
+
+***Create a migration in versions folder, this will update models
+alembic revision --autogenerate -m "Create models"
+
+
+***data.db file, this will push the model after the above
+alembic upgrade head
+
+
+***Seed
+Create lib/seed.py	(for generating random data initially)
+def create_owner(owner_data):
+    for owner in owner_data:
+        new_owner = Owner(**owner)  # Creates a new Owner object using the data
+        session.add(new_owner)      # Adds the new Owner object to the session
+    session.commit()                # Commits the transaction, saving all changes
+_The ** operator is used in Python to unpack dictionary items into keyword arguments.
+
+
+Create lib/config.py 	(for connection from )
+
+
+
+Createa lib/run.py	(for input in command line)
+
+
+***Aesthetic
+pipenv install colorama
+pipenv install faker
+
+print(Back.YELLOW + "hello" + Style.RESET_ALL)    #yellow background, Back (Background), Fore (Font), Style (reset all to cancel)
+
+
+
+*PythonCILProject2 (Movie, Movie Genre, Genre, Actor) (Many to Many)
+
+***After downloading the package
+pipenv install
+
+
+***Run Virtual Environment
+pipenv shell
+
+
+***Run Model
+python run.py
+
+
+***models.py
+Set up the table column first before defining relationship.
+Then set up the remaining base on the type of relationship.
+
+
+***add movie to the database
+def create_movies(movies):
+    for movie in movies:
+        new_movie = Movie(**movie)
+        session.add(new_movie)
+    session.commit()
+
+
+***Generate random data of genres to movie. Movie can have many genre
+def create_movie_genres():
+    movies = session.query(Movie).all()
+    genres = session.query(Genre).all()
+
+    for movie in movies:
+        random_num = randint(1, randint(1,3))
+        
+        genres_sample = sample(genres, random_num)
+        for genre in genres_sample:
+            movie_genre = MovieGenre(movie_id=movie.id, genre_id=genre.id)
+            session.add(movie_genre)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
