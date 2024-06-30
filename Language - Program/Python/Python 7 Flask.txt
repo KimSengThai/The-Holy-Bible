@@ -21,19 +21,66 @@ _Model		->	Responsible for communicating and responding to the database. Where t
 _View		->	What the user will be interacting with. Presenting data to the user.
 _Controller	->	Bridge between Model and View. Process user request, update the Model, select Views, etc.
 
-+------------+        +------------+        +------------+
-|            |        |            |        |            |
-|   Model    |<------>| Controller |<------>|    View    |
-|            |        |            |        |            |
-+------------+        +------------+        +------------+
+		+------------+        +------------+        +------------+
+		|            |        |            |        |            |
+		|   Model    |<------>| Controller |<------>|    View    |
+		|            |        |            |        |            |
+		+------------+        +------------+        +------------+
 
 
-*Building Flask with Models (Many to many relationships, Doctor to Patient)
+*REpresentational State Transfer (REST)
+_Communication process between software applications using HTTP methods to perform actions on resources identified by URLs
+_Resources is everything including documents, images, videos, identified by  URI (Uniform Resource Identifier)
+_Statelessness, each request from a client to a server must contain all the information the server needs to understand and fulfill the request. It will not be store or kept by the server.
+_HTTP Methods interaction with resources including GET, POST, PUT, PATCH, DELETE
+_Representations, When a client makes a request to a server, it can specify the format of the response it expects (like JSON, XML, etc.) through HTTP headers.
+_State Transfers: Instead of focusing on actions, REST focuses on transferring the state of resources from a server to a client or vice versa. 
+		  This approach allows for a more modular architecture where changes on the server side can be managed without affecting the client's implementation as long as the interface remains consistent.
+
+
+*CRUD Operations.
+_Create, Read, Update, Delete. (or RESTful Routes)
+_RESTful Routes
+
+HTTP Request Method  Route             Action/Description
+------------------------------------------------------------------
+GET                  /users            Show all users
+GET                  /users/<int:id>   Show a specific user
+POST                 /users            Create a new user
+PATCH/PUT            /users/<int:id>   Update a specific user
+DELETE               /users/<int:id>   Delete a specific user
+
+
+*Flask Blueprint
+_Blueprints are used to organize your Flask application into smaller, modular components. 
+_They help in structuring the application by grouping related routes, templates, static files, and other resources.
+
+
+*REST APIs (Flask)
+_Flask-RESTful uses 2 classes: Resource Class and Abstract Class (or Base Class)
+_The Resource class in Flask-RESTful is used to create RESTful routes. 
+	Each Resource class corresponds to a resource in your API, and you define methods within this class to handle HTTP requests (GET, POST, PUT, DELETE, etc.).
+_An Abstract class (or base class) in Flask-RESTful is not provided out-of-the-box like Resource.
+	But you can create one to define shared behavior or utility functions that can be inherited by multiple resource classes.
+_API use to handle URL routing.
+
+
+Summary
+Abstract Base Classes (ABCs): Used to define a common interface for a set of subclasses, enforcing that certain methods are implemented. 
+			      This is a general Python feature, not specific to Flask.
+Flask-RESTful Resources:      Used to build RESTful APIs in Flask. 
+			      They provide a structured way to define HTTP methods for resources.
+Blueprints: 		      Used to modularize a Flask application, making it more organized and manageable. 
+			      They group related routes and resources.
+
+
+*Building Flask with Models (Many to many relationships, Students and Courses)
 
 
 ***Creating Flask in Virtual Environment
 pipenv install flask flask-sqlalchemy flask-migrate datetime
 pipenv install sqlalchemy_serializer
+pipenv install flask-resful
 pipenv shell
 
 _Flask			->	Web framework for Python
@@ -41,197 +88,233 @@ _Flask-SQLAlchemy	->	Flask extension that support SQLAlchemy (SQL toolkit and Ob
 _Flask-Migrate		->	Flask extension that handles SQLAlchemy database using Alembic (version control)
 _datetime		->	Import date time format
 _sqlalchemy_serializer	->	Create to_dict(). Allow for quicker respond time than manually adding json file. + include, - exclude
-
+_Flask-RESTful		->	It provides tools and utilities for building APIs that follow REST principles, making it easier to manage routing, request handling, and response formatting.
 
 
 ***models.py (Databases)
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy_serializer import SerializerMixin
+from flask_sqlalchemy import SQLAlchemy					#Using SQLAlchemy with Flask
+from sqlalchemy.ext.associationproxy import association_proxy		#This allows us to use association proxies, which simplify many-to-many relationships.
+from sqlalchemy_serializer import SerializerMixin			#To be easily converted to and from dictionaries and JSON
 
-db = SQLAlchemy()
+db = SQLAlchemy()							#Create instance of SQLAlchemy clas, from flask_sqlalchemy. Assigns this object to db.
 
-class Doctor(db.Model, SerializerMixin):
-    __tablename__ = "doctors"
+class Student(db.Model, SerializerMixin):				#db.Model (Flask-SQLAlchemy extension) and SerializerMixin (for serialization).
+    __tablename__ = "students"
 
-    id = db.Column(db.Integer, primary_key=True)
+    serialize_rules = ('-enrolments.student',)				#Tell serialize to exclude student attribute from enrolments table, avoid circular references.
+
+    id = db.Column(db.Integer, primary_key=True)			#db from SQLAlchemy() helps interact with Flask application.
     name = db.Column(db.String, nullable=False)
-    specialization = db.Column(db.String)
+    degree = db.Column(db.String)
 
-    appointments = db.relationship('Appointment', back_populates='doctor')
-    patients = association_proxy('appointments', 'patient', creator=lambda p: Appointment(patient=p))
-
-    # Exclude appointments to avoid recursion
-    serializer_rules = ('-appointments.doctor',)
-    # def to_json(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "specialization": self.specialization
-    #     }
+    enrolments = db.relationship('Enrolment', back_populates='student', cascade='all, delete-orphan')		#cascade='all, delete-orphan' ensures that deleting a Student also deletes related Enrolment records.
+    courses = association_proxy('enrolments', 'course', creator=lambda c: Enrolment(course=c))
 
     def __repr__(self):
-        return f"<Doctor {self.id}: {self.name} - {self.specialization}>"
+        return f"<Student {self.id}: {self.name} - {self.degree}>"
 
-class Patient(db.Model, SerializerMixin):
-    __tablename__ = "patients"
+class Course(db.Model, SerializerMixin):
+    __tablename__ = "courses"
+
+    serialize_rules = ('-enrolments.course',)
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    birthdate = db.Column(db.Date, nullable=False)
+    title = db.Column(db.String, nullable=False)
 
-    appointments = db.relationship('Appointment', back_populates='patient')
-    doctors = association_proxy('appointments', 'doctor', creator=lambda d: Appointment(doctor=d))
-
-    # Exclude appointments to avoid recursion
-    serializer_rules = ('-appointments.patient',)
-    # def to_json(self):
-    #     return {
-    #         "id": self.id,
-    #         "name": self.name,
-    #         "birthdate": str(self.birthdate)
-    #     }
+    enrolments = db.relationship('Enrolment', back_populates='course', cascade='all,delete-orphan')
+    students = association_proxy('enrolments', 'student', creator=lambda s: Enrolment(student=s))
 
     def __repr__(self):
-        return f"{self.id}: {self.name}"
+        return f"<Course {self.id}: {self.title}>"
 
-class Appointment(db.Model, SerializerMixin):
-    __tablename__ = "appointments"
+class Enrolment(db.Model, SerializerMixin):
+    __tablename__ = "enrolments"
+
+    serialize_rules = ('-student.enrolments', '-course.enrolments')
 
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, db.ForeignKey('doctors.id'))
-    patient_id = db.Column(db.Integer, db.ForeignKey('patients.id'))
-    complaint = db.Column(db.String, nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
 
-    doctor = db.relationship('Doctor', back_populates='appointments')
-    patient = db.relationship('Patient', back_populates='appointments')
-
-    # Exclude back references to avoid recursion
-    serializer_rules = ('-doctor.appointments', '-patient.appointments')
+    student = db.relationship('Student', back_populates='enrolments')
+    course = db.relationship('Course', back_populates='enrolments')
 
     def __repr__(self):
-        return f"Appointment {self.id}: {self.complaint}"
-
+        return f"<Student {self.id} is enrolled in Class {self.id}>"
 
 
 
 ***Initiate alembic
 flask db init
-flask db revision --autogenerate -m "Create Doctor and Patient models"
+flask db revision --autogenerate -m "Create Student and Course models"
 flask db upgrade head
 
 
 
-
 ***app.py
-from flask import Flask # type: ignore
-from flask_migrate import Migrate # type: ignore
-from models import db
-from bp.doctor_bp import doctor_bp
-from bp.patient_bp import patient_bp
+from flask import Flask, make_response, jsonify				#Format json response
+from flask_migrate import Migrate					#Handle database migrations.					
+from models import db							#Import file, models
+from blueprints.course_bp import course_bp				#Import file, blueprints/course_bp
+from blueprints.student_bp import student_bp				#Import file, blueprints/student_bp
 
-app = Flask(__name__)
+app = Flask(__name__)							#Initializes the Flask application instance.
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///school.db"		#Configure Database URI, using SQLite with a file named school.db.
+app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False			#Disable Track Modifications, objects to save memory and improve performance
 
-app.register_blueprint(doctor_bp)
-app.register_blueprint(patient_bp)
+app.register_blueprint(course_bp)					#Registers the course_bp and student_bp blueprints with the Flask application
+app.register_blueprint(student_bp)
 
-migrate = Migrate(app, db)
-db.init_app(app)
+migrate = Migrate(app, db)						#Initialize Migrate
 
-@app.route('/')
-def index():
-    return "Welcome to the Hospital App"
+db.init_app(app)							#Initialize Database
+
+#decorator in Flask, place above a function. 
+@app.route('/')										#Take another function as an argument, and extend or alter its behavior.
+def index():										#decorator purpose is to alter a function without modifying its structure.
+    return make_response( jsonify( { "message": "Welcome to the School App!" } ), 200)
 
 if __name__ == "__main__":
     app.run(port=4000, debug=True)
 
 
 
+***bp/course_bp.py
+from flask import Blueprint, request, jsonify, make_response		#Blueprint to create a blueprint for course-related routes. 'request' for handling incoming data, 'jsonify' for JSON responses, and 'make_response' for formatting responses.
+from models import db, Student, Enrolment, Course
 
-***bp/doctor_bp.py
-from flask import Blueprint, request, make_response, jsonify
-from models import db, Doctor
+course_bp = Blueprint('course', __name__, url_prefix="/courses")	#Creates a blueprint for courses with a URL prefix /courses, route = /courses
 
-doctor_bp = Blueprint('doctor', __name__, url_prefix="/doctors")
-
-@doctor_bp.route('/')
+# Routes
+# GET    / - Return all classes
+@course_bp.route('/')							#A route decorator. Means route = /courses/
 def index():
-    doctors_from_db = Doctor.query.all()
-    doctors = [doctor.to_dict(rules=('-appointments.doctor',)) for doctor in doctors_from_db]
-    return make_response(jsonify(doctors), 200)
+    courses_from_db = Course.query.all()				#courses_from_db = A list of all Course instances retrieved from the database. 
+    courses = []							#This list will hold the dictionary representations of the Course instances.
+    for course in courses_from_db:					#course.to_dict() = By SerializerMixin that converts the Course into a dictionary.
+        courses.append( course.to_dict() )				#courses.append() = Adds the resulting dictionary to the courses list.
+    return make_response( jsonify( courses ), 200)			#Returns an HTTP response
 
-@doctor_bp.route('/', methods=['POST'])
+# POST   / - Create a new class
+@course_bp.route('/', methods=['POST'])					#Add a POST method
 def create():
-    new_doctor = Doctor(
-        name=request.json.get('name'),
-        specialization=request.json.get('specialization')
-    )
-    db.session.add(new_doctor)
-    db.session.commit()
+    new_course = Course(title=request.json['title'])			#Extracts the value of the title field from the JSON data in the POST request
+    db.session.add(new_course)						#Adds the new_course instance to the current database session. 
+    db.session.commit()							#Commits the current database session, finalizing to the database.
+    if new_course.id:
+        return make_response( jsonify(new_course.to_dict()), 201)		#Respond back to the client, in json data.
+    return make_response( jsonify({ "message": "Error in creating..."}), 403)
 
-    if new_doctor.id:
-        return make_response(jsonify(new_doctor.to_dict(rules=('-appointments.doctor',))), 201)
+# GET    /:class_id - Return class with class_id
+@course_bp.route('/<int:course_id>')						#GET requests to the URL /courses/<int:course_id>, course_id is the dynamic URL, Interger only
+def show_by_id(course_id):							#Passing URL course_id from <int:course_id>.
+    course = Course.query.filter(Course.id == course_id).first()		#A list of all Course instances retrieved from the database wich id = URL id.
+    if course:
+        return make_response( jsonify(course.to_dict()), 200)
+    return make_response( jsonify( {"error": "Course not found"}), 404)
 
-    return make_response(jsonify({"message": "Create unsuccessful!"}), 404)
+# PATCH  /:class_id - Update the class with class_id
+@course_bp.route('/<int:course_id>', methods=['PATCH', 'PUT'])			#Refactoring PATCH and PUT base on route = <int:course_id>
+def update(course_id):
+    course = Course.query.filter(Course.id == course_id).first()		#A list of all Course instances retrieved from the database wich id = URL id.		
+    if course:
+        for attr in request.json:						#Begin a loop over each key in the JSON payload.
+            setattr(course, attr, request.json[attr])				#setattr(object, name, value): 	A built-in Python function
+        db.session.commit()							#object:			The object whose attribute is being set
+        return make_response( jsonify(course.to_dict()), 200)			#name: 				The name of the attribute to set. In string.
+    return make_response( jsonify( {"error": "Course not found"}), 404)		#value: 			The new value to set the attribute to
+
+# DELETE /:class_id - Delete class with class_id
+@course_bp.route('/<int:course_id>', methods=['DELETE'])
+def destroy(course_id):
+    course = Course.query.filter(Course.id == course_id).first()
+    if course:
+        db.session.delete(course)						#To delete course
+        db.session.commit()
+        return make_response( jsonify({"message": "Successfully deleted"}), 200)
+    return make_response( jsonify( {"error": "Course not found"}), 404)
+
+# GET    /:class_id/students - Return all students from the class with class_id		#Get all student base on the course ID
+@course_bp.route('/<int:course_id>/students')
+def get_course_students(course_id):
+    course = Course.query.filter(Course.id == course_id).first()
+    if course:
+        students = []
+        for student in course.students:							#Select only student name
+            students.append(student.to_dict())						#Add student name to students list
+        return make_response( jsonify(students), 200)					#Return student list
+    return make_response( jsonify( {"error": "Course not found"}), 404)
 
 
 
+***bp/student_bp.py
+from flask import Blueprint, request, jsonify, make_response
+from models import db, Student, Enrolment, Course
 
-***bp/patient_bp.py
-from flask import Blueprint, request, make_response, jsonify
-from models import db, Patient, Doctor, Appointment
-from datetime import datetime
+student_bp = Blueprint('student', __name__, url_prefix="/students")	#Creates a blueprint for students with a URL prefix /students, route = /students
 
-patient_bp = Blueprint('patient', __name__, url_prefix="/patients")
-
-@patient_bp.route('/')
+# Routes
+# GET    / - Return all students
+# POST   / - Create a new student
+@student_bp.route('/', methods=["GET", "POST"])				#Refactoring method for both GET and POST
 def index():
-    patients_from_db = Patient.query.all()
-    patients = [patient.to_dict(rules=('-appointments.patient',)) for patient in patients_from_db]
-    return make_response(jsonify(patients), 200)
+    if request.method == "GET":
+        students_from_db = Student.query.all()
 
-@patient_bp.route('/', methods=['POST'])
-def create():
-    birthdate = datetime.strptime(request.json['birthdate'], '%Y-%m-%d')
-    new_patient = Patient(
-        name=request.json.get('name'),
-        birthdate=birthdate
-    )
-    db.session.add(new_patient)
-    db.session.commit()
+        students = []
+        for student in students_from_db:
+            students.append(student.to_dict())
 
-    if new_patient.id:
-        return make_response(jsonify(new_patient.to_dict(rules=('-appointments.patient',))), 201)
+        return make_response(jsonify(students), 200)
+    elif request.method == "POST":
+        new_student = Student(name=request.json['name'], degree=request.json['degree'])
+        db.session.add(new_student)
+        db.session.commit()
 
-    return make_response(jsonify({"message": "Create unsuccessful!"}), 404)
+        if new_student.id:
+            return make_response( jsonify(new_student.to_dict()), 201)
 
-@patient_bp.route('/<int:patient_id>')
-def show_by_id(patient_id):
-    patient = Patient.query.filter(Patient.id == patient_id).first()
-    if patient:
-        return make_response(jsonify(patient.to_dict(rules=('-appointments.patient',))), 200)
-    return make_response(jsonify({"error": "Patient not found"}), 404)
+        return make_response( jsonify({"error": "Error"}), 403)
 
-@patient_bp.route('/<int:patient_id>/consult_doctor', methods=['POST'])
-def consult_doctor(patient_id):
-    patient = Patient.query.filter(Patient.id == patient_id).first()
-    if patient:
-        doctor = Doctor.query.filter(Doctor.id == request.json['doctor_id']).first()
-        if doctor:
-            appointment = Appointment(patient_id=patient.id, doctor_id=doctor.id, complaint=request.json['complaint'])
-            db.session.add(appointment)
+# GET    /:student_id - Return student with student_id
+# PATCH  /:student_id - Update the student with student_id
+# DELETE /:student_id - Delete student with student_id
+@student_bp.route('/<int:student_id>', methods=['GET', 'PATCH', "DELETE"])
+def get_student(student_id):
+    student = Student.query.filter(Student.id == student_id).first()
+
+    if student:
+        if request.method == "GET":
+            return make_response(jsonify(student.to_dict()), 200)
+        elif request.method == "PATCH":
+            for attr in request.json:
+                setattr(student, attr, request.json[attr])
+
             db.session.commit()
 
-            if appointment.id:
-                return make_response(jsonify({"message": "Appointment made!"}), 200)
-        else:
-            return make_response(jsonify({"message": "No Doctor found"}), 404)
-    return make_response(jsonify({"message": "Patient not found"}), 404)
+            return make_response(jsonify(student.to_dict()), 200)
+        elif request.method == "DELETE":
+            db.session.delete(student)
+            db.session.commit()
 
+            return make_response(jsonify({"message": "Successfully deleted"}), 200)
 
+    return make_response(jsonify({"error": "Student not found"}), 403)
+
+# POST   /:student_id/enrol - Enrol this student to a class
+@student_bp.route('/<int:student_id>/enrol', methods=['POST'])
+def enrol(student_id):
+    student = Student.query.filter(Student.id == student_id).first()
+    if student:
+        course = Course.query.filter(Course.id == request.json['course_id']).first()
+        if course:
+            new_enrolment = Enrolment(student_id=student.id, course_id=course.id)
+            db.session.add(new_enrolment)
+            db.session.commit()
+            return make_response(jsonify({"message": f"{student.name} is successfully enrolled in {course.title}!"}), 200)
+        return make_response(jsonify({"error": "Course is not found"}), 404)
+    return make_response(jsonify({"error": "Student not found"}), 403)
 
 
 
@@ -247,18 +330,134 @@ _For general run, it will normally work by (CLI):
 
 
 
+*Building Flask with Models Continue... (Using Resources instead of Blueprint, Resource and Blueprint meant to be use together. But in this case, we're just showing how to use)
+***app.py
+from flask import Flask, make_response, jsonify
+from flask_migrate import Migrate
+from models import db
+from blueprints.course_bp import course_bp
+from blueprints.student_bp import student_bp
+from flask_restful import Api
+from controllers.courses_controller import Courses, CourseById
+from controllers.students_controller import Students, StudentByID
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///school.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Getting rid of bp for now, because we are using resources.
+# app.register_blueprint(course_bp)
+# app.register_blueprint(student_bp)
+
+migrate = Migrate(app, db)
+
+api = Api(app)
+
+db.init_app(app)
+
+@app.route('/')
+def index():
+    return make_response( jsonify( { "message": "Welcome to the School App!" } ), 200)
+
+api.add_resource(Courses, '/courses')
+api.add_resource(CourseById, '/courses/<int:id>')
+
+api.add_resource(Students, '/students')
+api.add_resource(StudentByID, '/students/<int:id>')
+
+if __name__ == "__main__":
+    app.run(port=4000, debug=True)
 
 
 
+***courses_controller.py
+from flask_restful import Resource
+from models import db, Course
+from flask import make_response, request
+
+class Courses(Resource):
+    # GET /courses
+    def get(self):
+        courses = [ course.to_dict() for course in Course.query.all()]
+        return make_response(courses, 200)
+    
+    # POST /courses
+    def post(self):
+        new_course = Course(title=request.get_json()['title'])
+
+        db.session.add(new_course)
+        db.session.commit()
+
+        if new_course.id:
+            return make_response(new_course.to_dict(), 201)
+        
+        return make_response({"error": "Create unsuccessfully"}, 403)
+    
+class CourseById(Resource):
+    # Get /course/<int:id>
+    def get(self, id):
+        course = Course.query.filter(Course.id == id).first()
+
+        if course:
+            return make_response(course.to_dict(),200)
+        
+        return make_response({"error": "Create unsuccessfully"}, 403)
 
 
 
+***students_controller.py
+from flask_restful import Resource
+from models import db, Student
+from flask import make_response, request
 
+class Students(Resource):
+    # Get /students
+    def get(self):
+        students = [student.to_dict() for student in Student.query.all()]
+        return make_response(students, 200)
 
+    # POST /students
+    def post(self):
+        new_student = Student(name=request.json['name'], degree=request.json['degree'])
+        db.session.add(new_student)
+        db.session.commit()
+        if new_student.id:
+            return make_response(new_student.to_dict(), 201)
+        return make_response({"error": "Create unsuccessful"}, 403)
+    
+class StudentByID(Resource):
+    # Get /student/<int:id> - GET, UPDATE, DELETE
+    @staticmethod
+    def find_student(id):
+        return Student.query.filter(Student.id == id).first()
 
+    # GET /student/<int:id>
+    def get(self, id):
+        student = self.find_student(id)
+        if student:
+            return make_response(student.to_dict(), 200)
+        return make_response({"error": "Student not found"}, 404)
+    
+    # PATCH /student/<int:id>
+    def patch(self, id):
+        student = self.find_student(id)
+        if student:
+            for attr in request.json:
+                setattr(student, attr, request.json[attr])
+            db.session.commit()
+            return make_response(student.to_dict(), 200)
+        return make_response({"error": "Student not found"}, 404)
 
-
-
+    # DELETE /student/<int:id>
+    def delete(self, id):
+        student = self.find_student(id)
+        if student:
+            db.session.delete(student)
+            db.session.commit()
+            return make_response({"message": "Student deleted"}, 200)
+        return make_response({"error": "Student not found"}, 404)
+ 
 
 
 
